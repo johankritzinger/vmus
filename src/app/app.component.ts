@@ -18,7 +18,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 
-import { Settings } from '../providers/providers';
+import { Settings, Vmrecords } from '../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core'
 
@@ -61,8 +61,22 @@ export class MyApp {
     { title: 'Search', component: SearchPage }
   ]
 
-  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
+  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, vmrecords: Vmrecords) {
     this.initTranslate();
+    platform
+    .ready()
+    .then(() => {
+      // vmrecords.openDb();
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+
+    })
+    // platform.ready().then(() => {
+    // // Okay, so the platform is ready and our plugins are available.
+    // // Here you can do any higher level native things you might need.
+    // statusBar.styleDefault();
+    // splashScreen.hide();
+    // vmrecords.openDb();
   }
 
   ionViewDidLoad() {

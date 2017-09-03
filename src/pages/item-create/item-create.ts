@@ -1,28 +1,56 @@
 import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { NavController, ViewController } from 'ionic-angular';
+import { Vmrecords } from '../../providers/providers';
+// import { Camera } from '@ionic-native/camera';
 
-import { Camera } from '@ionic-native/camera';
+/**
+ * Generated class for the FormpagePage page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
 
-
+// @IonicPage()
 @Component({
   selector: 'page-item-create',
-  templateUrl: 'item-create.html'
+  templateUrl: 'item-create.html',
 })
 export class ItemCreatePage {
   @ViewChild('fileInput') fileInput;
-
-  isReadyToSave: boolean;
-
-  item: any;
-
+  proj: any;
   form: FormGroup;
+  isReadyToSave: boolean;
+  private myData: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
+  constructor(public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
+    // this.proj = navParams.get('proj');
+
     this.form = formBuilder.group({
-      profilePic: [''],
-      name: ['', Validators.required],
-      about: ['']
+      email: ['', Validators.required],
+      observers: [''],
+      country: [''],
+      // project: [this.proj.Project_acronym, Validators.required],
+      project: ['',Validators.required],
+      province: [''],
+      nearesttown: [''],
+      locality: [''],
+      minelev: [''],
+      maxelev: [''],
+      lat: [''],
+      long: [''],
+      datum: [''],
+      accuracy: [''],
+      source: [''],
+      year: [''],
+      month: [''],
+      day: [''],
+      note: [''],
+      userdet: [''],
+      nestcount: [''],
+      nestsite: [''],
+      roadkill: ['']
+
     });
 
     // Watch the form for changes, and
@@ -32,53 +60,57 @@ export class ItemCreatePage {
   }
 
   ionViewDidLoad() {
-
+    console.log('ionViewDidLoad FormpagePage ' + this.proj.Project_acronym);
   }
 
-  getPicture() {
-    if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        targetWidth: 96,
-        targetHeight: 96
-      }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else {
-      this.fileInput.nativeElement.click();
-    }
+  onSubmit(formData) {
+    this
+      .vmrecords
+      .getRows()
+      .then(s => {
+        this.vmrecords.addItem(formData);
+      });
+    console.log('Form data is ', formData);
+    this.myData = formData;
   }
 
-  processWebImage(event) {
-    let reader = new FileReader();
-    reader.onload = (readerEvent) => {
+//   getPicture() {
+//   if (Camera['installed']()) {
+//     this.camera.getPicture({
+//       destinationType: this.camera.DestinationType.DATA_URL,
+//       targetWidth: 96,
+//       targetHeight: 96
+//     }).then((data) => {
+//       this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+//     }, (err) => {
+//       alert('Unable to take photo');
+//     })
+//   } else {
+//     this.fileInput.nativeElement.click();
+//   }
+// }
 
-      let imageData = (readerEvent.target as any).result;
-      this.form.patchValue({ 'profilePic': imageData });
-    };
+processWebImage(event) {
+  let reader = new FileReader();
+  reader.onload = (readerEvent) => {
 
-    reader.readAsDataURL(event.target.files[0]);
-  }
+    let imageData = (readerEvent.target as any).result;
+    this.form.patchValue({ 'profilePic': imageData });
+  };
 
-  getProfileImageStyle() {
-    return 'url(' + this.form.controls['profilePic'].value + ')'
-  }
+  reader.readAsDataURL(event.target.files[0]);
+}
 
-  /**
-   * The user cancelled, so we dismiss without sending data back.
-   */
-  cancel() {
-    this.viewCtrl.dismiss();
-  }
+getProfileImageStyle() {
+  return 'url(' + this.form.controls['profilePic'].value + ')'
+}
 
-  /**
-   * The user is done and wants to create the item, so return it
-   * back to the presenter.
-   */
-  done() {
-    if (!this.form.valid) { return; }
-    this.viewCtrl.dismiss(this.form.value);
-  }
+/**
+ * The user cancelled, so we dismiss without sending data back.
+ */
+cancel() {
+  this.viewCtrl.dismiss();
+}
+
+
 }

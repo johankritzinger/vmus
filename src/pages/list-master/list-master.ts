@@ -1,22 +1,36 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { Platform, NavController, ModalController } from 'ionic-angular';
 
 import { ItemCreatePage } from '../item-create/item-create';
 import { ItemDetailPage } from '../item-detail/item-detail';
 
 import { Items } from '../../providers/providers';
+import { Vmrecords } from '../../providers/providers';
 
 import { Item } from '../../models/item';
+import { Vmrecord } from '../../models/vmrecord';
 
 @Component({
   selector: 'page-list-master',
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: Item[];
+  // currentRecords: Vmrecords[];
+  currentRecords: any[];
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.currentItems = this.items.query();
+  constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController) {
+    //First We need to ready the Platform
+    this
+      .platform
+      .ready()
+      .then(() => {
+        this
+          .vmrecords
+          .getRows()
+          .then(s => {
+            this.currentRecords = this.vmrecords.arr;
+          });
+      })
   }
 
   /**
@@ -31,9 +45,9 @@ export class ListMasterPage {
    */
   addItem() {
     let addModal = this.modalCtrl.create(ItemCreatePage);
-    addModal.onDidDismiss(item => {
-      if (item) {
-        this.items.add(item);
+    addModal.onDidDismiss(vmrecord => {
+      if (vmrecord) {
+        this.vmrecords.addItem(vmrecord);
       }
     })
     addModal.present();
@@ -42,16 +56,16 @@ export class ListMasterPage {
   /**
    * Delete an item from the list of items.
    */
-  deleteItem(item) {
-    this.items.delete(item);
+  deleteItem(vmrecord) {
+    this.vmrecords.del(vmrecord);
   }
 
   /**
    * Navigate to the detail page for this item.
    */
-  openItem(item: Item) {
+  openItem(vmrecord: Item) {
     this.navCtrl.push(ItemDetailPage, {
-      item: item
+      item: vmrecord
     });
   }
 }

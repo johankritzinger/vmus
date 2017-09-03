@@ -15,13 +15,13 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentItems">
+    <ion-item-sliding *ngFor="let item of currentRecords">
       <button ion-item (click)="openItem(item)">
-        <ion-avatar item-start>
+        <!-- <ion-avatar item-start>
           <img [src]="item.profilePic" />
-        </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
+        </ion-avatar> -->
+        <h2>{{item.project}}</h2>
+        <p>{{item.userdet}}</p>
         <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
       </button>
 
