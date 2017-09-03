@@ -80,33 +80,31 @@ export class Vmrecords {
         userdet,
         nestcount,
         nestsite,
-        roadkill) VALUES (
-            i.email,
-            i.observers,
-            i.project,
-            i.country,
-            i.province,
-            i.nearesttown,
-            i.locality,
-            i.minelev,
-            i.maxelev,
-            i.lat,
-            i.long,
-            i.datum,
-            i.accuracy,
-            i.source,
-            i.year,
-            i.month,
-            i.day,
-            i.note,
-            i.userdet,
-            i.nestcount,
-            i.nestsite,
-            i.roadkill
-          )`;
+        roadkill) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
       this
         .db
-        .executeSql(InsertQuery, [i], (r) => {
+        .executeSql(InsertQuery, [i.email,
+        i.observers,
+        i.project,
+        i.country,
+        i.province,
+        i.nearesttown,
+        i.locality,
+        i.minelev,
+        i.maxelev,
+        i.lat,
+        i.long,
+        i.datum,
+        i.accuracy,
+        i.source,
+        i.year,
+        i.month,
+        i.day,
+        i.note,
+        i.userdet,
+        i.nestcount,
+        i.nestsite,
+        i.roadkill ], (r) => {
           console.log('Inserted... Sucess..', i);
           this
             .getRows()

@@ -66,7 +66,7 @@ export class MyApp {
     platform
     .ready()
     .then(() => {
-      // vmrecords.openDb();
+      vmrecords.openDb();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 

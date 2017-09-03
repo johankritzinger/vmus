@@ -60,7 +60,7 @@ export class ItemCreatePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FormpagePage ' + this.proj.Project_acronym);
+    console.log('ionViewDidLoad FormpagePage ' + 'this.proj.Project_acronym');
   }
 
   onSubmit(formData) {
@@ -112,5 +112,12 @@ cancel() {
   this.viewCtrl.dismiss();
 }
 
-
+/**
+ * The user is done and wants to create the item, so return it
+ * back to the presenter.
+ */
+done() {
+  if (!this.form.valid) { return; }
+  this.viewCtrl.dismiss(this.form.value);
+}
 }
