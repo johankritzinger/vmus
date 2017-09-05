@@ -8,7 +8,7 @@ import { Items } from '../../providers/providers';
 import { Vmrecords } from '../../providers/providers';
 
 import { Item } from '../../models/item';
-import { Vmrecord } from '../../models/vmrecord';
+// import { Vmrecord } from '../../models/vmrecord';
 
 @Component({
   selector: 'page-list-master',
@@ -20,23 +20,29 @@ export class ListMasterPage {
 
   constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController) {
     //First We need to ready the Platform
-    this
-      .platform
-      .ready()
-      .then(() => {
-        this
-          .vmrecords
-          .getRows()
-          .then(s => {
-            this.currentRecords = this.vmrecords.arr;
-          });
-      })
+    // this
+    //   .platform
+    //   .ready()
+    //   .then(() => {
+    //     this
+    //       .vmrecords
+    //       .getRows()
+    //       .then(s => {
+    //         this.currentRecords = this.vmrecords.arr;
+    //       });
+    //   })
   }
 
   /**
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
+    this
+      .vmrecords
+      .getRows()
+      .then(s => {
+        this.currentRecords = this.vmrecords.arr;
+      });
   }
 
   /**
@@ -63,9 +69,9 @@ export class ListMasterPage {
   /**
    * Navigate to the detail page for this item.
    */
-  openItem(vmrecord: Item) {
-    this.navCtrl.push(ItemDetailPage, {
-      item: vmrecord
+  openItem(vmrecord) {
+    this.navCtrl.push(ItemCreatePage, {
+      vmrecord
     });
   }
 }

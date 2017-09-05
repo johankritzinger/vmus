@@ -25,16 +25,17 @@ export class ItemCreatePage {
 
   constructor(public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
     // this.proj = navParams.get('proj');
+    this.proj = navParams.get('vmrecord') || vmrecords.newRecord;
 
     this.form = formBuilder.group({
-      email: ['', Validators.required],
-      observers: [''],
-      country: [''],
+      email: [this.proj.email, Validators.required],
+      observers: [this.proj.observers],
+      country: [this.proj.country],
       // project: [this.proj.Project_acronym, Validators.required],
-      project: ['',Validators.required],
-      province: [''],
-      nearesttown: [''],
-      locality: [''],
+      project: [this.proj.project,Validators.required],
+      province: [this.proj.province],
+      nearesttown: [this.proj.nearesttown],
+      locality: [this.proj.locality],
       minelev: [''],
       maxelev: [''],
       lat: [''],

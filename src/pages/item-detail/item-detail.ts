@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { Items } from '../../providers/providers';
+import { Vmrecords } from '../../providers/providers';
 
 @Component({
   selector: 'page-item-detail',
@@ -10,8 +10,8 @@ import { Items } from '../../providers/providers';
 export class ItemDetailPage {
   item: any;
 
-  constructor(public navCtrl: NavController, navParams: NavParams, items: Items) {
-    this.item = navParams.get('item') || items.defaultItem;
+  constructor(public navCtrl: NavController, navParams: NavParams, vmrecords: Vmrecords) {
+    this.item = navParams.get('vmrecord') || vmrecords.newRecord;
   }
 
 }

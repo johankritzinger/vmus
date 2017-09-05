@@ -53,6 +53,32 @@ export class Vmrecords {
         console.log('Populated Datebase OK..');
       })
   }
+
+  newRecord: any = {
+    "email": '',
+      "observers": '',
+      "project": '',
+      "country": '',
+      "province": '',
+      "nearesttown": '',
+      "locality": '',
+      "minelev": '',
+      "maxelev": '',
+      "lat": '',
+      "long": '',
+      "datum": '',
+      "accuracy": '',
+      "source": '',
+      "year": '',
+      "month": '',
+      "day": '',
+      "note": '',
+      "userdet": '',
+      "nestcount": '',
+      "nestsite": '',
+      "roadkill": '',
+  };
+
   /**
    *
    * @param addItem for adding: function
@@ -135,6 +161,7 @@ export class Vmrecords {
               this
                 .arr
                 .push(item);
+              console.log('fetched item ' + i)
             }
           }
           res(true);
