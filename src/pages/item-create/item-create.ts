@@ -28,7 +28,8 @@ export class ItemCreatePage {
     this.proj = navParams.get('vmrecord') || vmrecords.newRecord;
 
     this.form = formBuilder.group({
-      email: [this.proj.email, Validators.required],
+      id: [this.proj.id],
+      email: [this.proj.email],
       observers: [this.proj.observers],
       country: [this.proj.country],
       // project: [this.proj.Project_acronym, Validators.required],
@@ -36,18 +37,18 @@ export class ItemCreatePage {
       province: [this.proj.province],
       nearesttown: [this.proj.nearesttown],
       locality: [this.proj.locality],
-      minelev: [''],
-      maxelev: [''],
-      lat: [''],
-      long: [''],
+      minelev: [this.proj.minelev],
+      maxelev: [this.proj.maxelev],
+      lat: [this.proj.lat],
+      long: [this.proj.long],
       datum: [''],
-      accuracy: [''],
-      source: [''],
+      accuracy: [this.proj.accuracy],
+      source: [this.proj.source],
       year: [''],
       month: [''],
       day: [''],
-      note: [''],
-      userdet: [''],
+      note: [this.proj.note],
+      userdet: [this.proj.userdet],
       nestcount: [''],
       nestsite: [''],
       roadkill: ['']
@@ -119,6 +120,11 @@ cancel() {
  */
 done() {
   if (!this.form.valid) { return; }
+  if (this.form.value.id) {
+    this.vmrecords.update(this.form.value)
+  } else {
+    this.vmrecords.addItem(this.form.value);
+  }
   this.viewCtrl.dismiss(this.form.value);
 }
 }

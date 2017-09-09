@@ -10,6 +10,8 @@ import { Vmrecords } from '../../providers/providers';
 import { Item } from '../../models/item';
 // import { Vmrecord } from '../../models/vmrecord';
 
+import { Geolocation } from '@ionic-native/geolocation';
+
 @Component({
   selector: 'page-list-master',
   templateUrl: 'list-master.html'
@@ -18,19 +20,8 @@ export class ListMasterPage {
   // currentRecords: Vmrecords[];
   currentRecords: any[];
 
-  constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController) {
-    //First We need to ready the Platform
-    // this
-    //   .platform
-    //   .ready()
-    //   .then(() => {
-    //     this
-    //       .vmrecords
-    //       .getRows()
-    //       .then(s => {
-    //         this.currentRecords = this.vmrecords.arr;
-    //       });
-    //   })
+  constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController, public geolocation: Geolocation) {
+      this.geolocation.getCurrentPosition()
   }
 
   /**

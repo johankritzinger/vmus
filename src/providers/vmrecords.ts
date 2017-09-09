@@ -1,4 +1,6 @@
 import {Injectable} from '@angular/core';
+import { Geolocation } from '@ionic-native/geolocation';
+import { Vmrecord } from '../models/vmrecord';
 /*
   Generated class for the Sqlite provider.
 
@@ -54,7 +56,7 @@ export class Vmrecords {
       })
   }
 
-  newRecord: any = {
+  emptyRecord: any = {
     "email": '',
       "observers": '',
       "project": '',
@@ -78,6 +80,11 @@ export class Vmrecords {
       "nestsite": '',
       "roadkill": '',
   };
+
+  newRecord() {
+    this.emptyRecord;
+
+  }
 
   /**
    *
@@ -191,58 +198,38 @@ export class Vmrecords {
 
   }
   //to Update any Item
-  update(id, i) {
+  // (removed for ease)
+  // country = ` + i.country + `,
+  // province = ` + i.province + `,
+  // nearesttown = ` + i.nearesttown + `,
+  // locality = ` + i.locality + `,
+  // minelev = ` + i.minelev + `,
+  // maxelev = ` + i.maxelev + `,
+  // lat = ` + i.lat + `,
+  // long = ` + i.long + `,
+  // datum = ` + i.datum + `,
+  // accuracy = ` + i.accuracy + `,
+  // source = ` + i.source + `,
+  // year = ` + i.year + `,
+  // month = ` + i.month + `,
+  // day = ` + i.day + `,
+  // note = ` + i.note + `,
+
+  // nestcount = ` + i.nestcount + `,
+  // nestsite = ` + i.nestsite + `,
+  // roadkill = ` + i.roadkill + `
+  update(i) {
+    console.log('updating record ' + i.id)
     return new Promise(res => {
-      var query = `UPDATE Todo SET (email,
-        observers,
-        project,
-        country,
-        province,
-        nearesttown,
-        locality,
-        minelev,
-        maxelev,
-        lat,
-        long,
-        datum,
-        accuracy,
-        source,
-        year,
-        month,
-        day,
-        note,
-        userdet,
-        nestcount,
-        nestsite,
-        roadkill) VALUES (
-            i.email,
-            i.observers,
-            i.project,
-            i.country,
-            i.province,
-            i.nearesttown,
-            i.locality,
-            i.minelev,
-            i.maxelev,
-            i.lat,
-            i.long,
-            i.datum,
-            i.accuracy,
-            i.source,
-            i.year,
-            i.month,
-            i.day,
-            i.note,
-            i.userdet,
-            i.nestcount,
-            i.nestsite,
-            i.roadkill
-          ) WHERE id=?`;
+      var query = `UPDATE VMRecords SET
+        email='` + i.email + `',
+        observers='` + i.observers + `',
+        project='` + i.project + `',
+        userdet='` + i.userdet + `'
+          WHERE id=` + i.id;
       this
         .db
-        .executeSql(query, [
-          i, id
-        ], (s) => {
+        .executeSql(query, [], (s) => {
           console.log('Update Success...', s);
           this
             .getRows()

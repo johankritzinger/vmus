@@ -41,7 +41,7 @@ export class MapPage {
       console.log('map loaded')
 
     }, (err) => {
-      console.log('map error: ' + err);
+      console.log('map error: ' + err.message);
     });
 
   }
