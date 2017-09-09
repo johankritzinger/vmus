@@ -48,7 +48,7 @@ export class Vmrecords {
           roadkill bool
           )`);
       }, (e) => {
-        console.log('Transtion Error', e);
+        console.log('OpenDb Error', e);
       }, () => {
         console.log('Populated Datebase OK..');
       })
