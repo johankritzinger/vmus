@@ -21,13 +21,23 @@ export class ListMasterPage {
   currentRecords: any[];
 
   constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController, public geolocation: Geolocation) {
-      this.geolocation.getCurrentPosition()
+      // this.geolocation.getCurrentPosition()
   }
 
   /**
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
+    this
+      .vmrecords
+      .getRows()
+      .then(s => {
+        this.currentRecords = this.vmrecords.arr;
+      });
+  }
+
+  paneChanged() {
+    console.log('refreshing')
     this
       .vmrecords
       .getRows()
@@ -55,6 +65,13 @@ export class ListMasterPage {
    */
   deleteItem(vmrecord) {
     this.vmrecords.del(vmrecord);
+    // refresh
+    this
+      .vmrecords
+      .getRows()
+      .then(s => {
+        this.currentRecords = this.vmrecords.arr;
+      });
   }
 
   /**

@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Vmrecord } from '../models/vmrecord';
+// import { Vmrecord } from '../models/vmrecord';
+// import { Location } from './location';
+
 /*
   Generated class for the Sqlite provider.
 
@@ -13,7 +15,9 @@ export class Vmrecords {
   public text : string = "";
   public db = null;
   public arr = [];
-  constructor() {}
+  public nextid: number = 1;
+
+  constructor(public geolocation: Geolocation ) {}
  /**
   *
   * Open The Datebase
@@ -49,6 +53,7 @@ export class Vmrecords {
           nestsite text,
           roadkill bool
           )`);
+          this.getNextid();
       }, (e) => {
         console.log('OpenDb Error', e);
       }, () => {
@@ -57,6 +62,7 @@ export class Vmrecords {
   }
 
   emptyRecord: any = {
+    "id": null,
     "email": '',
       "observers": '',
       "project": '',
@@ -81,9 +87,53 @@ export class Vmrecords {
       "roadkill": '',
   };
 
-  newRecord() {
-    this.emptyRecord;
+  getNextid()    {
+      this
+        .db
+        .executeSql('SELECT max(id) AS next FROM VMRecords', [], rs => {
+          if (rs.rows.length > 0) {
+            this.nextid = rs
+              .rows
+              .item(0).next + 1;
+            console.log('Next id = ' + JSON.stringify(this.nextid) );
+          }
+        }, (e) => {
+          console.log('Sql Query Error', e);
+        });
+  }
 
+  newRecord() {
+    let record = this.emptyRecord;
+
+    var today = new Date();
+    record.year = today.getFullYear();
+    record.month = today.getMonth();
+    record.day = today.getDate();
+
+    this
+      .db
+      .executeSql('SELECT max(id) AS next FROM VMRecords', [], rs => {
+        if (rs.rows.length > 0) {
+          this.nextid = rs
+            .rows
+            .item(0).next + 1;
+          console.log('Next id = ' + JSON.stringify(this.nextid) );
+          record.id = this.nextid;
+        }
+      }, (e) => {
+        console.log('Sql Query Error', e);
+      });
+
+    this.geolocation.getCurrentPosition().then((position) => {
+      record.lat = position.coords.latitude;
+      record.long = position.coords.longitude;
+      record.accuracy =  position.coords.accuracy;
+      record.minelev = position.coords.altitude - position.coords.altitudeAccuracy;
+      record.maxelev = position.coords.altitude + position.coords.altitudeAccuracy;
+      }, (err) => {
+        console.log('map error: ' + err.message);
+      });
+    return record;
   }
 
   /**
@@ -142,8 +192,10 @@ export class Vmrecords {
           this
             .getRows()
             .then(s => {
-              resolve(true)
+              resolve(true);
+              console.log('getRows: ' + JSON.stringify(this.arr))
             });
+            this.getNextid();
         }, e => {
           console.log('Inserted Error', e);
           resolve(false);
@@ -179,12 +231,14 @@ export class Vmrecords {
 
   }
   //to delete any Item
-  del(id) {
+  del(i) {
+    this.arr.splice(this.arr.indexOf(i)-1, 1);
     return new Promise(resolve => {
+      console.log('deleting record ' + i)
       var query = "DELETE FROM VMRecords WHERE id=?";
       this
         .db
-        .executeSql(query, [id], (s) => {
+        .executeSql(query, [i.id], (s) => {
           console.log('Delete Success...', s);
           this
             .getRows()

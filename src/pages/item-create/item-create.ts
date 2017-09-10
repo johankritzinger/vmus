@@ -24,37 +24,11 @@ export class ItemCreatePage {
   private myData: any;
 
   constructor(public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
-    // this.proj = navParams.get('proj');
-    this.proj = navParams.get('vmrecord') || vmrecords.newRecord;
 
-    this.form = formBuilder.group({
-      id: [this.proj.id],
-      email: [this.proj.email],
-      observers: [this.proj.observers],
-      country: [this.proj.country],
-      // project: [this.proj.Project_acronym, Validators.required],
-      project: [this.proj.project,Validators.required],
-      province: [this.proj.province],
-      nearesttown: [this.proj.nearesttown],
-      locality: [this.proj.locality],
-      minelev: [this.proj.minelev],
-      maxelev: [this.proj.maxelev],
-      lat: [this.proj.lat],
-      long: [this.proj.long],
-      datum: [''],
-      accuracy: [this.proj.accuracy],
-      source: [this.proj.source],
-      year: [''],
-      month: [''],
-      day: [''],
-      note: [this.proj.note],
-      userdet: [this.proj.userdet],
-      nestcount: [''],
-      nestsite: [''],
-      roadkill: ['']
+    console.log('Nav params data: ' + JSON.stringify(navParams.data))
 
-    });
-
+    this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
+    
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
@@ -120,11 +94,22 @@ cancel() {
  */
 done() {
   if (!this.form.valid) { return; }
-  if (this.form.value.id) {
-    this.vmrecords.update(this.form.value)
+  if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
+    console.log('updating record ' + this.form.value.id);
+    this.vmrecords.update(this.form.value).then(s => {
+      this.viewCtrl.dismiss(this.form.value);
+    });
   } else {
-    this.vmrecords.addItem(this.form.value);
+    console.log('adding record ' + this.form.value.id);
+    this.vmrecords.addItem(this.form.value).then(s => {
+      this.viewCtrl.dismiss(this.form.value);
+    });
   }
-  this.viewCtrl.dismiss(this.form.value);
 }
+
+deleteItem(vmrecord) {
+  this.vmrecords.del(this.form.value);
+  this.viewCtrl.dismiss();
+}
+
 }

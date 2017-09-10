@@ -9,6 +9,12 @@
   <ion-navbar>
     <ion-title>{{ 'ITEM_CREATE_TITLE' | translate }}</ion-title>
     <ion-buttons start>
+      <button ion-button (click)="deleteItem()">
+        <span color="danger" showWhen="ios">
+          DEL
+        </span>
+        <ion-icon name="md-alert" showWhen="android,windows"></ion-icon>
+      </button>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
           {{ 'CANCEL_BUTTON' | translate }}
@@ -78,15 +84,23 @@
       </ion-item>
       <ion-item>
         <ion-label>lat</ion-label>
-        <ion-input type="text" placeholder="About" formControlName="lat"></ion-input>
+        <ion-input type="text" formControlName="lat"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>long</ion-label>
-        <ion-input type="text" placeholder="About" formControlName="long"></ion-input>
+        <ion-input type="text"  formControlName="long"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>year</ion-label>
-        <ion-input type="text" placeholder="About" formControlName="year"></ion-input>
+        <ion-input type="text" formControlName="year"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>month</ion-label>
+        <ion-input type="text" formControlName="month"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>day</ion-label>
+        <ion-input type="text" formControlName="day"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>note</ion-label>
