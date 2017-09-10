@@ -18,7 +18,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 
-import { Settings, Vmrecords } from '../providers/providers';
+import { Settings, Vmrecords,VmprojectsProvider } from '../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core'
 
@@ -62,14 +62,16 @@ export class MyApp {
     { title: 'Search', component: SearchPage }
   ]
 
-  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, vmrecords: Vmrecords) {
+  constructor(private translate: TranslateService, private platform: Platform, private settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, vmrecords: Vmrecords, vmprojects: VmprojectsProvider) {
     this.initTranslate();
     platform
     .ready()
     .then(() => {
       vmrecords.openDb();
+      vmprojects.openDb();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.settings.load();
 
     })
     // platform.ready().then(() => {

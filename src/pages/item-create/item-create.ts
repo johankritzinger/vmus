@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Vmrecords } from '../../providers/providers';
+import { Vmrecords, VmprojectsProvider } from '../../providers/providers';
 // import { Camera } from '@ionic-native/camera';
 
 /**
@@ -23,12 +23,15 @@ export class ItemCreatePage {
   isReadyToSave: boolean;
   private myData: any;
 
-  constructor(public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
+  constructor(public vmprojects: VmprojectsProvider, public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
 
-    console.log('Nav params data: ' + JSON.stringify(navParams.data))
+    // this.vmprojects.getRows();
+
+    console.log('Nav params data: ' + JSON.stringify(navParams.data));
+    console.log('vmprojects: ' + JSON.stringify(this.vmprojects.vmProjects));
 
     this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
-    
+
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
@@ -94,17 +97,17 @@ cancel() {
  */
 done() {
   if (!this.form.valid) { return; }
-  if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
-    console.log('updating record ' + this.form.value.id);
-    this.vmrecords.update(this.form.value).then(s => {
-      this.viewCtrl.dismiss(this.form.value);
-    });
-  } else {
-    console.log('adding record ' + this.form.value.id);
+  // if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
+  //   console.log('updating record ' + this.form.value.id);
+  //   this.vmrecords.update(this.form.value).then(s => {
+  //     this.viewCtrl.dismiss(this.form.value);
+  //   });
+  // } else {
+  //   console.log('adding record ' + this.form.value.id);
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);
     });
-  }
+  // }
 }
 
 deleteItem(vmrecord) {

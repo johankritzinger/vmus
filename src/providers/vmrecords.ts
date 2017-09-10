@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Settings } from './settings';
 // import { Vmrecord } from '../models/vmrecord';
 // import { Location } from './location';
 
@@ -17,7 +18,11 @@ export class Vmrecords {
   public arr = [];
   public nextid: number = 1;
 
-  constructor(public geolocation: Geolocation ) {}
+  // settingsReady = false;
+
+  constructor(public geolocation: Geolocation, public settings: Settings ) {
+    // this.settings.load();
+  }
  /**
   *
   * Open The Datebase
@@ -84,7 +89,7 @@ export class Vmrecords {
       "userdet": '',
       "nestcount": '',
       "nestsite": '',
-      "roadkill": '',
+      "roadkill": false,
   };
 
   getNextid()    {
@@ -107,8 +112,14 @@ export class Vmrecords {
 
     var today = new Date();
     record.year = today.getFullYear();
-    record.month = today.getMonth();
+    record.month = today.getMonth()+1;
     record.day = today.getDate();
+
+    this.settings.load().then(() => {
+      // this.settingsReady = true;
+      record.email = this.settings.allSettings.email;
+      record.project = this.settings.allSettings.prefProject;
+    });
 
     this
       .db
@@ -142,7 +153,7 @@ export class Vmrecords {
    */
   addItem(i) {
     return new Promise(resolve => {
-      var InsertQuery = `INSERT INTO VMRecords (email,
+      var InsertQuery = `INSERT OR REPLACE INTO VMRecords (id, email,
         observers,
         project,
         country,
@@ -163,10 +174,10 @@ export class Vmrecords {
         userdet,
         nestcount,
         nestsite,
-        roadkill) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        roadkill) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
       this
         .db
-        .executeSql(InsertQuery, [i.email,
+        .executeSql(InsertQuery, [i.id, i.email,
         i.observers,
         i.project,
         i.country,
@@ -232,7 +243,7 @@ export class Vmrecords {
   }
   //to delete any Item
   del(i) {
-    this.arr.splice(this.arr.indexOf(i)-1, 1);
+    // this.arr.splice(this.arr.indexOf(i)-1, 1);
     return new Promise(resolve => {
       console.log('deleting record ' + i)
       var query = "DELETE FROM VMRecords WHERE id=?";
@@ -251,50 +262,48 @@ export class Vmrecords {
     })
 
   }
-  //to Update any Item
-  // (removed for ease)
-  // country = ` + i.country + `,
-  // province = ` + i.province + `,
-  // nearesttown = ` + i.nearesttown + `,
-  // locality = ` + i.locality + `,
-  // minelev = ` + i.minelev + `,
-  // maxelev = ` + i.maxelev + `,
-  // lat = ` + i.lat + `,
-  // long = ` + i.long + `,
-  // datum = ` + i.datum + `,
-  // accuracy = ` + i.accuracy + `,
-  // source = ` + i.source + `,
-  // year = ` + i.year + `,
-  // month = ` + i.month + `,
-  // day = ` + i.day + `,
-  // note = ` + i.note + `,
-
-  // nestcount = ` + i.nestcount + `,
-  // nestsite = ` + i.nestsite + `,
-  // roadkill = ` + i.roadkill + `
-  update(i) {
-    console.log('updating record ' + i.id)
-    return new Promise(res => {
-      var query = `UPDATE VMRecords SET
-        email='` + i.email + `',
-        observers='` + i.observers + `',
-        project='` + i.project + `',
-        userdet='` + i.userdet + `'
-          WHERE id=` + i.id;
-      this
-        .db
-        .executeSql(query, [], (s) => {
-          console.log('Update Success...', s);
-          this
-            .getRows()
-            .then(s => {
-              res(true);
-            });
-        }, (err) => {
-          console.log('Updating Error', err);
-        });
-    })
-
-  }
+  //to Update any Item (addItem now deals with this)
+  // update(i) {
+  //   console.log('updating record ' + i.id)
+  //   return new Promise(res => {
+  //     var query = `UPDATE VMRecords SET
+  //       email='` + i.email + `',
+  //       observers='` + i.observers + `',
+  //       project='` + i.project + `',
+  //       userdet='` + i.userdet + `',
+  //       country='` + i.country + `',
+  //       province='` + i.province + `',
+  //       nearesttown='` + i.nearesttown + `',
+  //       locality='` + i.locality + `',
+  //       minelev='` + i.minelev + `',
+  //       maxelev='` + i.maxelev + `',
+  //       lat='` + i.lat + `',
+  //       long='` + i.long + `',
+  //       datum='` + i.datum + `',
+  //       accuracy='` + i.accuracy + `',
+  //       source='` + i.source + `',
+  //       year='` + i.year + `',
+  //       month='` + i.month + `',
+  //       day='` + i.day + `',
+  //       note='` + i.note + `',
+  //       nestcount='` + i.nestcount + `',
+  //       nestsite='` + i.nestsite + `',
+  //       roadkill='` + i.roadkill + `'
+  //         WHERE id=` + i.id;
+  //     this
+  //       .db
+  //       .executeSql(query, [], (s) => {
+  //         console.log('Update Success...', s);
+  //         this
+  //           .getRows()
+  //           .then(s => {
+  //             res(true);
+  //           });
+  //       }, (err) => {
+  //         console.log('Updating Error', err);
+  //       });
+  //   })
+  //
+  // }
 
 }

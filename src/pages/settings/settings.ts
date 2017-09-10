@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { Settings } from '../../providers/settings';
+import { Settings,VmprojectsProvider } from '../../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -38,14 +38,15 @@ export class SettingsPage {
     public settings: Settings,
     public formBuilder: FormBuilder,
     public navParams: NavParams,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    public vmprojects: VmprojectsProvider) {
   }
 
   _buildForm() {
     let group: any = {
       option1: [this.options.option1],
-      option2: [this.options.option2],
-      option3: [this.options.option3]
+      email: [this.options.email],
+      prefProject: [this.options.prefProject]
     };
 
     switch (this.page) {
