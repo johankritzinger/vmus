@@ -17,8 +17,6 @@ import { Geolocation } from '@ionic-native/geolocation';
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  // currentRecords: Vmrecords[];
-  currentRecords: any[];
 
   constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController, public geolocation: Geolocation) {
       // this.geolocation.getCurrentPosition()
@@ -30,35 +28,22 @@ export class ListMasterPage {
   ionViewDidLoad() {
     this
       .vmrecords
-      .getRows()
-      .then(s => {
-        this.currentRecords = this.vmrecords.arr;
-      });
-  }
-
-  paneChanged() {
-    console.log('refreshing')
-    this
-      .vmrecords
-      .getRows()
-      .then(s => {
-        this.currentRecords = this.vmrecords.arr;
-      });
+      .getRows();
   }
 
   /**
    * Prompt the user to add a new item. This shows our ItemCreatePage in a
    * modal and then adds the new item to our data source if the user created one.
    */
-  addItem() {
-    let addModal = this.modalCtrl.create(ItemCreatePage);
-    addModal.onDidDismiss(vmrecord => {
-      if (vmrecord) {
-        this.vmrecords.addItem(vmrecord);
-      }
-    })
-    addModal.present();
-  }
+  // addItem() {
+  //   let addModal = this.modalCtrl.create(ItemCreatePage);
+  //   addModal.onDidDismiss(vmrecord => {
+  //     if (vmrecord) {
+  //       this.vmrecords.addItem(vmrecord);
+  //     }
+  //   })
+  //   addModal.present();
+  // }
 
   /**
    * Delete an item from the list of items.
@@ -68,10 +53,7 @@ export class ListMasterPage {
     // refresh
     this
       .vmrecords
-      .getRows()
-      .then(s => {
-        this.currentRecords = this.vmrecords.arr;
-      });
+      .getRows();
   }
 
   /**
