@@ -22,15 +22,26 @@ export class ItemCreatePage {
   form: FormGroup;
   isReadyToSave: boolean;
   private myData: any;
+  recordReady: boolean = false;
 
-  constructor(public vmprojects: VmprojectsProvider, public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, formBuilder: FormBuilder) {
+  constructor(public vmprojects: VmprojectsProvider, public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public formBuilder: FormBuilder) {
 
     // this.vmprojects.getRows();
 
-    console.log('Nav params data: ' + JSON.stringify(navParams.data));
-    console.log('vmprojects: ' + JSON.stringify(this.vmprojects.vmProjects));
+    // console.log('Nav params data: ' + JSON.stringify(navParams.data));
+    // console.log('vmprojects: ' + JSON.stringify(this.vmprojects.vmProjects));
 
-    this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
+    // this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
+    if (this.navParams.data.vmrecord) {
+      this.form = this.formBuilder.group(this.navParams.data.vmrecord);
+      this.recordReady = true;
+    } else {
+      this.form = this.formBuilder.group(this.vmrecords.newRecord()
+      //  ; .then(() => {
+      //   this.recordReady = true;
+      // })
+      )
+    }
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
@@ -39,7 +50,11 @@ export class ItemCreatePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FormpagePage ' + 'this.proj.Project_acronym');
+    // console.log('ionViewDidLoad FormpagePage ' + 'this.proj.Project_acronym');
+  }
+
+  ionViewWillEnter() {
+    //
   }
 
   onSubmit(formData) {

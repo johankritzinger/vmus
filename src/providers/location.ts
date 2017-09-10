@@ -1,3 +1,5 @@
+// See https://www.joshmorony.com/adding-background-geolocation-to-an-ionic-2-application/
+
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';

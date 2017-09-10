@@ -108,43 +108,45 @@ export class Vmrecords {
   }
 
   newRecord() {
-    let record = this.emptyRecord;
+    // return new Promise(resolve => {
+      let record = this.emptyRecord;
 
-    var today = new Date();
-    record.year = today.getFullYear();
-    record.month = today.getMonth()+1;
-    record.day = today.getDate();
+      var today = new Date();
+      record.year = today.getFullYear();
+      record.month = today.getMonth()+1;
+      record.day = today.getDate();
 
-    this.settings.load().then(() => {
-      // this.settingsReady = true;
-      record.email = this.settings.allSettings.email;
-      record.project = this.settings.allSettings.prefProject;
-    });
-
-    this
-      .db
-      .executeSql('SELECT max(id) AS next FROM VMRecords', [], rs => {
-        if (rs.rows.length > 0) {
-          this.nextid = rs
-            .rows
-            .item(0).next + 1;
-          console.log('Next id = ' + JSON.stringify(this.nextid) );
-          record.id = this.nextid;
-        }
-      }, (e) => {
-        console.log('Sql Query Error', e);
+      this.settings.load().then(() => {
+        // this.settingsReady = true;
+        record.email = this.settings.allSettings.email;
+        record.project = this.settings.allSettings.prefProject;
       });
 
-    this.geolocation.getCurrentPosition().then((position) => {
-      record.lat = position.coords.latitude;
-      record.long = position.coords.longitude;
-      record.accuracy =  position.coords.accuracy;
-      record.minelev = position.coords.altitude - position.coords.altitudeAccuracy;
-      record.maxelev = position.coords.altitude + position.coords.altitudeAccuracy;
-      }, (err) => {
-        console.log('map error: ' + err.message);
-      });
-    return record;
+      this
+        .db
+        .executeSql('SELECT max(id) AS next FROM VMRecords', [], rs => {
+          if (rs.rows.length > 0) {
+            this.nextid = rs
+              .rows
+              .item(0).next + 1;
+            console.log('Next id = ' + JSON.stringify(this.nextid) );
+            record.id = this.nextid;
+          }
+        }, (e) => {
+          console.log('Sql Query Error', e);
+        });
+
+      this.geolocation.getCurrentPosition().then((position) => {
+        record.lat = position.coords.latitude;
+        record.long = position.coords.longitude;
+        record.accuracy =  position.coords.accuracy;
+        record.minelev = position.coords.altitude - position.coords.altitudeAccuracy;
+        record.maxelev = position.coords.altitude + position.coords.altitudeAccuracy;
+        }, (err) => {
+          console.log('map error: ' + err.message);
+        });
+      return record;
+    // })
   }
 
   /**
