@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Settings } from './settings';
+import { Settings, Location } from './providers';
 // import { Vmrecord } from '../models/vmrecord';
 // import { Location } from './location';
 
@@ -20,7 +20,11 @@ export class Vmrecords {
 
   // settingsReady = false;
 
-  constructor(public geolocation: Geolocation, public settings: Settings ) {
+  constructor(
+    public settings: Settings,
+    public location: Location,
+    public geolocation: Geolocation
+   ) {
     // this.settings.load();
   }
  /**
@@ -116,11 +120,17 @@ export class Vmrecords {
       record.month = today.getMonth()+1;
       record.day = today.getDate();
 
-      this.settings.load().then(() => {
-        // this.settingsReady = true;
-        record.email = this.settings.allSettings.email;
-        record.project = this.settings.allSettings.prefProject;
-      });
+      // this.settings.load().then(() => {
+      //   // this.settingsReady = true;
+      //   record.email = this.settings.allSettings.email;
+      //   record.project = this.settings.allSettings.prefProject;
+      // });
+
+      // record.lat = this.location.lat;
+      // record.long = this.location.lng;
+      // record.accuracy = this.location.accuracy;
+      // record.minelev = this.location.altitude - this.location.altitudeAccuracy;
+      // record.maxelev = this.location.altitude + this.location.altitudeAccuracy;
 
       this
         .db
@@ -136,16 +146,8 @@ export class Vmrecords {
           console.log('Sql Query Error', e);
         });
 
-      this.geolocation.getCurrentPosition().then((position) => {
-        record.lat = position.coords.latitude;
-        record.long = position.coords.longitude;
-        record.accuracy =  position.coords.accuracy;
-        record.minelev = position.coords.altitude - position.coords.altitudeAccuracy;
-        record.maxelev = position.coords.altitude + position.coords.altitudeAccuracy;
-        }, (err) => {
-          console.log('map error: ' + err.message);
-        });
-      return record;
+
+    return record;
     // })
   }
 

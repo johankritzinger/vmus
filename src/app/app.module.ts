@@ -24,7 +24,7 @@ import { WelcomePage } from '../pages/welcome/welcome';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
-import { Vmrecords,VmprojectsProvider } from '../providers/providers';
+import { Vmrecords, VmprojectsProvider, Location } from '../providers/providers';
 import { Settings } from '../providers/settings';
 import { User } from '../providers/user';
 
@@ -117,6 +117,7 @@ export function provideSettings(storage: Storage) {
     Vmrecords,
     VmprojectsProvider,
     Geolocation,
+    Location,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }
