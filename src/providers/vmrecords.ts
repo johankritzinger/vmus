@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Settings, Location } from './providers';
+import { Settings } from './settings';
 // import { Vmrecord } from '../models/vmrecord';
-// import { Location } from './location';
+import { Location } from './location';
 
 /*
   Generated class for the Sqlite provider.
@@ -17,14 +17,14 @@ export class Vmrecords {
   public db = null;
   public arr = [];
   public nextid: number = 1;
+  public record: any;
 
   // settingsReady = false;
 
-  constructor(
+  constructor(public geolocation: Geolocation,
     public settings: Settings,
-    public location: Location,
-    public geolocation: Geolocation
-   ) {
+    public location: Location
+    ) {
     // this.settings.load();
   }
  /**
@@ -113,24 +113,18 @@ export class Vmrecords {
 
   newRecord() {
     // return new Promise(resolve => {
-      let record = this.emptyRecord;
+      this.record = this.emptyRecord;
 
       var today = new Date();
-      record.year = today.getFullYear();
-      record.month = today.getMonth()+1;
-      record.day = today.getDate();
+      this.record.year = today.getFullYear();
+      this.record.month = today.getMonth()+1;
+      this.record.day = today.getDate();
 
-      // this.settings.load().then(() => {
-      //   // this.settingsReady = true;
-      //   record.email = this.settings.allSettings.email;
-      //   record.project = this.settings.allSettings.prefProject;
-      // });
-
-      // record.lat = this.location.lat;
-      // record.long = this.location.lng;
-      // record.accuracy = this.location.accuracy;
-      // record.minelev = this.location.altitude - this.location.altitudeAccuracy;
-      // record.maxelev = this.location.altitude + this.location.altitudeAccuracy;
+      this.settings.load().then(() => {
+        // this.settingsReady = true;
+        this.record.email = this.settings.allSettings.email;
+        this.record.project = this.settings.allSettings.prefProject;
+      });
 
       this
         .db
@@ -140,14 +134,31 @@ export class Vmrecords {
               .rows
               .item(0).next + 1;
             console.log('Next id = ' + JSON.stringify(this.nextid) );
-            record.id = this.nextid;
+            this.record.id = this.nextid;
           }
         }, (e) => {
           console.log('Sql Query Error', e);
         });
 
+      this.location.startTracking();
 
-    return record;
+      this.record.lat = this.location.lat;
+      this.record.long = this.location.lng;
+      this.record.accuracy = this.location.accuracy;
+      this.record.minelev = this.location.altitude - this.location.altitudeAccuracy;
+      this.record.maxelev = this.location.altitude + this.location.altitudeAccuracy;
+
+
+      // this.geolocation.getCurrentPosition().then((position) => {
+      //   record.lat = position.coords.latitude;
+      //   record.long = position.coords.longitude;
+      //   record.accuracy =  position.coords.accuracy;
+      //   record.minelev = position.coords.altitude - position.coords.altitudeAccuracy;
+      //   record.maxelev = position.coords.altitude + position.coords.altitudeAccuracy;
+      //   }, (err) => {
+      //     console.log('map error: ' + err.message);
+      //   });
+      // return record;
     // })
   }
 

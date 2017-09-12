@@ -4,8 +4,7 @@ import { Platform, NavController, ModalController } from 'ionic-angular';
 import { ItemCreatePage } from '../item-create/item-create';
 import { ItemDetailPage } from '../item-detail/item-detail';
 
-import { Items } from '../../providers/providers';
-import { Vmrecords } from '../../providers/providers';
+import { Vmrecords, Location } from '../../providers/providers';
 
 import { Item } from '../../models/item';
 // import { Vmrecord } from '../../models/vmrecord';
@@ -18,7 +17,12 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 export class ListMasterPage {
 
-  constructor(public navCtrl: NavController, public vmrecords: Vmrecords, protected platform : Platform, public modalCtrl: ModalController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController,
+      public vmrecords: Vmrecords,
+      protected platform : Platform,
+      public modalCtrl: ModalController,
+      public location: Location,
+      public geolocation: Geolocation ) {
       // this.geolocation.getCurrentPosition()
   }
 
@@ -29,6 +33,7 @@ export class ListMasterPage {
     this
       .vmrecords
       .getRows();
+    // this.location.startTracking();
   }
 
   /**

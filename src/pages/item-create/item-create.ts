@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Vmrecords, VmprojectsProvider } from '../../providers/providers';
+import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
 // import { Camera } from '@ionic-native/camera';
 
 /**
@@ -23,8 +23,15 @@ export class ItemCreatePage {
   isReadyToSave: boolean;
   private myData: any;
   recordReady: boolean = false;
+  isNewRecord: boolean = false;
 
-  constructor(public vmprojects: VmprojectsProvider, public vmrecords: Vmrecords, public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public formBuilder: FormBuilder) {
+  constructor(public vmprojects: VmprojectsProvider,
+    public vmrecords: Vmrecords,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public location: Location,
+    public formBuilder: FormBuilder) {
 
     // this.vmprojects.getRows();
 
@@ -36,11 +43,18 @@ export class ItemCreatePage {
       this.form = this.formBuilder.group(this.navParams.data.vmrecord);
       this.recordReady = true;
     } else {
-      this.form = this.formBuilder.group(this.vmrecords.newRecord()
-      //  ; .then(() => {
-      //   this.recordReady = true;
-      // })
-      )
+      this.location.startTracking();
+      this.vmrecords.newRecord();
+      this.form = this.formBuilder.group( this.vmrecords.record )
+      this.isNewRecord = true;
+
+
+      //
+      // this.form.lat = this.location.lat;
+      // this.form.long = this.location.lng;
+      // this.form.accuracy = this.location.accuracy;
+      // this.form.minelev = this.location.altitude - this.location.altitudeAccuracy;
+      // this.form.maxelev = this.location.altitude + this.location.altitudeAccuracy;
     }
 
     // Watch the form for changes, and
