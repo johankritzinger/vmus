@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
+import 'rxjs/add/operator/filter';
 // import { Camera } from '@ionic-native/camera';
 
 /**

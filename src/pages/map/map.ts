@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Location } from '../../providers/providers'
 
 // import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng, CameraPosition } from '@ionic-native/google-maps';
 
@@ -16,7 +17,7 @@ export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public geolocation: Geolocation, public location: Location) {
 
   }
 
@@ -25,12 +26,13 @@ export class MapPage {
   }
 
   loadMap(){
-    console.log('getting location')
+    console.log('getting location');
+    this.location.startTracking();
 
     this.geolocation.getCurrentPosition().then((position) => {
 
-      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      console.log('Lat = '+ position.coords.latitude + ', Long = ' + position.coords.longitude);
+      let latLng = new google.maps.LatLng(this.location.lat, this.location.lng);
+      // console.log('Lat = '+ position.coords.latitude + ', Long = ' + position.coords.longitude);
       let mapOptions = {
         center: latLng,
         zoom: 15,

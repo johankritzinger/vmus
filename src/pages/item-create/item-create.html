@@ -74,24 +74,36 @@
         <ion-label>locality</ion-label>
         <ion-input type="text" placeholder="locality" formControlName="locality"></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="isNewRecord">
+        <ion-label>Altitude {{ this.location.minelev  }} - {{ this.location.maxelev  }}</ion-label>
+        <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
+        <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isNewRecord">
         <ion-label>minelev</ion-label>
         <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="!isNewRecord">
         <ion-label>maxelev</ion-label>
         <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label>lat</ion-label>
-        <ion-input type="text" formControlName="lat"></ion-input>
+      <ion-item *ngIf="isNewRecord">
+        <ion-label >lat {{ this.location.lat | number : '1.4-5' }}, {{ this.location.lng | number : '1.4-5' }} +- {{ this.location.accuracy | number : '1.1-2' }} </ion-label>
+        <ion-input  type="hidden" formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
+        <ion-input  type="hidden" formControlName="long" value="{{ this.location.lng | number : '1.4-7' }}"></ion-input>
+        <ion-input  type="hidden" formControlName="accuracy" value="{{ this.location.accuracy | number : '1.1-2' }}"></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="!isNewRecord">
+        <ion-label>lat</ion-label>
+        <ion-input type="text"  formControlName="lat"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isNewRecord">
         <ion-label>long</ion-label>
         <ion-input type="text"  formControlName="long"></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label>accuracy</ion-label>
+      <ion-item *ngIf="!isNewRecord">
+        <ion-label>accuracy </ion-label>
+        <!-- <ion-input type="text"  formControlName="accuracy"></ion-input> -->
         <ion-input type="text"  formControlName="accuracy"></ion-input>
       </ion-item>
       <ion-item>
