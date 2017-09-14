@@ -20,7 +20,7 @@ import 'rxjs/add/operator/filter';
 export class ItemCreatePage {
   @ViewChild('fileInput') fileInput;
   proj: any;
-  form: FormGroup;
+  // form: FormGroup;
   isReadyToSave: boolean;
   private myData: any;
   recordReady: boolean = false;
@@ -32,7 +32,8 @@ export class ItemCreatePage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public location: Location,
-    public formBuilder: FormBuilder) {
+    // public formBuilder: FormBuilder
+  ) {
 
     // this.vmprojects.getRows();
 
@@ -41,12 +42,12 @@ export class ItemCreatePage {
 
     // this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
     if (this.navParams.data.vmrecord) {
-      this.form = this.formBuilder.group(this.navParams.data.vmrecord);
+      this.vmrecords.form = this.vmrecords.formBuilder.group(this.navParams.data.vmrecord);
       this.recordReady = true;
     } else {
       this.location.startTracking();
       this.vmrecords.newRecord();
-      this.form = this.formBuilder.group( this.vmrecords.record )
+      this.vmrecords.form = this.vmrecords.formBuilder.group( this.vmrecords.record )
       this.isNewRecord = true;
 
 
@@ -59,8 +60,8 @@ export class ItemCreatePage {
     }
 
     // Watch the form for changes, and
-    this.form.valueChanges.subscribe((v) => {
-      this.isReadyToSave = this.form.valid;
+    this.vmrecords.form.valueChanges.subscribe((v) => {
+      this.isReadyToSave = this.vmrecords.form.valid;
     });
   }
 
@@ -104,14 +105,14 @@ processWebImage(event) {
   reader.onload = (readerEvent) => {
 
     let imageData = (readerEvent.target as any).result;
-    this.form.patchValue({ 'profilePic': imageData });
+    this.vmrecords.form.patchValue({ 'profilePic': imageData });
   };
 
   reader.readAsDataURL(event.target.files[0]);
 }
 
 getProfileImageStyle() {
-  return 'url(' + this.form.controls['profilePic'].value + ')'
+  return 'url(' + this.vmrecords.form.controls['profilePic'].value + ')'
 }
 
 /**
@@ -126,7 +127,7 @@ cancel() {
  * back to the presenter.
  */
 done() {
-  if (!this.form.valid) { return; }
+  if (!this.vmrecords.form.valid) { return; }
   // if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
   //   console.log('updating record ' + this.form.value.id);
   //   this.vmrecords.update(this.form.value).then(s => {
@@ -134,14 +135,14 @@ done() {
   //   });
   // } else {
   //   console.log('adding record ' + this.form.value.id);
-    this.vmrecords.addItem(this.form.value).then(s => {
-      this.viewCtrl.dismiss(this.form.value);
+    this.vmrecords.addItem(this.vmrecords.form.value).then(s => {
+      this.viewCtrl.dismiss(this.vmrecords.form.value);
     });
   // }
 }
 
 deleteItem(vmrecord) {
-  this.vmrecords.del(this.form.value);
+  this.vmrecords.del(this.vmrecords.form.value);
   this.viewCtrl.dismiss();
 }
 

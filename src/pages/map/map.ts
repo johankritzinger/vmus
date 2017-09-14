@@ -1,3 +1,4 @@
+// see https://www.joshmorony.com/ionic-2-how-to-use-google-maps-geolocation-video-tutorial/
 import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';

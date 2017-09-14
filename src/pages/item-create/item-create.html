@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'ITEM_CREATE_TITLE' | translate }}</ion-title>
+    <ion-title>VMUS Record</ion-title>
     <ion-buttons start>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -28,7 +28,7 @@
 
 </ion-header>
 <ion-content>
-  <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <form *ngIf="vmrecords.form" [formGroup]="vmrecords.form" (ngSubmit)="onSubmit(vmrecords.form.value)">
     <!-- <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" /> -->
     <!--<div class="profile-image-wrapper" (click)="getPicture()">
       <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
@@ -40,92 +40,99 @@
       <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
     </div> -->
     <ion-list>
-      <!-- <ion-item>
-        <ion-label>Project</ion-label>
-        <ion-input type="text" placeholder="Name" formControlName="project"></ion-input>
-      </ion-item> -->
-      <ion-item>
-        <ion-label>Project</ion-label>
-        <ion-select formControlName="project">
-          <ion-option *ngFor="let project of this.vmprojects.vmProjects" [value]="project.Project_acronym">{{ project.Project_acronym}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Email</ion-label>
-        <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Observers</ion-label>
-        <ion-input type="text" placeholder="observers" formControlName="observers"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>country</ion-label>
-        <ion-input type="text" placeholder="country" formControlName="country"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>province</ion-label>
-        <ion-input type="text" placeholder="province" formControlName="province"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>nearesttown</ion-label>
-        <ion-input type="text" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>locality</ion-label>
-        <ion-input type="text" placeholder="locality" formControlName="locality"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="isNewRecord">
-        <ion-label>Altitude {{ this.location.minelev  }} - {{ this.location.maxelev  }}</ion-label>
-        <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
-        <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="!isNewRecord">
-        <ion-label>minelev</ion-label>
-        <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="!isNewRecord">
-        <ion-label>maxelev</ion-label>
-        <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="isNewRecord">
-        <ion-label >lat {{ this.location.lat | number : '1.4-5' }}, {{ this.location.lng | number : '1.4-5' }} +- {{ this.location.accuracy | number : '1.1-2' }} </ion-label>
-        <ion-input  type="hidden" formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
-        <ion-input  type="hidden" formControlName="long" value="{{ this.location.lng | number : '1.4-7' }}"></ion-input>
-        <ion-input  type="hidden" formControlName="accuracy" value="{{ this.location.accuracy | number : '1.1-2' }}"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="!isNewRecord">
-        <ion-label>lat</ion-label>
-        <ion-input type="text"  formControlName="lat"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="!isNewRecord">
-        <ion-label>long</ion-label>
-        <ion-input type="text"  formControlName="long"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="!isNewRecord">
-        <ion-label>accuracy </ion-label>
-        <!-- <ion-input type="text"  formControlName="accuracy"></ion-input> -->
-        <ion-input type="text"  formControlName="accuracy"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>year</ion-label>
-        <ion-input type="text" formControlName="year"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>month</ion-label>
-        <ion-input type="text" formControlName="month"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>day</ion-label>
-        <ion-input type="text" formControlName="day"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>note</ion-label>
-        <ion-input type="text" placeholder="note" formControlName="note"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Species identified</ion-label>
-        <ion-input type="text" placeholder="Species" formControlName="userdet"></ion-input>
-      </ion-item>
+      <ion-item-group>
+          <ion-item>
+            <ion-label>Project</ion-label>
+            <ion-select formControlName="project">
+              <ion-option *ngFor="let project of this.vmprojects.vmProjects" [value]="project.Project_acronym">{{ project.Project_acronym}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Email</ion-label>
+            <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Observers</ion-label>
+            <ion-input type="text" placeholder="observers" formControlName="observers"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>note</ion-label>
+            <ion-input type="text" placeholder="note" formControlName="note"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Species identified</ion-label>
+            <ion-input type="text" placeholder="Species" formControlName="userdet"></ion-input>
+          </ion-item>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider color="light">Location</ion-item-divider>
+            <ion-item *ngIf="isNewRecord">
+              <ion-label >
+                <h3>Location</h3>
+                <p>lat {{ this.location.lat | number : '1.4-5' }}, {{ this.location.lng | number : '1.4-5' }}</p>
+                <p>+- {{ this.location.accuracy | number : '1.1-2' }} </p></ion-label>
+              <ion-input  type="hidden" formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
+              <ion-input  type="hidden" formControlName="long" value="{{ this.location.lng | number : '1.4-7' }}"></ion-input>
+              <ion-input  type="hidden" formControlName="accuracy" value="{{ this.location.accuracy | number : '1.1-2' }}"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!isNewRecord">
+              <ion-label>lat</ion-label>
+              <ion-input type="text"  formControlName="lat"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!isNewRecord">
+              <ion-label>long</ion-label>
+              <ion-input type="text"  formControlName="long"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!isNewRecord">
+              <ion-label>accuracy </ion-label>
+              <!-- <ion-input type="text"  formControlName="accuracy"></ion-input> -->
+              <ion-input type="text"  formControlName="accuracy"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="isNewRecord">
+              <ion-label>Altitude {{ this.location.altitude  }} +- {{ this.location.altitudeAccuracy  }}</ion-label>
+              <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
+              <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!isNewRecord">
+              <ion-label>minelev</ion-label>
+              <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!isNewRecord">
+              <ion-label>maxelev</ion-label>
+              <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>country</ion-label>
+              <ion-input type="text" placeholder="country" formControlName="country"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>province</ion-label>
+              <ion-input type="text" placeholder="province" formControlName="province"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>nearesttown</ion-label>
+              <ion-input type="text" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>locality</ion-label>
+              <ion-input type="text" placeholder="locality" formControlName="locality"></ion-input>
+            </ion-item>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider color="light">Date</ion-item-divider>
+        <ion-item>
+          <ion-label>year</ion-label>
+          <ion-input type="text" formControlName="year"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>month</ion-label>
+          <ion-input type="text" formControlName="month"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>day</ion-label>
+          <ion-input type="text" formControlName="day"></ion-input>
+        </ion-item>
+      </ion-item-group>
       <ion-item>
         <ion-label>roadkill</ion-label>
         <ion-toggle formControlName="roadkill"></ion-toggle>

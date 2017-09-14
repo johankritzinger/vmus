@@ -56,9 +56,9 @@ export class ListMasterPage {
   deleteItem(vmrecord) {
     this.vmrecords.del(vmrecord);
     // refresh
-    this
-      .vmrecords
-      .getRows();
+    // this
+    //   .vmrecords
+    //   .getRows();
   }
 
   /**

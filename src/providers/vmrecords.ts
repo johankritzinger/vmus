@@ -3,13 +3,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Settings } from './settings';
 // import { Vmrecord } from '../models/vmrecord';
 import { Location } from './location';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-/*
-  Generated class for the Sqlite provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 declare var window : any;
 @Injectable()
 export class Vmrecords {
@@ -18,12 +13,14 @@ export class Vmrecords {
   public arr = [];
   public nextid: number = 1;
   public record: any;
+  form: FormGroup;
 
   // settingsReady = false;
 
   constructor(public geolocation: Geolocation,
     public settings: Settings,
-    public location: Location
+    public location: Location,
+    public formBuilder: FormBuilder
     ) {
     // this.settings.load();
   }
