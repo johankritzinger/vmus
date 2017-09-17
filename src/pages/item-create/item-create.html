@@ -28,18 +28,8 @@
 
 </ion-header>
 <ion-content>
-  <!-- <form *ngIf="vmrecords.form" [formGroup]="vmrecords.form" (ngSubmit)="onSubmit(vmrecords.form.value)"> -->
   <form *ngIf="form" [formGroup]="form">
-    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-    <div class="profile-image-wrapper" (click)="getPicture()">
-      <div class="profile-image-placeholder" *ngIf="!this.form.controls.pic1.value">
-        <ion-icon name="add"></ion-icon>
-        <div>
-          Add image
-        </div>
-      </div>
-      <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.pic1.value"></div>
-    </div>
+  <!-- <form *ngIf="vmrecords.form" [formGroup]="vmrecords.form" (ngSubmit)="onSubmit(vmrecords.form.value)"> -->
     <ion-list>
       <!-- <ion-item-group> -->
           <ion-item>
@@ -48,6 +38,25 @@
               <ion-option *ngFor="let project of this.vmprojects.vmProjects" [value]="project.Project_acronym">{{ project.Project_acronym}}</ion-option>
             </ion-select>
           </ion-item>
+          <ion-item>
+            <ion-label>Date</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" formControlName="date"></ion-datetime>
+          </ion-item>
+          <button ion-button (click)="openLocation()" color='light' block>Location (
+            {{ this.form.value.locality || this.form.value.lat }},
+                          {{ this.form.value.nearesttown || this.form.value.long }})
+
+        <!-- <ion-input  type="hidden" formControlName="lat"></ion-input>
+        <ion-input  type="hidden" formControlName="long"></ion-input>
+        <ion-input  type="hidden" formControlName="accuracy"></ion-input>
+        <ion-input type="hidden" formControlName="country"></ion-input>
+        <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
+        <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
+        <ion-input type="hidden" placeholder="province" formControlName="province"></ion-input>
+        <ion-input type="hidden" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
+        <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input> -->
+        </button>
+        <button ion-button (click)="openPics()" color='light' block>Pictures</button>
           <ion-item>
             <ion-label>Email</ion-label>
             <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
@@ -71,27 +80,11 @@
       <!-- </ion-item-group>
       <ion-item-group> -->
           <!-- <ion-item> -->
-            <button ion-button (click)="openLocation()" color='light' block>Location (
-              {{ this.form.value.locality || this.form.value.lat }},
-                            {{ this.form.value.nearesttown || this.form.value.long }})
 
-          <ion-input  type="hidden" formControlName="lat"></ion-input>
-          <ion-input  type="hidden" formControlName="long"></ion-input>
-          <ion-input  type="hidden" formControlName="accuracy"></ion-input>
-          <ion-input type="hidden" formControlName="country"></ion-input>
-          <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
-          <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
-          <ion-input type="hidden" placeholder="province" formControlName="province"></ion-input>
-          <ion-input type="hidden" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
-          <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input>
-          </button>
         <!-- </ion-item> -->
       <!-- </ion-item-group>
       <ion-item-group> -->
-        <ion-item>
-          <ion-label>Date</ion-label>
-          <ion-datetime displayFormat="YYYY-MM-DD" formControlName="date"></ion-datetime>
-        </ion-item>
+
         <!-- <ion-item>
           <ion-label>year</ion-label>
           <ion-input type="text" formControlName="year"></ion-input>

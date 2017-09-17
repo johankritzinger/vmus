@@ -22,6 +22,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { RecordLocationPage } from '../pages/record-location/record-location';
+import { PicsPage } from '../pages/pics/pics';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
@@ -75,7 +76,8 @@ export function provideSettings(storage: Storage) {
     TabsPage,
     TutorialPage,
     WelcomePage,
-    RecordLocationPage
+    RecordLocationPage,
+    PicsPage
   ],
   imports: [
     BrowserModule,
@@ -107,7 +109,8 @@ export function provideSettings(storage: Storage) {
     TabsPage,
     TutorialPage,
     WelcomePage,
-    RecordLocationPage
+    RecordLocationPage,
+    PicsPage
   ],
   providers: [
     Api,

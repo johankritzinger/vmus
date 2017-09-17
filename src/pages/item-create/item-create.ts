@@ -3,8 +3,9 @@ import { NavController, NavParams, ViewController, ModalController } from 'ionic
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
 import { RecordLocationPage } from '../record-location/record-location';
+import { PicsPage } from '../pics/pics';
 import 'rxjs/add/operator/filter';
-import { Camera } from '@ionic-native/camera';
+
 
 /**
  * Generated class for the FormpagePage page.
@@ -19,12 +20,12 @@ import { Camera } from '@ionic-native/camera';
   templateUrl: 'item-create.html',
 })
 export class ItemCreatePage {
-  @ViewChild('fileInput') fileInput;
+
   proj: any;
   form: FormGroup;
   isReadyToSave: boolean = true ;
   private myData: any;
-  // recordReady: boolean = false;
+  // recordReady: boolean = false;RecordLocationPage
   // isNewRecord: boolean;
   page: string = 'main';
   pageTitle: string = 'VMUS Record'
@@ -43,8 +44,7 @@ export class ItemCreatePage {
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public location: Location,
-    public formBuilder: FormBuilder,
-    public camera: Camera
+    public formBuilder: FormBuilder
   ) {
     this.form = formBuilder.group(this.vmrecords.record)
 
@@ -89,7 +89,20 @@ export class ItemCreatePage {
       })
       addModal.present();
       // this.navCtrl.push(RecordLocationPage)
+  }
 
+  openPics() {
+      let addModal = this.modalCtrl.create(PicsPage);
+      console.log('addModal')
+      addModal.onDidDismiss(vmrecord => {
+        if (vmrecord) {
+         console.log('Closed pics page :' + vmrecord);
+         this.form = this.formBuilder.group(this.vmrecords.record);
+        }
+
+      })
+      addModal.present();
+      // this.navCtrl.push(RecordLocationPage)
   }
 
   ionViewDidLoad() {
@@ -101,22 +114,6 @@ export class ItemCreatePage {
     //
     // this.page = this.navParams.get('page') || this.page;
     // this.pageTitle = this.navParams.get('pageTitle');
-  }
-
-    getPicture() {
-    if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        targetWidth: 96,
-        targetHeight: 96
-      }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else {
-      this.fileInput.nativeElement.click();
-    }
   }
 
   processWebImage(event) {
