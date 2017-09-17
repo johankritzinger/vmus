@@ -37,6 +37,11 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+// for images, see https://devdactic.com/ionic-2-images/
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -131,6 +136,9 @@ export function provideSettings(storage: Storage) {
     Geolocation,
     Location,
     Connection,
+    File,
+    Transfer,
+    FilePath,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

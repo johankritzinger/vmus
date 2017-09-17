@@ -30,23 +30,52 @@
 
 
 <ion-content padding>
-  <form *ngIf="form" [formGroup]="form">
-    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]"  />
-    <div class="profile-image-wrapper" (click)="getPicture()">
-      <div class="profile-image-placeholder" *ngIf="!this.form.controls.pic1.value">
-        <ion-icon name="add"></ion-icon>
-        <div>
-          Add image
-        </div>
-      </div>
-      <!-- <div class="profile-image" [style.backgroundImage]="this.form.controls.pic1.value" *ngIf="this.form.controls.pic1.value"> -->
+  <form [formGroup]="form">
+  <img src="{{pathForImage(form.value.pic1)}}" style="width: 100%" [hidden]="!form.value.pic1">
+  <h3 [hidden]="form.value.pic1">Please Select Image!</h3>
+  <ion-input type="hidden" formControlName="pic1"></ion-input>
+  <ion-buttons>
+    <button ion-button icon-left (click)="presentActionSheet('pic1')">
+      <ion-icon name="camera"></ion-icon>Select Image
+    </button>
+    <button ion-button icon-left (click)="deleteImage('pic1')" [disabled]="!form.value.pic1"  color="danger">
+      <ion-icon name="md-alert"></ion-icon>DELETE!
+    </button>
+  </ion-buttons>
 
+  <img src="{{pathForImage(form.value.pic2)}}" style="width: 100%" [hidden]="!form.value.pic2">
+  <h3 [hidden]="form.value.pic2">Please Select Image!</h3>
+  <ion-input type="hidden" formControlName="pic2"></ion-input>
+  <ion-buttons>
+    <button ion-button icon-left (click)="presentActionSheet('pic2')">
+      <ion-icon name="camera"></ion-icon>Select Image
+    </button>
+    <button ion-button icon-left (click)="deleteImage('pic2')" [disabled]="!form.value.pic2"  color="danger">
+      <ion-icon name="md-alert"></ion-icon>DELETE!
+    </button>
+  </ion-buttons>
 
-    </div>
+  <img src="{{pathForImage(form.value.pic3)}}" style="width: 100%" [hidden]="!form.value.pic3">
+  <h3 [hidden]="form.value.pic3">Please Select Image!</h3>
+  <ion-input type="hidden" formControlName="pic3"></ion-input>
+  <ion-buttons>
+    <button ion-button icon-left (click)="presentActionSheet('pic3')">
+      <ion-icon name="camera"></ion-icon>Select Image
+    </button>
+    <button ion-button icon-left (click)="deleteImage('pic3')" [disabled]="!form.value.pic3"  color="danger">
+      <ion-icon name="md-alert"></ion-icon>DELETE!
+    </button>
+  </ion-buttons>
 
-    <div >
-      <img [src]="pic1" />
-      Pic {{this.form.value.pic1}}
-    </div>
-  </form>
+</form>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <button ion-button icon-left (click)="presentActionSheet()">
+        <ion-icon name="camera"></ion-icon>Select Image
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
