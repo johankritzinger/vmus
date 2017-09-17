@@ -46,7 +46,8 @@ export class SettingsPage {
     let group: any = {
       option1: [this.options.option1],
       email: [this.options.email],
-      prefProject: [this.options.prefProject]
+      prefProject: [this.options.prefProject],
+      skipIntro: [this.options.skipIntro]
     };
 
     switch (this.page) {

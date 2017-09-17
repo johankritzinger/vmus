@@ -33,18 +33,21 @@ export class TutorialPage {
         // console.log('Loaded values', values);
         this.slides = [
           {
-            title: values.TUTORIAL_SLIDE1_TITLE,
-            description: values.TUTORIAL_SLIDE1_DESCRIPTION,
+            title: 'Welcome to the VMUS app',
+            description: 'Currently this is proof of concept, saving records locally',
             image: 'assets/img/ica-slidebox-img-1.png',
           },
           {
-            title: values.TUTORIAL_SLIDE2_TITLE,
-            description: values.TUTORIAL_SLIDE2_DESCRIPTION,
+            title: 'How to use the app',
+            description: `Add a record, completing as much of the form as is convenient
+              at the time. Leave a note for yourself, and capture the location. Photos can be
+              added, or added later, e.g. by selecting from your camera roll or downloading them.`,
             image: 'assets/img/ica-slidebox-img-2.png',
           },
           {
-            title: values.TUTORIAL_SLIDE3_TITLE,
-            description: values.TUTORIAL_SLIDE3_DESCRIPTION,
+            title: 'VMUS projects',
+            description: `All records are submitted to specific projects.  Ensure you submit to the
+            correct project.`,
             image: 'assets/img/ica-slidebox-img-3.png',
           }
         ];

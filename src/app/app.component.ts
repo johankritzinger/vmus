@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { CardsPage } from '../pages/cards/cards';
 import { ContentPage } from '../pages/content/content';
-import { FirstRunPage } from '../pages/pages';
+import { FirstRunPage, MainPage } from '../pages/pages';
 import { ListMasterPage } from '../pages/list-master/list-master';
 import { LoginPage } from '../pages/login/login';
 import { MapPage } from '../pages/map/map';
@@ -42,7 +42,7 @@ import { TranslateService } from '@ngx-translate/core'
   <ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = FirstRunPage;
+  rootPage: any = FirstRunPage;
   // rootPage = ListMasterPage;
 
   @ViewChild(Nav) nav: Nav;
@@ -71,7 +71,12 @@ export class MyApp {
       vmprojects.openDb();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.settings.load();
+      this.settings.load()
+        .then(s => {
+          if (this.settings.allSettings.skipIntro) {
+            this.rootPage =   MainPage;
+          }
+        });
 
     })
     // platform.ready().then(() => {

@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
+import { TabsPage } from '../tabs/tabs';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -20,6 +21,9 @@ export class WelcomePage {
 
   login() {
     this.navCtrl.push(LoginPage);
+  }
+  skiplogin() {
+    this.navCtrl.push(TabsPage);
   }
 
   signup() {

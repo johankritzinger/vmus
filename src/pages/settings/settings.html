@@ -27,6 +27,11 @@
         </ion-select>
       </ion-item>
 
+      <ion-item>
+        <ion-label>Skip intro on startup</ion-label>
+        <ion-toggle formControlName="skipIntro"></ion-toggle>
+      </ion-item>
+
       <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
         {{ 'SETTINGS_PROFILE_BUTTON' | translate }}
       </button>
