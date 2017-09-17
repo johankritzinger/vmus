@@ -44,9 +44,9 @@ export class VmprojectsProvider {
           });
 
          }, (e) => {
-           console.log('OpenDb Error', e);
+           console.log('VMProjects OpenDb Error', e);
          }, () => {
-           console.log('Populated Datebase OK..');
+           console.log('VMProjects Datebase OK..');
          })
      }
 

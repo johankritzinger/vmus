@@ -21,10 +21,11 @@ import { SignupPage } from '../pages/signup/signup';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
+import { RecordLocationPage } from '../pages/record-location/record-location';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
-import { Vmrecords, VmprojectsProvider, Location } from '../providers/providers';
+import { Vmrecords, VmprojectsProvider, Location, Connection } from '../providers/providers';
 import { Settings } from '../providers/settings';
 import { User } from '../providers/user';
 
@@ -73,7 +74,8 @@ export function provideSettings(storage: Storage) {
     SignupPage,
     TabsPage,
     TutorialPage,
-    WelcomePage
+    WelcomePage,
+    RecordLocationPage
   ],
   imports: [
     BrowserModule,
@@ -104,7 +106,8 @@ export function provideSettings(storage: Storage) {
     SignupPage,
     TabsPage,
     TutorialPage,
-    WelcomePage
+    WelcomePage,
+    RecordLocationPage
   ],
   providers: [
     Api,
@@ -118,6 +121,7 @@ export function provideSettings(storage: Storage) {
     VmprojectsProvider,
     Geolocation,
     Location,
+    Connection,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

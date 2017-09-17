@@ -5,6 +5,7 @@ import { Vmrecords } from './vmrecords';
 import { VmprojectsProvider } from './vmprojects';
 import { Location } from './location';
 import { Items } from './items';
+import { Connection } from './connection'
 
 export {
 User,
@@ -13,5 +14,6 @@ Settings,
 Vmrecords,
 VmprojectsProvider,
 Location,
-Items
+Items,
+Connection
 };

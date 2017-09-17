@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
+import { RecordLocationPage } from '../record-location/record-location';
 import 'rxjs/add/operator/filter';
-// import { Camera } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 
 /**
  * Generated class for the FormpagePage page.
@@ -20,130 +21,169 @@ import 'rxjs/add/operator/filter';
 export class ItemCreatePage {
   @ViewChild('fileInput') fileInput;
   proj: any;
-  // form: FormGroup;
-  isReadyToSave: boolean;
+  form: FormGroup;
+  isReadyToSave: boolean = true ;
   private myData: any;
-  recordReady: boolean = false;
-  isNewRecord: boolean = false;
+  // recordReady: boolean = false;
+  // isNewRecord: boolean;
+  page: string = 'main';
+  pageTitle: string = 'VMUS Record'
+
+  // subSettings: any = ItemCreatePage;
+
+  // locationSettings = {
+  //   page: 'location',
+  //   pageTitle: 'Edit Location'
+  // };
 
   constructor(public vmprojects: VmprojectsProvider,
     public vmrecords: Vmrecords,
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
     public location: Location,
-    // public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public camera: Camera
   ) {
+    this.form = formBuilder.group(this.vmrecords.record)
 
-    // this.vmprojects.getRows();
-
-    // console.log('Nav params data: ' + JSON.stringify(navParams.data));
-    // console.log('vmprojects: ' + JSON.stringify(this.vmprojects.vmProjects));
-
-    // this.form = formBuilder.group(navParams.data.vmrecord || vmrecords.newRecord());
-    if (this.navParams.data.vmrecord) {
-      this.vmrecords.form = this.vmrecords.formBuilder.group(this.navParams.data.vmrecord);
-      this.recordReady = true;
-    } else {
-      this.location.startTracking();
-      this.vmrecords.newRecord();
-      this.vmrecords.form = this.vmrecords.formBuilder.group( this.vmrecords.record )
-      this.isNewRecord = true;
-
-
-      //
-      // this.form.lat = this.location.lat;
-      // this.form.long = this.location.lng;
-      // this.form.accuracy = this.location.accuracy;
-      // this.form.minelev = this.location.altitude - this.location.altitudeAccuracy;
-      // this.form.maxelev = this.location.altitude + this.location.altitudeAccuracy;
-    }
+    console.log('Loading form for record ' + this.vmrecords.record.id )
 
     // Watch the form for changes, and
-    this.vmrecords.form.valueChanges.subscribe((v) => {
-      this.isReadyToSave = this.vmrecords.form.valid;
+    this.form.valueChanges.subscribe((v) => {
+      // this.isReadyToSave = this.vmrecords.form.valid;
+      // this.vmrecords.record = this.form.value;
     });
+
+    if (this.vmrecords.isNewRecord) {
+      this.location.events.subscribe('locationFound', (lat, lng,accuracy) => {
+        // user and time are the same arguments passed in `events.publish(user, time)`
+        console.log('Accuracy OK');
+        this.form.value.lat = lat;
+        this.vmrecords.record.lat = lat;
+        this.form.value.long = lng;
+        this.vmrecords.record.long = lng;
+        this.form.value.accuracy = accuracy;
+        this.vmrecords.record.accuracy = accuracy;
+        this.updateLocation();
+
+      });
+      // !!! need to add watch for altitude
+
+    }
+
+
+  }
+
+
+  openLocation() {
+      let addModal = this.modalCtrl.create(RecordLocationPage);
+      console.log('addModal')
+      addModal.onDidDismiss(vmrecord => {
+        if (vmrecord) {
+         console.log('Closed location page :' + vmrecord);
+         this.form = this.formBuilder.group(this.vmrecords.record);
+        }
+
+      })
+      addModal.present();
+      // this.navCtrl.push(RecordLocationPage)
+
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad FormpagePage ' + 'this.proj.Project_acronym');
+    // Probably already tracking, just in case:
+    this.location.startTracking();
   }
 
   ionViewWillEnter() {
     //
+    // this.page = this.navParams.get('page') || this.page;
+    // this.pageTitle = this.navParams.get('pageTitle');
   }
 
-  onSubmit(formData) {
-    this
-      .vmrecords
-      .getRows()
-      .then(s => {
-        this.vmrecords.addItem(formData);
+    getPicture() {
+    if (Camera['installed']()) {
+      this.camera.getPicture({
+        destinationType: this.camera.DestinationType.DATA_URL,
+        targetWidth: 96,
+        targetHeight: 96
+      }).then((data) => {
+        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+      }, (err) => {
+        alert('Unable to take photo');
+      })
+    } else {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  processWebImage(event) {
+    let reader = new FileReader();
+    reader.onload = (readerEvent) => {
+
+      let imageData = (readerEvent.target as any).result;
+      this.vmrecords.form.patchValue({ 'profilePic': imageData });
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  getProfileImageStyle() {
+    return 'url(' + this.vmrecords.form.controls['profilePic'].value + ')'
+  }
+
+  /**
+   * The user cancelled, so we dismiss without sending data back.
+   */
+  cancel() {
+    this.viewCtrl.dismiss();
+  }
+
+  /**
+   * The user is done and wants to create the item, so return it
+   * back to the presenter.
+   */
+  done() {
+    // if (!this.vmrecords.form.valid) { return; }
+    // if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
+    //   console.log('updating record ' + this.form.value.id);
+    //   this.vmrecords.update(this.form.value).then(s => {
+    //     this.viewCtrl.dismiss(this.form.value);
+    //   });
+    // } else {
+    //   console.log('adding record ' + this.form.value.id);
+      this.vmrecords.record = this.form.value;
+      this.vmrecords.addItem(this.vmrecords.record).then(s => {
+        this.viewCtrl.dismiss(this.form.value);
       });
-    console.log('Form data is ', formData);
-    this.myData = formData;
+    // }
   }
 
-//   getPicture() {
-//   if (Camera['installed']()) {
-//     this.camera.getPicture({
-//       destinationType: this.camera.DestinationType.DATA_URL,
-//       targetWidth: 96,
-//       targetHeight: 96
-//     }).then((data) => {
-//       this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
-//     }, (err) => {
-//       alert('Unable to take photo');
-//     })
-//   } else {
-//     this.fileInput.nativeElement.click();
-//   }
-// }
+  updateLocation() {
+    // similar to record-location, but also update the record
+    this.location.fetchlocstr (this.form.value.lat,this.form.value.long)
+      .then(s => {
+        this.form.get('country').setValue(this.location.country);
+        this.vmrecords.record.country = this.location.country;
+        this.form.get('locality').setValue(this.location.locstr);
+        this.vmrecords.record.locality = this.location.locstr;
+        // this.form.value.country = this.location.country;
+        console.log('added ' + this.location.country);
+        // this.form.value.locality = this.location.locstr;
+      });
+    this.location.fetchtownstr (this.form.value.lat,this.form.value.long)
+      .then(s => {
+        console.log('added town: ' + this.location.townstr );
+        this.form.get('nearesttown').setValue(this.location.townstr);
+        this.vmrecords.record.nearesttown = this.location.townstr;
+      });
+  }
 
-processWebImage(event) {
-  let reader = new FileReader();
-  reader.onload = (readerEvent) => {
-
-    let imageData = (readerEvent.target as any).result;
-    this.vmrecords.form.patchValue({ 'profilePic': imageData });
-  };
-
-  reader.readAsDataURL(event.target.files[0]);
-}
-
-getProfileImageStyle() {
-  return 'url(' + this.vmrecords.form.controls['profilePic'].value + ')'
-}
-
-/**
- * The user cancelled, so we dismiss without sending data back.
- */
-cancel() {
-  this.viewCtrl.dismiss();
-}
-
-/**
- * The user is done and wants to create the item, so return it
- * back to the presenter.
- */
-done() {
-  if (!this.vmrecords.form.valid) { return; }
-  // if (this.form.value.id && this.form.value.id != this.vmrecords.nextid) {
-  //   console.log('updating record ' + this.form.value.id);
-  //   this.vmrecords.update(this.form.value).then(s => {
-  //     this.viewCtrl.dismiss(this.form.value);
-  //   });
-  // } else {
-  //   console.log('adding record ' + this.form.value.id);
-    this.vmrecords.addItem(this.vmrecords.form.value).then(s => {
-      this.viewCtrl.dismiss(this.vmrecords.form.value);
-    });
-  // }
-}
-
-deleteItem(vmrecord) {
-  this.vmrecords.del(this.vmrecords.form.value);
-  this.viewCtrl.dismiss();
-}
+  deleteItem(vmrecord) {
+    this.vmrecords.del(this.form.value);
+    this.viewCtrl.dismiss();
+  }
 
 }

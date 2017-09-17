@@ -7,30 +7,39 @@ import { Network } from '@ionic-native/network';
 
 @Injectable()
 export class Connection {
-  constructor(private network: Network) { }
 
-  let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-  console.log('network was disconnected :-(');
-});
+  public connected: boolean = false;
+  public connectionType: string = 'none'
 
-// stop disconnect watch
-disconnectSubscription.unsubscribe();
+  constructor(private network: Network) {
+
+      this.network.onDisconnect().subscribe(() => {
+          console.log('network was disconnected :-(');
+          this.connected = false;
+          this.connectionType = 'none'
+      });
+
+    // stop disconnect watch
+    // disconnectSubscription.unsubscribe();
 
 
-// watch network for a connection
-let connectSubscription = this.network.onConnect().subscribe(() => {
-  console.log('network connected!');
-  // We just got a connection but we need to wait briefly
-   // before we determine the connection type. Might need to wait.
-  // prior to doing any api requests as well.
-  setTimeout(() => {
-    if (this.network.type === 'wifi') {
-      console.log('we got a wifi connection, woohoo!');
-    }
-  }, 3000);
-});
+    // watch network for a connection
+    this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      this.connected = true;
+      // We just got a connection but we need to wait briefly
+       // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        this.connectionType = this.network.type;
+        if (this.network.type === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+        }
 
-// stop connect watch
-connectSubscription.unsubscribe();
+      }, 3000);
+    });
+
+  }
+
 
 }

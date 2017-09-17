@@ -5,7 +5,7 @@
 
     <ion-buttons end>
       <!-- <button ion-button icon-only (click)="addItem()"> -->
-      <button ion-button icon-only (click)="openItem()">
+      <button ion-button icon-only (click)="addRecord()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -24,9 +24,9 @@
         <!-- <ion-avatar item-start>
           <img [src]="item.profilePic" />
         </ion-avatar> -->
-        <h2>{{ item.id }}: {{item.project}}</h2>
+        <h2>{{ item.id }}: {{ item.project }}</h2>
         <p>{{item.userdet}}</p>
-        <ion-note item-end *ngIf="item.note">{{ item.id }}: {{item.note}}</ion-note>
+        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
       </button>
 
     </ion-item-sliding>

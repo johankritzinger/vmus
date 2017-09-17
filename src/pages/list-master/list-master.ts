@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, NavController, ModalController } from 'ionic-angular';
 
 import { ItemCreatePage } from '../item-create/item-create';
-import { ItemDetailPage } from '../item-detail/item-detail';
+// import { ItemDetailPage } from '../item-detail/item-detail';
 
 import { Vmrecords, Location } from '../../providers/providers';
 
@@ -53,20 +53,28 @@ export class ListMasterPage {
   /**
    * Delete an item from the list of items.
    */
-  deleteItem(vmrecord) {
-    this.vmrecords.del(vmrecord);
-    // refresh
-    // this
-    //   .vmrecords
-    //   .getRows();
+  // deleteItem(vmrecord) {
+  //   this.vmrecords.del(vmrecord);
+  //   // refresh
+  //   // this
+  //   //   .vmrecords
+  //   //   .getRows();
+  // }
+
+  addRecord() {
+    this.vmrecords.record = this.vmrecords.newRecord();
+    // this.vmrecords.form = this.vmrecords.formBuilder.group( this.vmrecords.newRecord() )
+    this.navCtrl.push(ItemCreatePage);
   }
 
   /**
    * Navigate to the detail page for this item.
    */
   openItem(vmrecord) {
+    this.vmrecords.record = vmrecord;
+    // this.vmrecords.form = this.vmrecords.formBuilder.group( vmrecord )
     this.navCtrl.push(ItemCreatePage, {
-      vmrecord
+      // vmrecord
     });
   }
 }

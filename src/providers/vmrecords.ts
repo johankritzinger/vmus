@@ -14,6 +14,7 @@ export class Vmrecords {
   public nextid: number = 1;
   public record: any;
   form: FormGroup;
+  isNewRecord: boolean = false;
 
   // settingsReady = false;
 
@@ -50,6 +51,7 @@ export class Vmrecords {
           datum text,
           accuracy int,
           source text,
+          date text,
           year int,
           month int,
           day int,
@@ -57,13 +59,17 @@ export class Vmrecords {
           userdet text,
           nestcount int,
           nestsite text,
-          roadkill bool
+          roadkill bool,
+          pic1 text,
+          pic2 text,
+          pic3 text,
+          sound1 text
           )`);
           this.getNextid();
       }, (e) => {
-        console.log('OpenDb Error', e);
+        console.log('OpenDb Error', JSON.stringify(e));
       }, () => {
-        console.log('Populated Datebase OK..');
+        console.log('Created VMRecords Datebase OK..');
       })
   }
 
@@ -83,6 +89,7 @@ export class Vmrecords {
       "datum": '',
       "accuracy": '',
       "source": '',
+      "date": '1990-01-01',
       "year": '',
       "month": '',
       "day": '',
@@ -91,7 +98,11 @@ export class Vmrecords {
       "nestcount": '',
       "nestsite": '',
       "roadkill": false,
-  };
+      "pic1": '',
+      "pic2": '',
+      "pic3": '',
+      "sound1": '',
+      };
 
   getNextid()    {
       this
@@ -109,19 +120,24 @@ export class Vmrecords {
   }
 
   newRecord() {
+    this.isNewRecord = true;
     // return new Promise(resolve => {
       this.record = this.emptyRecord;
 
       var today = new Date();
+      // this.record.date = today;
       this.record.year = today.getFullYear();
       this.record.month = today.getMonth()+1;
       this.record.day = today.getDate();
+      console.log('date set to: ' + today);
+      this.record.date = today.toISOString();
+      console.log('date set to: ' + this.record.date);
 
-      this.settings.load().then(() => {
+      // this.settings.load().then(() => {
         // this.settingsReady = true;
         this.record.email = this.settings.allSettings.email;
         this.record.project = this.settings.allSettings.prefProject;
-      });
+      // });
 
       this
         .db
@@ -157,6 +173,7 @@ export class Vmrecords {
       //   });
       // return record;
     // })
+    return this.record;
   }
 
   /**
@@ -164,6 +181,7 @@ export class Vmrecords {
    * @param addItem for adding: function
    */
   addItem(i) {
+    this.isNewRecord = false;
     return new Promise(resolve => {
       var InsertQuery = `INSERT OR REPLACE INTO VMRecords (id, email,
         observers,
@@ -179,6 +197,7 @@ export class Vmrecords {
         datum,
         accuracy,
         source,
+        date,
         year,
         month,
         day,
@@ -186,7 +205,11 @@ export class Vmrecords {
         userdet,
         nestcount,
         nestsite,
-        roadkill) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        roadkill,
+        pic1,
+        pic2,
+        pic3,
+        sound1) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
       this
         .db
         .executeSql(InsertQuery, [i.id, i.email,
@@ -203,6 +226,7 @@ export class Vmrecords {
         i.datum,
         i.accuracy,
         i.source,
+        i.date,
         i.year,
         i.month,
         i.day,
@@ -210,7 +234,12 @@ export class Vmrecords {
         i.userdet,
         i.nestcount,
         i.nestsite,
-        i.roadkill ], (r) => {
+        i.roadkill,
+        i.pic1,
+        i.pic2,
+        i.pic3,
+        i.sound1
+       ], (r) => {
           console.log('Inserted... Sucess..', i);
           this
             .getRows()
@@ -243,7 +272,7 @@ export class Vmrecords {
               this
                 .arr
                 .push(item);
-              console.log('fetched item ' + i)
+              console.log('fetched item ' + JSON.stringify(item))
             }
           }
           res(true);
@@ -256,8 +285,9 @@ export class Vmrecords {
   //to delete any Item
   del(i) {
     // this.arr.splice(this.arr.indexOf(i)-1, 1);
+    this.isNewRecord = false;
     return new Promise(resolve => {
-      console.log('deleting record ' + i)
+      console.log('deleting record ' + i.id)
       var query = "DELETE FROM VMRecords WHERE id=?";
       this
         .db
