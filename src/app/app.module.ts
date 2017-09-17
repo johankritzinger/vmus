@@ -23,6 +23,8 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { RecordLocationPage } from '../pages/record-location/record-location';
 import { PicsPage } from '../pages/pics/pics';
+import { ProjectDetailsPage } from '../pages/project-details/project-details';
+import { ListProjectsPage } from '../pages/list-projects/list-projects';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
@@ -77,7 +79,9 @@ export function provideSettings(storage: Storage) {
     TutorialPage,
     WelcomePage,
     RecordLocationPage,
-    PicsPage
+    PicsPage,
+    ListProjectsPage,
+    ProjectDetailsPage
   ],
   imports: [
     BrowserModule,
@@ -110,7 +114,9 @@ export function provideSettings(storage: Storage) {
     TutorialPage,
     WelcomePage,
     RecordLocationPage,
-    PicsPage
+    PicsPage,
+    ListProjectsPage,
+    ProjectDetailsPage
   ],
   providers: [
     Api,

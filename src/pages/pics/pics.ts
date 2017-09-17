@@ -38,11 +38,15 @@ export class PicsPage {
   getPicture() {
   if (Camera['installed']()) {
     this.camera.getPicture({
-      destinationType: this.camera.DestinationType.DATA_URL,
-      targetWidth: 96,
-      targetHeight: 96
+      destinationType: this.camera.DestinationType.FILE_URI,
+      // targetWidth: 96,
+      // targetHeight: 96,
+      saveToPhotoAlbum: true,
+      allowEdit: true
     }).then((data) => {
-      this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+      console.log('pic data: ' + data)
+      // this.form.patchValue({ 'pic1': 'data:image/jpg;base64,' + data });
+      this.form.value.pic1 = data;
     }, (err) => {
       alert('Unable to take photo');
     })
@@ -51,8 +55,24 @@ export class PicsPage {
   }
 }
 
+processWebImage(event) {
+  let reader = new FileReader();
+  reader.onload = (readerEvent) => {
+
+    let imageData = (readerEvent.target as any).result;
+    this.form.patchValue({ 'pic1': imageData });
+  };
+
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+getProfileImageStyle() {
+  return 'url(' + this.form.controls['pic1'].value + ')'
+}
+
 done() {
   // if (!this.vmrecords.form.valid) { return; }
+    console.log('saving pics: ' + JSON.stringify(this.form.value));
     this.vmrecords.record = this.form.value;
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);

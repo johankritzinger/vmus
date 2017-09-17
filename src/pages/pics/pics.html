@@ -31,7 +31,7 @@
 
 <ion-content padding>
   <form *ngIf="form" [formGroup]="form">
-    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]"  />
     <div class="profile-image-wrapper" (click)="getPicture()">
       <div class="profile-image-placeholder" *ngIf="!this.form.controls.pic1.value">
         <ion-icon name="add"></ion-icon>
@@ -39,7 +39,14 @@
           Add image
         </div>
       </div>
-      <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.pic1.value"></div>
+      <!-- <div class="profile-image" [style.backgroundImage]="this.form.controls.pic1.value" *ngIf="this.form.controls.pic1.value"> -->
+
+
+    </div>
+
+    <div >
+      <img [src]="pic1" />
+      Pic {{this.form.value.pic1}}
     </div>
   </form>
 </ion-content>
