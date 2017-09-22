@@ -4,6 +4,7 @@ import { HttpModule, Http } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Network } from '@ionic-native/network';
 
 import { MyApp } from './app.component';
 
@@ -139,6 +140,7 @@ export function provideSettings(storage: Storage) {
     File,
     Transfer,
     FilePath,
+    Network,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

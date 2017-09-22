@@ -31,4 +31,8 @@ export class ListProjectsPage {
     });
   }
 
+  updateProjects() {
+    this.vmprojects.fetchProjects();
+  }
+
 }

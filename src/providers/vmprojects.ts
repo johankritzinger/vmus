@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Settings } from './settings';
+import { Connection } from './connection';
+import 'rxjs/add/operator/do';
 
 /*
   Generated class for the VmprojectsProvider provider.
@@ -16,7 +19,20 @@ export class VmprojectsProvider {
     public vmProjects = [];
     public db = null;
 
-    constructor( public http: Http) {
+    constructor( public http: Http,
+        public settings: Settings,
+        public connection: Connection
+      ) {
+
+        this.settings.load().then(() => {
+          let today = new Date();
+          let lastUpd = new Date(this.settings.allSettings.projectsUpdated)
+          if ((today.getTime() - lastUpd.getTime() > 1000*60*60*24*7) && this.connection.connected ) {
+            this.fetchProjects ();
+          }
+        });
+
+
     }
 
     /**
@@ -51,21 +67,34 @@ export class VmprojectsProvider {
      }
 
     fetchProjects () {
-      this.http.get('http://vmus.adu.org.za/api/v1/projects').map(res => res.json()).subscribe(data => {
-          this.vmProjects = data.projects;
-          console.log('data.projects = ' + data.projects );
-          if (this.vmProjects.length > 0) {
-            for (var i = 0; i < this.vmProjects.length; i++) {
-              this.saveProjects(this.vmProjects[i]);
+      if (this.connection.connected) {
+        console.log('updating projects now')
+        this.http.get('http://vmus.adu.org.za/api/v1/projects')
+          .map(res => res.json()).subscribe(data => {
+            // this.vmProjects = data.projects;
+            console.log('data.projects.length = ' + data.projects.length );
+            if (data.projects.length > 0) {
+              for (var i = 0; i < data.projects.length; i++) {
+                console.log('saving project ' + i);
+                this.saveProjects(data.projects[i]);
+              }
             }
+            // return data.projects;
+        },
+        err => {
+            console.log('error fetching data: ' + JSON.stringify(err));
+        },
+        // this next bit happens on comlete
+        () => {
+          this.getRows();
+          console.log('Previous projectsUpdated: ' + this.settings.allSettings.projectsUpdated);
+          let update = {
+            projectsUpdated: new Date()
           }
+          this.settings.merge(update);
 
-
-          // return data.projects;
-      },
-      err => {
-          console.log(err);
-      });
+        });
+      }
     }
 
     saveProjects(i) {
@@ -83,8 +112,8 @@ export class VmprojectsProvider {
                                      i.Database_name,
                                      i.Description,
                                      i.Date_started], (r) => {
-            console.log('Inserted... Sucess..', i);
-            this.getRows();
+            // console.log('Inserted... Sucess..', i);
+
           }, e => {
             console.log('Inserted Error', e);
             resolve(false);

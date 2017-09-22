@@ -31,6 +31,7 @@ export class SettingsPage {
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
   pageTitle: string;
+  projectsUpdated: string = new Date(this.settings.allSettings.projectsUpdated).toLocaleDateString();
 
   subSettings: any = SettingsPage;
 
@@ -40,6 +41,7 @@ export class SettingsPage {
     public navParams: NavParams,
     public translate: TranslateService,
     public vmprojects: VmprojectsProvider) {
+
   }
 
   _buildForm() {
@@ -49,6 +51,7 @@ export class SettingsPage {
       prefProject: [this.options.prefProject],
       skipIntro: [this.options.skipIntro]
     };
+    console.log(' Project updated: ' + JSON.stringify(this.options));
 
     switch (this.page) {
       case 'main':
@@ -93,5 +96,9 @@ export class SettingsPage {
 
   ngOnChanges() {
     console.log('Ng All Changes');
+  }
+
+  updateProjects() {
+    this.vmprojects.fetchProjects();
   }
 }

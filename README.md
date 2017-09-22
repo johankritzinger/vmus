@@ -11,3 +11,6 @@ when a network connection is available.
 
 The current version is not usable - it saves locally but does not export or submit
 records.
+
+Use issues on github to report feature requests and bugs, contribute to the project,
+etc.
