@@ -47,8 +47,16 @@ export class TutorialPage {
           {
             title: 'VMUS projects',
             description: `All records are submitted to specific projects.  Ensure you submit to the
-            correct project.`,
+            correct project.  See the records page for info on projects.  Projects should be updated
+            about weekly if you're online`,
             image: 'assets/img/ica-slidebox-img-3.png',
+          },
+          {
+            title: 'Photos',
+            description: `Photos submitted are under the .... licence. If you take photos using
+            the app, a copy is saved in your gallery / role - these are not deleted when you delete
+            the photo / record.  Currently photos are not deleted other than when you specifically
+            delete the photo, so space will become an issue.`
           }
         ];
       });
