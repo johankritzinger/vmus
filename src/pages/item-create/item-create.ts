@@ -29,6 +29,7 @@ export class ItemCreatePage {
   // isNewRecord: boolean;
   page: string = 'main';
   pageTitle: string = 'VMUS Record'
+  isTrackingLocation: boolean = false;
 
   // subSettings: any = ItemCreatePage;
 
@@ -46,36 +47,22 @@ export class ItemCreatePage {
     public location: Location,
     public formBuilder: FormBuilder
   ) {
-    this.form = formBuilder.group(this.vmrecords.record)
+    if (!this.vmrecords.record.isTrackingLocation) {
+      this.vmrecords.record.isTrackingLocation = false;
+    }
+    if (!this.vmrecords.record.isTrackingAltitude) {
+      this.vmrecords.record.isTrackingAltitude = false;
+    }
+    this.form = formBuilder.group(this.vmrecords.record);
+    console.log('Loading form for record ' + this.vmrecords.record.id );
 
-    console.log('Loading form for record ' + this.vmrecords.record.id )
+    console.log('Location tracking: ' + this.vmrecords.record.id );
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       // this.isReadyToSave = this.vmrecords.form.valid;
       // this.vmrecords.record = this.form.value;
     });
-
-    if (this.vmrecords.isNewRecord) {
-      this.location.events.subscribe('locationFound', (lat, lng,accuracy) => {
-        // user and time are the same arguments passed in `events.publish(user, time)`
-        console.log('Accuracy OK');
-        this.form.value.lat = lat;
-        this.vmrecords.record.lat = lat;
-        this.form.value.long = lng;
-        this.vmrecords.record.long = lng;
-        this.form.value.accuracy = accuracy;
-        this.vmrecords.record.accuracy = accuracy;
-        this.updateLocation();
-
-      });
-      this.location.events.subscribe('altitudeFound', (altitude) => {
-        this.form.value.altitude = altitude;
-      })
-
-    }
-
-
   }
 
 
@@ -86,6 +73,9 @@ export class ItemCreatePage {
         if (vmrecord) {
          console.log('Closed location page :' + vmrecord);
          this.form = this.formBuilder.group(this.vmrecords.record);
+         if (!this.form.value.isTrackingLocation) {
+           this.form.value.isTrackingLocation = false;
+         }
         }
 
       })
@@ -110,6 +100,26 @@ export class ItemCreatePage {
   ionViewDidLoad() {
     // Probably already tracking, just in case:
     this.location.startTracking();
+
+    console.log('ionViewDidLoad RecordLocationPage, Tracking: ' + this.form.value.isTrackingLocation);
+
+    if (this.form.value.isTrackingLocation) {
+      this.location.events.subscribe('locationFound', (lat, lng,accuracy) => {
+        // user and time are the same arguments passed in `events.publish(user, time)`
+        console.log('Accuracy OK');
+        this.form.value.lat = lat;
+        this.vmrecords.record.lat = lat;
+        this.form.value.long = lng;
+        this.vmrecords.record.long = lng;
+        this.form.value.accuracy = accuracy;
+        this.vmrecords.record.accuracy = accuracy;
+        this.updateLocation();
+
+      });
+      this.location.events.subscribe('altitudeFound', (altitude) => {
+        this.form.value.altitude = altitude;
+      })
+    }
   }
 
   ionViewWillEnter() {

@@ -29,7 +29,8 @@ export class RecordLocationPage {
 
       this.form = formBuilder.group(this.vmrecords.record);
 
-      console.log('Loading location form for record ' + this.vmrecords.record.id )
+      console.log('Loading location form for record ' + this.vmrecords.record.id );
+      
 
       // Watch the form for changes, and
       this.form.valueChanges.subscribe((v) => {
@@ -40,7 +41,41 @@ export class RecordLocationPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecordLocationPage');
+    console.log('ionViewDidLoad RecordLocationPage, Tracking: ' + this.form.value.isTrackingLocation);
+
+    if (this.form.value.isTrackingLocation) {
+      this.trackLocation();
+    }
+  }
+
+  trackLocation() {
+      this.form.value.isTrackingLocation = true;
+      this.location.events.subscribe('locationFound', (lat, lng,accuracy) => {
+        // user and time are the same arguments passed in `events.publish(user, time)`
+        console.log('Accuracy OK');
+        this.form.get('lat').setValue(lat);
+        this.form.get('long').setValue(lng);
+        this.form.get('accuracy').setValue(accuracy);
+        this.vmrecords.record.lat = lat;
+        this.vmrecords.record.long = lng;
+        this.vmrecords.record.accuracy = accuracy;
+        this.updateLocation();
+
+      });
+      this.location.events.subscribe('altitudeFound', (altitude) => {
+        this.form.get('altitude').setValue(altitude);
+        this.vmrecords.record.altitude = altitude;
+      })
+  }
+
+  stopTrackingLocation() {
+    this.form.value.isTrackingLocation = false;
+    this.location.events.unsubscribe('locationFound');
+  }
+
+  stopTrackingAltitude() {
+    this.form.value.isTrackingLocation = false;
+    this.location.events.unsubscribe('altitudeFound');
   }
 
   updateLocation() {
