@@ -47,6 +47,7 @@ export class RecordLocationPage {
     this.location.fetchlocstr (this.form.value.lat,this.form.value.long)
       .then(s => {
         this.form.get('country').setValue(this.location.country);
+        this.form.get('province').setValue(this.location.province);
         this.form.get('locality').setValue(this.location.locstr);
         // this.form.value.country = this.location.country;
         console.log('added ' + this.location.country);

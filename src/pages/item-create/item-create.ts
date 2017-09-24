@@ -69,7 +69,9 @@ export class ItemCreatePage {
         this.updateLocation();
 
       });
-      // !!! need to add watch for altitude
+      this.location.events.subscribe('altitudeFound', (altitude) => {
+        this.form.value.altitude = altitude;
+      })
 
     }
 

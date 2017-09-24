@@ -14,6 +14,7 @@ export class Location {
   public lat: number = 0;
   public lng: number = 0;
   public accuracy: number = 10000.0;
+  public bestAcuracy: number = 10000.0;
   public altitude: number = 0;
   public altitudeAccuracy: number = 10000.0;
 
@@ -53,11 +54,15 @@ export class Location {
         this.altitudeAccuracy = position.coords.altitudeAccuracy;
 
       });
-      if (this.accuracy < 100) {
+      if (this.accuracy < 100 && this.accuracy < this.bestAcuracy) {
         console.log('accuracy OK, checking location');
+        this.bestAcuracy = this.accuracy;
         this.events.publish('locationFound', this.lat,this.lng, this.accuracy);
         // this.fetchlocstr (position.coords.latitude,position.coords.longitude);
         // this.fetchtownstr (position.coords.latitude,position.coords.longitude);
+      }
+      if (this.altitude) {
+        this.events.publish('altitudeFound', this.altitude);
       }
 
     });
