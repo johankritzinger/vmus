@@ -163,6 +163,7 @@ export class ItemCreatePage {
     this.location.fetchlocstr (this.form.value.lat,this.form.value.long)
       .then(s => {
         this.form.get('country').setValue(this.location.country);
+        this.form.get('province').setValue(this.location.province);
         this.vmrecords.record.country = this.location.country;
         this.form.get('locality').setValue(this.location.locstr);
         this.vmrecords.record.locality = this.location.locstr;

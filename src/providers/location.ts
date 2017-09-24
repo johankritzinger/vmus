@@ -21,6 +21,7 @@ export class Location {
   public locstr :string = "";
   public townstr: string = '';
   public country: string = '';
+  public province: string = '';
 
   // !!! Need to change
   geoNamesLogin: string = 'johank'
@@ -125,6 +126,7 @@ export class Location {
                   this.locstr += ", " + dist.toFixed(1) + "km " + dir;
                 }
             this.country = data.geonames[0].countryName;
+            this.province = data.geonames[0].adminName1;
             console.log('country found ' + this.country)
 
           }
