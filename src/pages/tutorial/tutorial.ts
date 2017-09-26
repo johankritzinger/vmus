@@ -56,7 +56,8 @@ export class TutorialPage {
             description: `Photos submitted are under the .... licence. If you take photos using
             the app, a copy is saved in your gallery / role - these are not deleted when you delete
             the photo / record.  Currently photos are not deleted other than when you specifically
-            delete the photo, so space will become an issue.`
+            delete the photo, so space will become an issue.`,
+            image: 'assets/img/ica-slidebox-img-3.png',
           }
         ];
       });

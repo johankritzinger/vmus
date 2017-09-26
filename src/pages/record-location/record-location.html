@@ -128,7 +128,7 @@
           </ion-col>
           <ion-col col-3>
             <ion-buttons >
-              <button ion-button (click)="updateLocation()">
+              <button ion-button (click)="updateLocation()" [disabled]="!connection.connected" >
                 Get
               </button>
             </ion-buttons>
