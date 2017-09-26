@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, ToastController, ViewController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Vmrecords, VmprojectsProvider, Location, Connection } from '../../providers/providers';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { MapPage } from '../map/map';
 
 /**
  * Generated class for the RecordLocationPage page.
@@ -26,6 +27,7 @@ export class RecordLocationPage {
         public viewCtrl: ViewController,
         public  formBuilder: FormBuilder,
         public toastCtrl: ToastController,
+        public modalCtrl: ModalController,
         public connection: Connection,
     ) {
 
@@ -48,6 +50,7 @@ export class RecordLocationPage {
     if (this.form.value.isTrackingLocation) {
       this.trackLocation();
     }
+    this.presentToast('Connected: ' + this.connection.connected)
   }
 
   trackLocation() {
@@ -150,6 +153,23 @@ export class RecordLocationPage {
       position: 'top'
     });
     toast.present();
+  }
+
+  // Not working yet, not called
+  openMap() {
+      let addModal = this.modalCtrl.create(MapPage);
+      console.log('addModal')
+      addModal.onDidDismiss(vmrecord => {
+        if (vmrecord) {
+         console.log('Closed location page :' + vmrecord);
+         this.form = this.formBuilder.group(this.vmrecords.record);
+         if (!this.form.value.isTrackingLocation) {
+           this.form.value.isTrackingLocation = false;
+         }
+        }
+
+      })
+      addModal.present();
   }
 
 }

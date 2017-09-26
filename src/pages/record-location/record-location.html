@@ -29,10 +29,11 @@
 <ion-content>
   <form [formGroup]="form">
 <ion-list>
-    <ion-item-divider color="light">Location</ion-item-divider>
+
       <ion-grid>
         <ion-row>
           <ion-col col-9>
+            <ion-item-divider color="light">Location</ion-item-divider>
             <!-- <ion-item *ngIf="vmrecords.isNewRecord">
               <ion-label>lat</ion-label>
               <ion-input type="text"  formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
@@ -60,9 +61,7 @@
             </ion-item>
           </ion-col>
           <ion-col col-3>
-            <ion-item>
-              <ion-label>Get</ion-label>
-            </ion-item>
+            <ion-item-divider color="light">Watch</ion-item-divider>
             <ion-item>
               <ion-toggle formControlName="isTrackingLocation" (ionChange)="changeLocTracking()"></ion-toggle>
             </ion-item>
@@ -71,10 +70,12 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    <ion-item-divider color="light">Altitude</ion-item-divider>
+
     <ion-grid>
       <ion-row>
+
         <ion-col col-9>
+          <ion-item-divider color="light">Altitude</ion-item-divider>
           <!-- <ion-item *ngIf="vmrecords.isNewRecord">
             <ion-label>minelev</ion-label>
             <ion-input type="text" placeholder="minelev" formControlName="minelev" value="{{ this.location.altitude }}"></ion-input>
@@ -94,9 +95,7 @@
           </ion-item>
         </ion-col>
         <ion-col col-3>
-          <ion-item>
-            <ion-label>Get</ion-label>
-          </ion-item>
+          <ion-item-divider color="light">Watch</ion-item-divider>
           <ion-item>
             <ion-toggle formControlName="isTrackingAltitude" (ionChange)="changeAltTracking()"></ion-toggle>
           </ion-item>
@@ -128,7 +127,7 @@
           </ion-col>
           <ion-col col-3>
             <ion-buttons >
-              <button ion-button (click)="updateLocation()" [disabled]="!connection.connected" >
+              <button ion-button (click)="updateLocation()" [disabled]="!this.connection.connected" >
                 Get
               </button>
             </ion-buttons>
