@@ -86,17 +86,17 @@ export class RecordLocationPage {
   }
 
   changeAltTracking() {
-    let set = this.form.value.isTrackingLocation;
+    let set = this.form.value.isTrackingAltitude;
     this.presentToast('altitude checking: ' + set)
     if (set) {
-      this.form.value.isTrackingLocation = true;
+      this.form.value.isTrackingAltitude = true;
       this.location.events.subscribe('altitudeFound', (altitude) => {
         this.presentToast('setting altitude');
         this.form.get('altitude').setValue(altitude);
         this.vmrecords.record.altitude = altitude;
       })
     } else {
-      this.form.value.isTrackingLocation = false;
+      this.form.value.isTrackingAltitude = false;
       this.location.events.unsubscribe('altitudeFound');
     }
   }
