@@ -94,7 +94,6 @@ export class ItemCreatePage {
 
       })
       addModal.present();
-      // this.navCtrl.push(RecordLocationPage)
   }
 
   ionViewDidLoad() {

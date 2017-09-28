@@ -67,6 +67,11 @@
             </ion-item>
             <!-- <button ion-button (click)="trackLocation()" [disabled]="isTrackingLocation">Get loc</button>
             <button ion-button (click)="stopTrackingLocation()" [disabled]="!isTrackingLocation">Fix loc</button> -->
+            <ion-buttons >
+              <button ion-button (click)="openMap(lat,long)" [disabled]="!this.connection.connected" >
+                Map
+              </button>
+            </ion-buttons>
           </ion-col>
         </ion-row>
       </ion-grid>

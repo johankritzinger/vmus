@@ -18,7 +18,7 @@ import { MapPage } from '../map/map';
 })
 export class RecordLocationPage {
 
-  form: FormGroup;
+  public form: FormGroup;
 
   constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -156,7 +156,7 @@ export class RecordLocationPage {
   }
 
   // Not working yet, not called
-  openMap() {
+  openMap2() {
       let addModal = this.modalCtrl.create(MapPage);
       console.log('addModal')
       addModal.onDidDismiss(vmrecord => {
@@ -170,6 +170,15 @@ export class RecordLocationPage {
 
       })
       addModal.present();
+  }
+
+  openMap(lat,long) {
+    // this.navCtrl.push(RecordLocationPage)
+   let mapDet = {'lat': lat ,'long': long}
+   this.navCtrl.push(MapPage, {
+      mapDet
+    });
+
   }
 
 }
