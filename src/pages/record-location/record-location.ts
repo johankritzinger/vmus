@@ -41,6 +41,7 @@ export class RecordLocationPage {
         // this.isReadyToSave = this.vmrecords.form.valid;
         // this.vmrecords.record = this.form.value;
       });
+      this.connection.events.subscribe('connectionChange');
 
   }
 
