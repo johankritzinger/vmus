@@ -49,15 +49,25 @@
 
             <ion-item >
               <ion-label>lat</ion-label>
-              <ion-input type="text"  formControlName="lat"></ion-input>
+              <ion-input type="text"  formControlName="lat" (ionChange)=updateManual() ></ion-input>
             </ion-item>
             <ion-item >
               <ion-label>long</ion-label>
-              <ion-input type="text"  formControlName="long"></ion-input>
+              <ion-input type="text"  formControlName="long" (ionChange)=updateManual() ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>accuracy </ion-label>
-              <ion-input type="text"  formControlName="accuracy"></ion-input>
+              <ion-input type="text" formControlName="accuracy" [disabled]="!this.manualUpdate"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Source</ion-label>
+              <ion-select formControlName="source" [disabled]="!this.manualUpdate">
+                <ion-option>GPS</ion-option>
+                <ion-option>Google Map</ion-option>
+                <ion-option>Google Earth</ion-option>
+                <ion-option>1:50 000 Map</ion-option>
+                <ion-option>1:250 000 Map</ion-option>
+              </ion-select>
             </ion-item>
           </ion-col>
           <ion-col col-3>
@@ -68,7 +78,7 @@
             <!-- <button ion-button (click)="trackLocation()" [disabled]="isTrackingLocation">Get loc</button>
             <button ion-button (click)="stopTrackingLocation()" [disabled]="!isTrackingLocation">Fix loc</button> -->
             <ion-buttons >
-              <button ion-button (click)="openMap(lat,long)" [disabled]="!this.connection.connected" >
+              <button ion-button (click)="openMap(this.form.value.lat,this.form.value.long)">
                 Map
               </button>
             </ion-buttons>

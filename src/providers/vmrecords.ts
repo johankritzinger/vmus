@@ -90,7 +90,7 @@ export class Vmrecords {
       "long": '',
       "datum": '',
       "accuracy": '',
-      "source": '',
+      "source": 'GPS',
       "date": '1990-01-01',
       "year": '',
       "month": '',

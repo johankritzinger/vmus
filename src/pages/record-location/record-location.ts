@@ -19,6 +19,7 @@ import { MapPage } from '../map/map';
 export class RecordLocationPage {
 
   public form: FormGroup;
+  public manualUpdate: boolean = false;
 
   constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -36,7 +37,7 @@ export class RecordLocationPage {
       console.log('Loading location form for record ' + this.vmrecords.record.id );
 
 
-      // Watch the form for changes, and
+      // Watch the form for changes - not in use.
       this.form.valueChanges.subscribe((v) => {
         // this.isReadyToSave = this.vmrecords.form.valid;
         // this.vmrecords.record = this.form.value;
@@ -147,6 +148,9 @@ export class RecordLocationPage {
     this.viewCtrl.dismiss();
   }
 
+  /*
+  Displays a notification at the top of the screen - debugging
+  */
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
@@ -156,30 +160,22 @@ export class RecordLocationPage {
     toast.present();
   }
 
-  // Not working yet, not called
-  openMap2() {
-      let addModal = this.modalCtrl.create(MapPage);
-      console.log('addModal')
-      addModal.onDidDismiss(vmrecord => {
-        if (vmrecord) {
-         console.log('Closed location page :' + vmrecord);
-         this.form = this.formBuilder.group(this.vmrecords.record);
-         if (!this.form.value.isTrackingLocation) {
-           this.form.value.isTrackingLocation = false;
-         }
-        }
-
-      })
-      addModal.present();
-  }
-
+  /*
+  Currently the map opens with the set coords, but cannot be used to change it.
+  */
   openMap(lat,long) {
     // this.navCtrl.push(RecordLocationPage)
    let mapDet = {'lat': lat ,'long': long}
+   console.log('test: ' + mapDet.lat);
    this.navCtrl.push(MapPage, {
       mapDet
     });
 
+  }
+
+  updateManual() {
+    this.manualUpdate = true;
+    this.form.get('source').setValue('Please Select');
   }
 
 }
