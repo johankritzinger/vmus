@@ -71,6 +71,9 @@ export class ListMasterPage {
    * Navigate to the detail page for this item.
    */
   openItem(vmrecord) {
+    this.vmrecords.isNewRecord = false;
+    // this.vmrecords.isTrackingLocation = false;
+    // this.vmrecords.isTrackingAltitude = false;
     this.vmrecords.record = vmrecord;
     // this.vmrecords.form = this.vmrecords.formBuilder.group( vmrecord )
     this.navCtrl.push(ItemCreatePage, {

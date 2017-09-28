@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
-import { Vmrecords, VmprojectsProvider, Location } from '../../providers/providers';
+import { IonicPage, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Vmrecords, VmprojectsProvider, Location, Connection } from '../../providers/providers';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { MapPage } from '../map/map';
 
 /**
  * Generated class for the RecordLocationPage page.
@@ -17,46 +18,116 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class RecordLocationPage {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public manualUpdate: boolean = false;
 
   constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public vmrecords: Vmrecords,
         public location: Location,
         public viewCtrl: ViewController,
-        public  formBuilder: FormBuilder
+        public  formBuilder: FormBuilder,
+        public toastCtrl: ToastController,
+        public modalCtrl: ModalController,
+        public connection: Connection,
     ) {
 
       this.form = formBuilder.group(this.vmrecords.record);
 
-      console.log('Loading location form for record ' + this.vmrecords.record.id )
+      console.log('Loading location form for record ' + this.vmrecords.record.id );
 
-      // Watch the form for changes, and
+
+      // Watch the form for changes - not in use.
       this.form.valueChanges.subscribe((v) => {
         // this.isReadyToSave = this.vmrecords.form.valid;
         // this.vmrecords.record = this.form.value;
       });
+      this.connection.events.subscribe('connectionChange');
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecordLocationPage');
+    console.log('ionViewDidLoad RecordLocationPage, Tracking: ' + this.form.value.isTrackingLocation);
+
+    if (this.form.value.isTrackingLocation) {
+      this.trackLocation();
+    }
+    this.presentToast('Connected: ' + this.connection.connected)
+  }
+
+  trackLocation() {
+      this.location.bestAcuracy = 100;
+      this.form.value.isTrackingLocation = true;
+      this.presentToast('Getting location');
+      this.location.events.subscribe('locationFound', (lat, lng,accuracy) => {
+        this.form.get('lat').setValue(lat);
+        this.form.get('long').setValue(lng);
+        this.form.get('accuracy').setValue(accuracy);
+        this.vmrecords.record.lat = lat;
+        this.vmrecords.record.long = lng;
+        this.vmrecords.record.accuracy = accuracy;
+        this.presentToast('updating ' + accuracy);
+        this.updateLocation();
+      });
+      this.location.events.subscribe('altitudeFound', (altitude) => {
+        this.form.get('altitude').setValue(altitude);
+        this.vmrecords.record.altitude = altitude;
+        this.presentToast('setting altitude');
+      });
+  }
+
+  stopTrackingLocation() {
+    this.form.value.isTrackingLocation = false;
+    this.location.events.unsubscribe('locationFound');
+  }
+
+  changeLocTracking() {
+    let set = this.form.value.isTrackingLocation;
+    console.log('changeLocTracking: ' + set);
+    if (set) {
+      this.trackLocation();
+    } else {
+      this.stopTrackingLocation();
+    }
+  }
+
+  changeAltTracking() {
+    let set = this.form.value.isTrackingAltitude;
+    this.presentToast('Checking altitude: ' + set)
+    if (set) {
+      this.form.value.isTrackingAltitude = true;
+      this.location.events.subscribe('altitudeFound', (altitude) => {
+        this.presentToast('Setting altitude');
+        this.form.get('minelev').setValue(altitude);
+        this.vmrecords.record.minelev = altitude;
+        this.form.get('maxelev').setValue(altitude);
+        this.vmrecords.record.maxelev = altitude;
+
+      })
+    } else {
+      this.form.value.isTrackingAltitude = false;
+      this.location.events.unsubscribe('altitudeFound');
+    }
   }
 
   updateLocation() {
-    this.location.fetchlocstr (this.form.value.lat,this.form.value.long)
-      .then(s => {
-        this.form.get('country').setValue(this.location.country);
-        this.form.get('locality').setValue(this.location.locstr);
-        // this.form.value.country = this.location.country;
-        console.log('added ' + this.location.country);
-        // this.form.value.locality = this.location.locstr;
-      });
-    this.location.fetchtownstr (this.form.value.lat,this.form.value.long)
-      .then(s => {
-        console.log('added town: ' + this.location.country);
-        this.form.get('nearesttown').setValue(this.location.townstr);
-      });
+    if (this.connection.connected) {
+      this.presentToast('Looking up location');
+      this.location.fetchlocstr (this.form.value.lat,this.form.value.long)
+        .then(s => {
+          this.form.get('country').setValue(this.location.country);
+          this.form.get('province').setValue(this.location.province);
+          this.form.get('locality').setValue(this.location.locstr);
+          // this.form.value.country = this.location.country;
+          console.log('added ' + this.location.country);
+          // this.form.value.locality = this.location.locstr;
+        });
+      this.location.fetchtownstr (this.form.value.lat,this.form.value.long)
+        .then(s => {
+          console.log('added town: ' + this.location.country);
+          this.form.get('nearesttown').setValue(this.location.townstr);
+        });
+    }
   }
 
   done() {
@@ -64,12 +135,47 @@ export class RecordLocationPage {
       this.vmrecords.record = this.form.value;
       this.vmrecords.addItem(this.form.value).then(s => {
         this.viewCtrl.dismiss(this.form.value);
+
       });
+      this.location.events.unsubscribe('altitudeFound');
+      this.location.events.unsubscribe('locationFound');
     // }
   }
 
   cancel() {
+    this.location.events.unsubscribe('altitudeFound');
+    this.location.events.unsubscribe('locationFound');
     this.viewCtrl.dismiss();
+  }
+
+  /*
+  Displays a notification at the top of the screen - debugging
+  */
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  /*
+  Currently the map opens with the set coords, but cannot be used to change it.
+  */
+  openMap(lat,long) {
+    // this.navCtrl.push(RecordLocationPage)
+   let mapDet = {'lat': lat ,'long': long}
+   console.log('test: ' + mapDet.lat);
+   this.navCtrl.push(MapPage, {
+      mapDet
+    });
+
+  }
+
+  updateManual() {
+    this.manualUpdate = true;
+    this.form.get('source').setValue('Please Select');
   }
 
 }

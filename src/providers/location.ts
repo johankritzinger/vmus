@@ -14,6 +14,7 @@ export class Location {
   public lat: number = 0;
   public lng: number = 0;
   public accuracy: number = 10000.0;
+  public bestAcuracy: number = 100;
   public altitude: number = 0;
   public altitudeAccuracy: number = 10000.0;
 
@@ -21,6 +22,7 @@ export class Location {
   public locstr :string = "";
   public townstr: string = '';
   public country: string = '';
+  public province: string = '';
 
   // !!! Need to change
   geoNamesLogin: string = 'johank'
@@ -39,7 +41,9 @@ export class Location {
       enableHighAccuracy: true
     };
 
-    this.watch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined).subscribe((position: Geoposition) => {
+    this.watch = this.geolocation.watchPosition(options)
+      .filter((p: any) => p.code === undefined)
+      .subscribe((position: Geoposition) => {
 
       console.log(position);
 
@@ -52,11 +56,15 @@ export class Location {
         this.altitudeAccuracy = position.coords.altitudeAccuracy;
 
       });
-      if (this.accuracy < 100) {
-        console.log('accuracy OK, checking location');
+      if (this.accuracy < this.bestAcuracy) {
+        // console.log('accuracy OK, checking location');
+        this.bestAcuracy = this.accuracy;
         this.events.publish('locationFound', this.lat,this.lng, this.accuracy);
         // this.fetchlocstr (position.coords.latitude,position.coords.longitude);
         // this.fetchtownstr (position.coords.latitude,position.coords.longitude);
+      }
+      if (this.altitude) {
+        this.events.publish('altitudeFound', this.altitude);
       }
 
     });
@@ -65,30 +73,27 @@ export class Location {
   }
 
   stopTracking() {
-
   console.log('stopTracking');
-
   this.watch.unsubscribe();
-
 }
 
-  getLocation() {
-    this.geolocation.getCurrentPosition().then((position) => {
-    // let this.position=position {
-          alert('Latitude: '          + position.coords.latitude          + '\n' +
-                'Longitude: '         + position.coords.longitude         + '\n' +
-                'Altitude: '          + position.coords.altitude          + '\n' +
-                'Accuracy: '          + position.coords.accuracy          + '\n' +
-                'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-                'Heading: '           + position.coords.heading           + '\n' +
-                'Speed: '             + position.coords.speed             + '\n' +
-                'Timestamp: '         + position.timestamp                + '\n');
-      }, (err) => {
-        console.log('map error: ' + err.message);
-      });
-
-
-  }
+  // getLocation() {
+  //   this.geolocation.getCurrentPosition().then((position) => {
+  //   // let this.position=position {
+  //         alert('Latitude: '          + position.coords.latitude          + '\n' +
+  //               'Longitude: '         + position.coords.longitude         + '\n' +
+  //               'Altitude: '          + position.coords.altitude          + '\n' +
+  //               'Accuracy: '          + position.coords.accuracy          + '\n' +
+  //               'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+  //               'Heading: '           + position.coords.heading           + '\n' +
+  //               'Speed: '             + position.coords.speed             + '\n' +
+  //               'Timestamp: '         + position.timestamp                + '\n');
+  //     }, (err) => {
+  //       console.log('map error: ' + err.message);
+  //     });
+  //
+  //
+  // }
 
   fetchlocstr (lat,long) {
     // stolen from http://www.baboonspideratlas.co.za/templates/yoo_lava/js/uploadform.js
@@ -125,6 +130,7 @@ export class Location {
                   this.locstr += ", " + dist.toFixed(1) + "km " + dir;
                 }
             this.country = data.geonames[0].countryName;
+            this.province = data.geonames[0].adminName1;
             console.log('country found ' + this.country)
 
           }

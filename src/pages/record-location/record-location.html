@@ -29,72 +29,126 @@
 <ion-content>
   <form [formGroup]="form">
 <ion-list>
-  <ion-item-group>
-    <ion-item-divider color="light">Location</ion-item-divider>
-        <ion-item *ngIf="vmrecords.isNewRecord">
-          <ion-label >
-            <h3>Location</h3>
-            <p>lat {{ this.location.lat | number : '1.4-5' }}, {{ this.location.lng | number : '1.4-5' }}</p>
-            <p>+- {{ this.location.accuracy | number : '1.1-2' }} </p></ion-label>
-          <ion-input  type="hidden" formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
-          <ion-input  type="hidden" formControlName="long" value="{{ this.location.lng | number : '1.4-7' }}"></ion-input>
-          <ion-input  type="hidden" formControlName="accuracy" value="{{ this.location.accuracy | number : '1.1-2' }}"></ion-input>
 
-        </ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-9>
+            <ion-item-divider color="light">Location</ion-item-divider>
+            <!-- <ion-item *ngIf="vmrecords.isNewRecord">
+              <ion-label>lat</ion-label>
+              <ion-input type="text"  formControlName="lat" value="{{ this.location.lat | number : '1.4-7' }}"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="vmrecords.isNewRecord">
+              <ion-label>long</ion-label>
+              <ion-input type="text"  formControlName="long" value="{{ this.location.lng | number : '1.4-7' }}"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="vmrecords.isNewRecord">
+              <ion-label>accuracy </ion-label>
+              <ion-input type="text"  formControlName="accuracy" value="{{ this.location.accuracy | number : '1.1-2' }}"></ion-input>
+            </ion-item> -->
 
-        <ion-item *ngIf="!vmrecords.isNewRecord">
-          <ion-label>lat</ion-label>
-          <ion-input type="text"  formControlName="lat"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="!vmrecords.isNewRecord">
-          <ion-label>long</ion-label>
-          <ion-input type="text"  formControlName="long"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="!vmrecords.isNewRecord">
-          <ion-label>accuracy </ion-label>
-          <!-- <ion-input type="text"  formControlName="accuracy"></ion-input> -->
-          <ion-input type="text"  formControlName="accuracy"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="vmrecords.isNewRecord">
-          <ion-label>Altitude {{ this.location.altitude  }}</ion-label>
-          <ion-input type="hidden" placeholder="minelev" formControlName="minelev"></ion-input>
-          <ion-input type="hidden" placeholder="maxelev" formControlName="maxelev"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="!vmrecords.isNewRecord">
-          <ion-label>minelev</ion-label>
-          <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="!vmrecords.isNewRecord">
-          <ion-label>maxelev</ion-label>
-          <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
-        </ion-item>
-        <ion-buttons >
-          <button ion-button (click)="updateLocation()" strong>
-            <span color="primary" showWhen="ios">
-              Autocomplete
-            </span>
-            <ion-icon name="md-checkmark" showWhen="core,android,windows">Autocomplete</ion-icon>
-          </button>
-        </ion-buttons>
-        <ion-item>
-          <ion-label>country</ion-label>
-          <!-- <ion-input type="text" *ngIf="vmrecords.isNewRecord" formControlName="country">{{ this.location.country  }}</ion-input>
-          <ion-input type="text" *ngIf="!vmrecords.isNewRecord" formControlName="country"></ion-input> -->
-          <ion-input type="text" formControlName="country"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>province</ion-label>
-          <ion-input type="text" placeholder="province" formControlName="province"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>nearesttown</ion-label>
-          <ion-input type="text" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>locality</ion-label>
-          <ion-input type="text" placeholder="locality" formControlName="locality"></ion-input>
-        </ion-item>
-  </ion-item-group>
+            <ion-item >
+              <ion-label>lat</ion-label>
+              <ion-input type="text"  formControlName="lat" (ionChange)=updateManual() ></ion-input>
+            </ion-item>
+            <ion-item >
+              <ion-label>long</ion-label>
+              <ion-input type="text"  formControlName="long" (ionChange)=updateManual() ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>accuracy </ion-label>
+              <ion-input type="text" formControlName="accuracy" [disabled]="!this.manualUpdate"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Source</ion-label>
+              <ion-select formControlName="source" [disabled]="!this.manualUpdate">
+                <ion-option>GPS</ion-option>
+                <ion-option>Google Map</ion-option>
+                <ion-option>Google Earth</ion-option>
+                <ion-option>1:50 000 Map</ion-option>
+                <ion-option>1:250 000 Map</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col col-3>
+            <ion-item-divider color="light">Watch</ion-item-divider>
+            <ion-item>
+              <ion-toggle formControlName="isTrackingLocation" (ionChange)="changeLocTracking()"></ion-toggle>
+            </ion-item>
+            <!-- <button ion-button (click)="trackLocation()" [disabled]="isTrackingLocation">Get loc</button>
+            <button ion-button (click)="stopTrackingLocation()" [disabled]="!isTrackingLocation">Fix loc</button> -->
+            <ion-buttons >
+              <button ion-button (click)="openMap(this.form.value.lat,this.form.value.long)">
+                Map
+              </button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+
+        <ion-col col-9>
+          <ion-item-divider color="light">Altitude</ion-item-divider>
+          <!-- <ion-item *ngIf="vmrecords.isNewRecord">
+            <ion-label>minelev</ion-label>
+            <ion-input type="text" placeholder="minelev" formControlName="minelev" value="{{ this.location.altitude }}"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="vmrecords.isNewRecord">
+            <ion-label>maxelev</ion-label>
+            <ion-input type="text" placeholder="maxelev" formControlName="maxelev" value="{{ this.location.altitude }}"></ion-input>
+          </ion-item> -->
+
+          <ion-item >
+            <ion-label>minelev</ion-label>
+            <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
+          </ion-item>
+          <ion-item >
+            <ion-label>maxelev</ion-label>
+            <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-3>
+          <ion-item-divider color="light">Watch</ion-item-divider>
+          <ion-item>
+            <ion-toggle formControlName="isTrackingAltitude" (ionChange)="changeAltTracking()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
+    <ion-item-divider color="light">Description</ion-item-divider>
+    <ion-grid>
+          <ion-row>
+            <ion-col col-9>
+              <ion-item>
+                <ion-label>country</ion-label>
+                <!-- <ion-input type="text" *ngIf="vmrecords.isNewRecord" formControlName="country">{{ this.location.country  }}</ion-input>
+                <ion-input type="text" *ngIf="!vmrecords.isNewRecord" formControlName="country"></ion-input> -->
+                <ion-input type="text" formControlName="country"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>province</ion-label>
+                <ion-input type="text" placeholder="province" formControlName="province"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>nearesttown</ion-label>
+                <ion-input type="text" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>locality</ion-label>
+                <ion-input type="text" placeholder="locality" formControlName="locality"></ion-input>
+              </ion-item>
+          </ion-col>
+          <ion-col col-3>
+            <ion-buttons >
+              <button ion-button (click)="updateLocation()" [disabled]="!this.connection.connected" >
+                Get
+              </button>
+            </ion-buttons>
+          </ion-col>
+          </ion-row>
+        </ion-grid>
 </ion-list>
 
 

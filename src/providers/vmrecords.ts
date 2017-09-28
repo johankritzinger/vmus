@@ -15,6 +15,8 @@ export class Vmrecords {
   public record: any;
   form: FormGroup;
   isNewRecord: boolean = false;
+  // isTrackingLocation: boolean = false;
+  // isTrackingAltitude: boolean = false;
 
   // settingsReady = false;
 
@@ -88,7 +90,7 @@ export class Vmrecords {
       "long": '',
       "datum": '',
       "accuracy": '',
-      "source": '',
+      "source": 'GPS',
       "date": '1990-01-01',
       "year": '',
       "month": '',
@@ -102,6 +104,8 @@ export class Vmrecords {
       "pic2": '',
       "pic3": '',
       "sound1": '',
+      "isTrackingLocation":false,
+      "isTrackingAltitude": false
       };
 
   getNextid()    {
@@ -121,8 +125,12 @@ export class Vmrecords {
 
   newRecord() {
     this.isNewRecord = true;
+    // this.isTrackingLocation = true;
+    // this.isTrackingAltitude = true;
     // return new Promise(resolve => {
       this.record = this.emptyRecord;
+      this.record.isTrackingLocation = true;
+      this.record.isTrackingAltitude = true;
 
       var today = new Date();
       // this.record.date = today;
@@ -182,6 +190,8 @@ export class Vmrecords {
    */
   addItem(i) {
     this.isNewRecord = false;
+    // this.isTrackingLocation = false;
+    // this.isTrackingAltitude = false;
     return new Promise(resolve => {
       var InsertQuery = `INSERT OR REPLACE INTO VMRecords (id, email,
         observers,
