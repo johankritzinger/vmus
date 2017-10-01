@@ -21,12 +21,12 @@
   <ion-list>
     <ion-item-sliding *ngFor="let item of this.vmrecords.arr">
       <button ion-item (click)="openItem(item)">
-        <!-- <ion-avatar item-start>
-          <img [src]="item.profilePic" />
-        </ion-avatar> -->
-        <h2>{{ item.id }}: {{ item.project }}</h2>
-        <p>{{item.userdet}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+        <ion-avatar item-start *ngIf="item.pic1">
+          <img [src]="pathForImage(item.pic1)" />
+        </ion-avatar>
+        <h2>{{ item.id }}: {{ item.locality }}</h2>
+        <p>{{item.userdet || item.project}}</p>
+        <ion-note item-end *ngIf="item.userdet">{{ item.project }}</ion-note>
       </button>
 
     </ion-item-sliding>

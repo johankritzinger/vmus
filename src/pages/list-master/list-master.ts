@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform, NavController, ModalController } from 'ionic-angular';
+import { File } from '@ionic-native/file';
 
 import { ItemCreatePage } from '../item-create/item-create';
 // import { ItemDetailPage } from '../item-detail/item-detail';
@@ -10,6 +11,8 @@ import { Item } from '../../models/item';
 // import { Vmrecord } from '../../models/vmrecord';
 
 import { Geolocation } from '@ionic-native/geolocation';
+
+declare var cordova: any;
 
 @Component({
   selector: 'page-list-master',
@@ -79,5 +82,13 @@ export class ListMasterPage {
     this.navCtrl.push(ItemCreatePage, {
       // vmrecord
     });
+  }
+
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return cordova.file.dataDirectory + img;
+    }
   }
 }

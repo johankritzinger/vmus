@@ -81,7 +81,8 @@ export class PicsPage {
       quality: 100,
       sourceType: sourceType,
       saveToPhotoAlbum: true,
-      correctOrientation: true
+      correctOrientation: true,
+      allowEdit: true
     };
 
     // Get the data of an image
@@ -201,6 +202,10 @@ done() {
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);
     });
+    /*
+    We need to add a bit in here - if a previous picture was replaced, delete
+    it.
+    */
   // }
 }
 
