@@ -56,7 +56,11 @@
         <ion-input type="hidden" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
         <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input> -->
         </button>
-        <button ion-button (click)="openPics()" color='light' block>Pictures</button>
+        <button ion-button (click)="openPics()" color='light' block>
+          <ion-avatar item-start *ngIf="pic1">
+            <img [src]="pathForImage(pic1)" />
+          </ion-avatar>
+          Pictures</button>
           <ion-item>
             <ion-label>Email</ion-label>
             <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>

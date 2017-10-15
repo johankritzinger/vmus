@@ -34,6 +34,9 @@ export class LoginPage {
     })
   }
 
+  // http://api.adu.org.za/validation/user/login?API_KEY=32859abe3dc684a266846283cbd2264d&userid=18131&&email=johan.kritzinger@gmail.com&passid=71d00b760d017b2999eb54e32f41f592
+  // http://vmus.adu.org.za/vm_projects.php?database=&prj_acronym=&db=&URL=&Logo=&Headline=&Use_main_filter=0&User_id=f5dcb5d0c3a7436e5925282bb547a170&Full_name=Johan%20Kritzinger&serve_sp_list=0&drop_down_list=0&assessment=0&query_id=0&Vm_number=0&recNo=0&numRows=0&start=0&message=Welcome_Johan_Kritzinger
+
   // Attempt to login in through our User service
   doLogin() {
     this.user.login(this.account).subscribe((resp) => {
