@@ -62,10 +62,14 @@ export class Vmrecords {
           nestcount int,
           nestsite text,
           roadkill bool,
+          mailto text,
+          mailsubject text,
           pic1 text,
           pic2 text,
           pic3 text,
-          sound1 text
+          imageurl text,
+          sound1 text,
+          status int
           )`);
           this.getNextid();
       }, (e) => {

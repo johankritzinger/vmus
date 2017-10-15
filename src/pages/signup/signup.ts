@@ -34,6 +34,8 @@ export class SignupPage {
     })
   }
 
+  // http://www.adu.org.za/register.php?project=vmus
+
   doSignup() {
     // Attempt to login in through our User service
     this.user.signup(this.account).subscribe((resp) => {
