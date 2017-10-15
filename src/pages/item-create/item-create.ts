@@ -5,7 +5,7 @@ import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/
 import { RecordLocationPage } from '../record-location/record-location';
 import { PicsPage } from '../pics/pics';
 import 'rxjs/add/operator/filter';
-
+import { File } from '@ionic-native/file';
 
 /**
  * Generated class for the FormpagePage page.
@@ -13,6 +13,7 @@ import 'rxjs/add/operator/filter';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
+declare var cordova: any;
 
 // @IonicPage()
 @Component({
@@ -193,6 +194,14 @@ export class ItemCreatePage {
   deleteItem(vmrecord) {
     this.vmrecords.del(this.form.value);
     this.viewCtrl.dismiss();
+  }
+
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return cordova.file.dataDirectory + img;
+    }
   }
 
 }

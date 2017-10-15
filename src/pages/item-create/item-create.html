@@ -57,10 +57,12 @@
         <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input> -->
         </button>
         <button ion-button (click)="openPics()" color='light' block>
-          <ion-avatar item-start *ngIf="pic1">
-            <img [src]="pathForImage(pic1)" />
-          </ion-avatar>
-          Pictures</button>
+          <ion-img *ngIf="form.value.pic1"width="80" height="80" [src]="pathForImage(form.value.pic1)"></ion-img>
+          <!-- <ion-avatar item-start *ngIf="form.value.pic1">
+            <img [src]="pathForImage(form.value.pic1)" />
+          </ion-avatar> -->
+          <p>Pictures</p>
+        </button>
           <ion-item>
             <ion-label>Email</ion-label>
             <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
