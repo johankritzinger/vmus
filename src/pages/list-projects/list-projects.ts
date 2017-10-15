@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+// import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { VmprojectsProvider } from '../../providers/providers';
 import { ProjectDetailsPage } from '../project-details/project-details'
 
@@ -11,7 +12,7 @@ import { ProjectDetailsPage } from '../project-details/project-details'
  * on Ionic pages and navigation.
  */
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: 'page-list-projects',
   templateUrl: 'list-projects.html',

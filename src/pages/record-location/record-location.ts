@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+// import { IonicPage, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+import { ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Vmrecords, VmprojectsProvider, Location, Connection } from '../../providers/providers';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MapPage } from '../map/map';
@@ -11,7 +12,7 @@ import { MapPage } from '../map/map';
  * on Ionic pages and navigation.
  */
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: 'page-record-location',
   templateUrl: 'record-location.html',

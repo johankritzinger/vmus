@@ -1,7 +1,8 @@
 // see https://devdactic.com/ionic-2-images/
 
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
+// import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavController, NavParams } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
@@ -19,7 +20,7 @@ declare var cordova: any;
  * on Ionic pages and navigation.
  */
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: 'page-pics',
   templateUrl: 'pics.html',
