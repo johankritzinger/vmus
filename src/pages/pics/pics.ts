@@ -13,12 +13,6 @@ import { Camera } from '@ionic-native/camera';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 declare var cordova: any;
-/**
- * Generated class for the PicsPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 
 // @IonicPage()
 @Component({
