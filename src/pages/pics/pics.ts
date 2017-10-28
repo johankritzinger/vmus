@@ -2,7 +2,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 // import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
-import { ViewController, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
