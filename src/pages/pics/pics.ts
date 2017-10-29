@@ -2,11 +2,12 @@
 
 import { Component, ViewChild } from '@angular/core';
 // import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
-import { ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
-import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+// import { ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+// import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+import {  Platform, ActionSheetController, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
-import { Transfer, TransferObject } from '@ionic-native/transfer';
+// import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Vmrecords } from '../../providers/providers';
 import { Camera } from '@ionic-native/camera';
@@ -24,7 +25,7 @@ export class PicsPage {
 
   form: FormGroup;
   // lastImage: string = null;
-  loading: Loading;
+  // loading: Loading;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,13 +33,13 @@ export class PicsPage {
     public vmrecords: Vmrecords,
     public viewCtrl: ViewController,
     public camera: Camera,
-    private transfer: Transfer,
+    // private transfer: Transfer,
     private file: File,
     private filePath: FilePath,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
     public platform: Platform,
-    public loadingCtrl: LoadingController
+    // public loadingCtrl: LoadingController
 
   ) {
 
