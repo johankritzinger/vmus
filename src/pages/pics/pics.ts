@@ -46,32 +46,37 @@ export class PicsPage {
     this.form = formBuilder.group(this.vmrecords.record);
   }
 
-  public presentActionSheet(picform) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
-      buttons: [
-        {
-          text: 'Load from Library',
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY,picform);
-          }
-        },
-        {
-          text: 'Use Camera',
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.CAMERA,picform);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    });
-    actionSheet.present();
-  }
+  // public presentActionSheet(picform) {
+  //   let actionSheet = this.actionSheetCtrl.create({
+  //     title: 'Select Image Source',
+  //     buttons: [
+  //       {
+  //         text: 'Load from Library',
+  //         handler: () => {
+  //           this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY,picform);
+  //         }
+  //       },
+  //       {
+  //         text: 'Use Camera',
+  //         handler: () => {
+  //           this.takePicture(this.camera.PictureSourceType.CAMERA,picform);
+  //         }
+  //       },
+  //       {
+  //         text: 'Cancel',
+  //         role: 'cancel'
+  //       }
+  //     ]
+  //   });
+  //   actionSheet.present();
+  // }
 
-  public takePicture(sourceType,picform) {
+// This is wrong, replace with below
+  publicpresentActionSheet(picform) {
+    var sourceType = this.camera.PictureSourceType.CAMERA;
+// Replace up to here
+    
+    // public takePicture(sourceType,picform) {
     // Create options for the Camera Dialog
     var options = {
       quality: 100,
@@ -79,7 +84,7 @@ export class PicsPage {
       saveToPhotoAlbum: true,
       correctOrientation: true,
       allowEdit: true
-    };
+    }
 
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
