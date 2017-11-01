@@ -35,7 +35,7 @@ export class PicsPage {
     public camera: Camera,
     // private transfer: Transfer,
     private file: File,
-    private filePath: FilePath,
+    // private filePath: FilePath,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
     public platform: Platform,
@@ -75,7 +75,7 @@ export class PicsPage {
   publicpresentActionSheet(picform) {
     var sourceType = this.camera.PictureSourceType.CAMERA;
 // Replace up to here
-    
+
     // public takePicture(sourceType,picform) {
     // Create options for the Camera Dialog
     var options = {
@@ -88,21 +88,21 @@ export class PicsPage {
 
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
-      // Special handling for Android library
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName(),picform);
-            console.log('copied file to: ' + correctPath)
-          });
-      } else {
+    //   // Special handling for Android library
+    //   if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+    //     this.filePath.resolveNativePath(imagePath)
+    //       .then(filePath => {
+    //         let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+    //         let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+    //         this.copyFileToLocalDir(correctPath, currentName, this.createFileName(),picform);
+    //         console.log('copied file to: ' + correctPath)
+    //       });
+    //   } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
         this.copyFileToLocalDir(correctPath, currentName, this.createFileName(),picform);
           console.log('copied camera file to: ' + correctPath);
-      }
+      // }
     }, (err) => {
       this.presentToast('Error while selecting image.');
     });
