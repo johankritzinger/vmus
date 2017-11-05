@@ -51,21 +51,21 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
-// For ionic view (pro) error capturing
-import { Pro } from '@ionic/pro';
-
-const IonicPro = Pro.init('APP_ID', {
-  appVersion: "APP_VERSION"
-});
-
-// import { ErrorHandler } from '@angular/core';
-
-export class MyErrorHandler implements ErrorHandler {
-  handleError(err: any): void {
-    IonicPro.monitoring.handleNewError(err);
-  }
-}
+//
+// // For ionic view (pro) error capturing
+// import { Pro } from '@ionic/pro';
+//
+// const IonicPro = Pro.init('APP_ID', {
+//   appVersion: "APP_VERSION"
+// });
+//
+// // import { ErrorHandler } from '@angular/core';
+//
+// export class MyErrorHandler implements ErrorHandler {
+//   handleError(err: any): void {
+//     IonicPro.monitoring.handleNewError(err);
+//   }
+// }
 
 
 
@@ -160,8 +160,8 @@ export function provideSettings(storage: Storage) {
     Network,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
-    // { provide: ErrorHandler, useClass: IonicErrorHandler }
-    [{ provide: ErrorHandler, useClass: MyErrorHandler }]
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    // [{ provide: ErrorHandler, useClass: MyErrorHandler }]
   ]
 })
 export class AppModule { }
