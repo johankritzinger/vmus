@@ -31,7 +31,8 @@
 
 <ion-content padding>
   <form [formGroup]="form">
-  <img src="{{pathForImage(form.value.pic1)}}" style="width: 100%" [hidden]="!form.value.pic1">
+  <!-- <img src="{{pathForImage(form.value.pic1)}}" style="width: 100%" [hidden]="!form.value.pic1"> -->
+  <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic1">
   <h3 [hidden]="form.value.pic1">Please Select Image!</h3>
   <ion-input type="hidden" formControlName="pic1"></ion-input>
   <ion-buttons>
@@ -43,7 +44,7 @@
     </button>
   </ion-buttons>
 
-  <img src="{{pathForImage(form.value.pic2)}}" style="width: 100%" [hidden]="!form.value.pic2">
+    <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic2">
   <h3 [hidden]="form.value.pic2">Please Select Image!</h3>
   <ion-input type="hidden" formControlName="pic2"></ion-input>
   <ion-buttons>
@@ -55,7 +56,7 @@
     </button>
   </ion-buttons>
 
-  <img src="{{pathForImage(form.value.pic3)}}" style="width: 100%" [hidden]="!form.value.pic3">
+    <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic3">
   <h3 [hidden]="form.value.pic3">Please Select Image!</h3>
   <ion-input type="hidden" formControlName="pic3"></ion-input>
   <ion-buttons>

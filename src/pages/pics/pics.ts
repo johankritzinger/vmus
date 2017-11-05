@@ -6,7 +6,7 @@ import { Component, ViewChild } from '@angular/core';
 // import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 import {  Platform, ActionSheetController, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 
-// import { File } from '@ionic-native/file';
+import { File } from '@ionic-native/file';
 // import { Transfer, TransferObject } from '@ionic-native/transfer';
 // import { FilePath } from '@ionic-native/file-path';
 import { Vmrecords } from '../../providers/providers';
@@ -119,13 +119,13 @@ export class PicsPage {
   }
 
   // Copy the image to a local folder
-  // private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
-  //   this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-  //     this.form.value[picform] = newFileName;
-  //   }, error => {
-  //     this.presentToast('Error while storing file.');
-  //   });
-  // }
+  private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
+    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+      this.form.value[picform] = newFileName;
+    }, error => {
+      this.presentToast('Error while storing file.');
+    });
+  }
 
   private presentToast(text) {
     let toast = this.toastCtrl.create({
@@ -145,21 +145,21 @@ export class PicsPage {
     }
   }
 
-  // deleteImage(picform) {
-  //   console.log('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
-  //   this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
-  //     this.presentToast('File deleted');
-  //   }, error => {
-  //     this.presentToast('Error while deleting file.');
-  //   });
-  //   this.form.controls[picform].setValue(null);
-  //   console.log(this.form.value[picform]);
-  //   console.log('pic now set to ' + this.form.value[picform]);
-  // }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PicsPage');
+  deleteImage(picform) {
+    console.log('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
+    this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
+      this.presentToast('File deleted');
+    }, error => {
+      this.presentToast('Error while deleting file.');
+    });
+    this.form.controls[picform].setValue(null);
+    console.log(this.form.value[picform]);
+    console.log('pic now set to ' + this.form.value[picform]);
   }
+
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad PicsPage');
+  // }
 
 //   getPicture() {
 //   if (Camera['installed']()) {
