@@ -56,7 +56,7 @@
         <ion-input type="hidden" placeholder="nearesttown" formControlName="nearesttown"></ion-input>
         <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input> -->
         </button>
-        <button ion-button (click)="openPics(form.value.id)" color='light' block>
+        <button ion-button (click)="openPics()" color='light' block>
           <ion-img *ngIf="form.value.pic1"width="80" height="80" [src]="pathForImage(form.value.pic1)"></ion-img>
           <!-- <ion-avatar item-start *ngIf="form.value.pic1">
             <img [src]="pathForImage(form.value.pic1)" />

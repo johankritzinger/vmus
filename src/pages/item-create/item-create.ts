@@ -97,9 +97,9 @@ export class ItemCreatePage {
       addModal.present();
   }
 
-  openPics(recordnum) {
+  openPics() {
     this.navCtrl.push(PicsPage, {
-      recordnum
+      // recordnum
     });
 
   }
