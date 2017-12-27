@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 
 @Component({
   selector: 'page-pics',
@@ -8,6 +8,8 @@ import { NavController } from 'ionic-angular';
 })
 export class PicsPage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController,
+        public modalCtrl: ModalController,
+  ) { }
 
 }
