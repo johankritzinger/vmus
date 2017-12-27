@@ -84,7 +84,7 @@ export class ItemCreatePage {
       // this.navCtrl.push(RecordLocationPage)
   }
 
-  openPics() {
+  openPicsOld() {
       let addModal = this.modalCtrl.create(PicsPage);
       console.log('addModal')
       addModal.onDidDismiss(vmrecord => {
@@ -95,6 +95,13 @@ export class ItemCreatePage {
 
       })
       addModal.present();
+  }
+
+  openPics(recordnum) {
+    this.navCtrl.push(PicsPage, {
+      recordnum
+    });
+
   }
 
   ionViewDidLoad() {

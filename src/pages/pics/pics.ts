@@ -8,8 +8,12 @@ import { ToastController, ViewController, NavController, NavParams, ModalControl
 })
 export class PicsPage {
 
+  recordnum: number;
+
   constructor(public navCtrl: NavController,
-        public modalCtrl: ModalController,
-  ) { }
+        public navParams: NavParams,
+  ) {
+  this.recordnum = navParams.get('recordnum');
+ }
 
 }
