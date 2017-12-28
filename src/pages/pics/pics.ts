@@ -13,7 +13,7 @@ export class PicsPage {
   constructor(public navCtrl: NavController,
         public navParams: NavParams,
   ) {
-  this.recordnum = navParams.get('recordnum');
+  // this.recordnum = navParams.get('recordnum');
  }
 
 }
