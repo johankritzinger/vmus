@@ -139,19 +139,19 @@ export class PicsPage {
     if (img === null) {
       return '';
     } else {
+      this.presentToast(cordova.file.dataDirectory + img);
       return cordova.file.dataDirectory + img;
     }
   }
 
   deleteImage(picform) {
-    console.log('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
+    this.presentToast('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
     this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
       this.presentToast('File deleted');
     }, error => {
-      this.presentToast('Error while deleting file.');
+      this.presentToast('Error while deleting file.' + cordova.file.dataDirectory + this.form.value[picform]);
     });
     this.form.controls[picform].setValue(null);
-    console.log(this.form.value[picform]);
     console.log('pic now set to ' + this.form.value[picform]);
   }
 
@@ -196,16 +196,11 @@ export class PicsPage {
 
 done() {
   // if (!this.vmrecords.form.valid) { return; }
-    console.log('saving pics: ' + JSON.stringify(this.form.value));
+    this.presentToast('saving pics: ' + JSON.stringify(this.form.value));
     this.vmrecords.record = this.form.value;
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);
     });
-    /*
-    We need to add a bit in here - if a previous picture was replaced, delete
-    it.
-    */
-  // }
 }
 
 cancel() {
