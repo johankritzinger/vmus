@@ -103,6 +103,7 @@ export class PicsPage {
   private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
     this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
       this.form.value[picform] = newFileName;
+      this.presentToast('Saved pic ' + newFileName)
     }, error => {
       this.presentToast('Error while storing file.');
     });
