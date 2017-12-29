@@ -44,6 +44,7 @@ export class PicsPage {
   ) {
 
     this.form = formBuilder.group(this.vmrecords.record);
+    this.presentToast('Loading pics')
   }
 
   public getPicture(picform,source) {
@@ -178,7 +179,7 @@ export class PicsPage {
 
 done() {
   // if (!this.vmrecords.form.valid) { return; }
-    this.presentToast('saving pics: ' + JSON.stringify(this.form.value));
+    this.presentToast('saving pics: ' + this.form.value.pic1);
     this.vmrecords.record = this.form.value;
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);
