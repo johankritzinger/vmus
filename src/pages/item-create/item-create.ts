@@ -84,7 +84,7 @@ export class ItemCreatePage {
       // this.navCtrl.push(RecordLocationPage)
   }
 
-  openPicsOld() {
+  openPics() {
       let addModal = this.modalCtrl.create(PicsPage);
       console.log('addModal')
       addModal.onDidDismiss(vmrecord => {
@@ -97,7 +97,7 @@ export class ItemCreatePage {
       addModal.present();
   }
 
-  openPics() {
+  openPicsNav() {
     this.navCtrl.push(PicsPage, {
       // recordnum
     });
