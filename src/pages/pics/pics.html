@@ -7,25 +7,30 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>pics</ion-title>
+    <ion-title>Photos</ion-title>
     <ion-buttons start >
       <button ion-button (click)="cancel()">
-        <ion-icon name="md-close" ></ion-icon>
+        <span color="primary" showWhen="ios">
+          {{ 'CANCEL_BUTTON' | translate }}
+        </span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons end >
       <button ion-button (click)="done()" strong>
-        <ion-icon name="md-checkmark"></ion-icon>
+        <span color="primary" showWhen="ios">
+          {{ 'DONE_BUTTON' | translate }}
+        </span>
+        <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
   <form [formGroup]="form">
-  <img src="{{ pathForImage(form.value.pic1 || '') }}" style="width: 100%" [hidden]="!form.value.pic1">
+  <img src="{{ pathForImage(form.value.pic1 || '') }}" style="width: 100%" [hidden]="!form.value.pic1" />
   <!-- <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic1"> -->
   <h3 [hidden]="form.value.pic1">Add a picture</h3>
   <ion-input type="hidden" formControlName="pic1"></ion-input>
@@ -73,7 +78,3 @@
 
 </form>
 </ion-content>
-
-<ion-footer>
-
-</ion-footer>
