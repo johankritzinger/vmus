@@ -47,8 +47,7 @@
     </button>
   </ion-buttons>
 
-  <img src="{{pathForImage(form.value.pic2)}}" style="width: 100%" [hidden]="!form.value.pic2">
-  <!-- <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic2"> -->
+  <!-- <img src="{{pathForImage(form.value.pic2)}}" style="width: 100%" [hidden]="!form.value.pic2">
   <h3 [hidden]="form.value.pic2">Add a picture</h3>
   <ion-input type="hidden" formControlName="pic2"></ion-input>
   <ion-buttons>
@@ -64,7 +63,6 @@
   </ion-buttons>
 
   <img src="{{pathForImage(form.value.pic3)}}" style="width: 100%" [hidden]="!form.value.pic3">
-  <!-- <img [src]="form.value.pic" style="width: 100%" [hidden]="!form.value.pic3"> -->
   <h3 [hidden]="form.value.pic3">Add a picture</h3>
   <ion-input type="hidden" formControlName="pic3"></ion-input>
   <ion-buttons>
@@ -77,7 +75,7 @@
     <button ion-button icon-left (click)="deleteImage('pic3')" [disabled]="!form.value.pic3"  color="danger">
       <ion-icon name="md-alert"></ion-icon>DEL
     </button>
-  </ion-buttons>
+  </ion-buttons> -->
 
 </form>
 </ion-content>
