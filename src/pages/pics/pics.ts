@@ -44,7 +44,6 @@ export class PicsPage {
   ) {
 
     this.form = formBuilder.group(this.vmrecords.record);
-    this.presentToast('Loading pics')
   }
 
   public getPicture(picform,source) {
@@ -53,6 +52,7 @@ export class PicsPage {
     var options = {
       quality: 100,
       sourceType: sourceType,
+      destinationType: this.camera.DestinationType.NATIVE_URI,
       saveToPhotoAlbum: true,
       correctOrientation: true,
       allowEdit: false
@@ -63,6 +63,7 @@ export class PicsPage {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
       options = {
         quality: 100,
+        destinationType: this.camera.DestinationType.NATIVE_URI,
         sourceType: sourceType,
         saveToPhotoAlbum: true,
         correctOrientation: true,
