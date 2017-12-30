@@ -70,13 +70,16 @@ export class PicsPage {
       }
     }
     // Get the data of an image
+     this.presentToast('taking pic');
      this.camera.getPicture(options).then((imagePath) => {
+       this.presentToast('pic taken');
        // Special handling for Android library
        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
          this.filePath.resolveNativePath(imagePath)
            .then(filePath => {
              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+             this.presentToast(correctPath);
              this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), picform);
            });
        } else {
@@ -101,6 +104,7 @@ export class PicsPage {
 
   // Copy the image to a local folder
   private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
+    this.presentToast('copying ' + namePath + newFileName);
     this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
       this.form.value[picform] = newFileName;
       this.presentToast('Saved pic ' + newFileName)
