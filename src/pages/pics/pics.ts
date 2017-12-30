@@ -70,26 +70,34 @@ export class PicsPage {
       }
     }
     // Get the data of an image
-     this.presentToast('taking pic');
-     this.camera.getPicture(options).then((imagePath) => {
-       this.presentToast('pic taken');
-       // Special handling for Android library
-       if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-         this.filePath.resolveNativePath(imagePath)
-           .then(filePath => {
-             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-             this.presentToast(correctPath);
-             this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), picform);
-           });
-       } else {
-         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-         this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), picform);
-       }
+     // this.presentToast('taking pic');
+     this.camera.getPicture(options).then((imageData) => {
+       this.presentToast(imageData);
+       this.form.controls[picform].setValue(imageData);
      }, (err) => {
        this.presentToast('Error while selecting image.');
      });
+     // this.camera.getPicture(options).then((imagePath) => {
+     //   this.presentToast('pic taken');
+     //   // Special handling for Android library
+     //   if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+     //     this.filePath.resolveNativePath(imagePath)
+     //       .then(filePath => {
+     //         let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+     //         let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+     //         this.presentToast(correctPath);
+     //         this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), picform);
+     //       }, (err) => {
+     //         this.presentToast('cannot resolve filepath');
+     //       });
+     //   } else {
+     //     var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+     //     var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+     //     this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), picform);
+     //   }
+     // }, (err) => {
+     //   this.presentToast('Error while selecting image.');
+     // });
   }
 
   // Create a new name for the image
