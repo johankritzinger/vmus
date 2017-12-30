@@ -94,7 +94,7 @@ export class PicsPage {
     var d = new Date(),
     n = d.getTime(),
     newFileName =  n + ".jpg";
-    console.log(newFileName);
+    this.presentToast(newFileName);
     return newFileName;
 
   }
