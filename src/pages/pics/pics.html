@@ -31,7 +31,7 @@
 <ion-content padding>
   <form [formGroup]="form">
   <!-- <img *ngIf="form.value.pic1" [src]="pathForImage(form.value.pic1)" style="width: 100%" /> -->
-  <img *ngIf="form.value.pic1" [src]="form.value.pic1" style="width: 100%" />
+  <img *ngIf="form.value.pic1" [src]="'data:image/jpg;base64,' + form.value.pic1" style="width: 100%" />
   <h3 [hidden]="form.value.pic1">Add a picture</h3>
   <ion-input type="hidden" formControlName="pic1"></ion-input>
   <ion-buttons>
@@ -61,7 +61,7 @@
     </button>
   </ion-buttons>
 
-  <img *ngIf="form.value.pic3" [src]="form.value.pic1" style="width: 100%" />
+  <img *ngIf="form.value.pic3" [src]="'data:image/jpg;base64,' + form.value.pic3" style="width: 100%" />
   <h3 [hidden]="form.value.pic3">Add a picture</h3>
   <ion-input type="hidden" formControlName="pic3"></ion-input>
   <ion-buttons>
