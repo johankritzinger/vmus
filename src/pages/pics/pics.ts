@@ -77,7 +77,7 @@ export class PicsPage {
     // Get the data of an image
      // this.presentToast('taking pic');
      this.camera.getPicture(options).then((imageData) => {
-       this.presentToast(imageData);
+       // this.presentToast(imageData);
        this.form.controls[picform].setValue(imageData);
      }, (err) => {
        this.presentToast('Error while selecting image.');
