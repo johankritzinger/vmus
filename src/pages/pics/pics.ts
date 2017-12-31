@@ -1,5 +1,11 @@
 // see https://devdactic.com/ionic-2-images/
 
+// see https://ionicframework.com/docs/developer-resources/third-party-libs/
+
+// https://www.npmjs.com/package/resize-base64
+// npm install resize-base64 --save
+// var  img = resizebase64(base64, maxWidth, maxHeight);
+
 import { Component, ViewChild } from '@angular/core';
 // import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
 // import { ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
@@ -9,7 +15,7 @@ import {  Platform, ActionSheetController, ToastController, ViewController, NavC
 import { File } from '@ionic-native/file';
 // import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
-import { Vmrecords } from '../../providers/providers';
+import { Vmrecords, VmpicsProvider } from '../../providers/providers';
 import { Camera } from '@ionic-native/camera';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -31,6 +37,7 @@ export class PicsPage {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public vmrecords: Vmrecords,
+    public vmpics: VmpicsProvider,
     public viewCtrl: ViewController,
     public camera: Camera,
     // private transfer: Transfer,
@@ -42,8 +49,9 @@ export class PicsPage {
     // public loadingCtrl: LoadingController
 
   ) {
-
-    this.form = formBuilder.group(this.vmrecords.record);
+    // This creates vmpics.vmPics
+    this.vmpics.getPics(this.vmrecords.record.id);
+    // this.form = formBuilder.group(this.vmrecords.record);
   }
 
   public getPicture(picform,source) {
@@ -196,7 +204,6 @@ export class PicsPage {
 
 done() {
   // if (!this.vmrecords.form.valid) { return; }
-    this.presentToast('saving pics: ' + this.form.value.pic1);
     this.vmrecords.record = this.form.value;
     this.vmrecords.addItem(this.form.value).then(s => {
       this.viewCtrl.dismiss(this.form.value);

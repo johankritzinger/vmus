@@ -19,7 +19,7 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { ListProjectsPage } from '../pages/list-projects/list-projects';
 
-import { Settings, Vmrecords,VmprojectsProvider } from '../providers/providers';
+import { Settings, Vmrecords,VmprojectsProvider,VmpicsProvider } from '../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core'
 
@@ -64,13 +64,23 @@ export class MyApp {
     { title: 'List Projects', component: ListProjectsPage }
   ]
 
-  constructor(private translate: TranslateService, private platform: Platform, private settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, vmrecords: Vmrecords, vmprojects: VmprojectsProvider) {
+  constructor(private translate: TranslateService,
+      private platform: Platform,
+      private settings: Settings,
+      private config: Config,
+      private statusBar: StatusBar,
+      private splashScreen: SplashScreen,
+      vmrecords: Vmrecords,
+      vmprojects: VmprojectsProvider,
+      vmpics: VmpicsProvider
+    ) {
     this.initTranslate();
     platform
     .ready()
     .then(() => {
       vmrecords.openDb();
       vmprojects.openDb();
+      vmpics.openDb();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.settings.load()

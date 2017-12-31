@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
+import { Vmrecords, VmprojectsProvider, Items, Location, VmpicsProvider } from '../../providers/providers';
 import { RecordLocationPage } from '../record-location/record-location';
 import { PicsPage } from '../pics/pics';
 import 'rxjs/add/operator/filter';
@@ -41,6 +41,7 @@ export class ItemCreatePage {
 
   constructor(public vmprojects: VmprojectsProvider,
     public vmrecords: Vmrecords,
+    public vmpics: VmpicsProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
@@ -154,6 +155,7 @@ export class ItemCreatePage {
    * The user cancelled, so we dismiss without sending data back.
    */
   cancel() {
+    this.vmpics.removeOrphans();
     this.viewCtrl.dismiss();
   }
 
@@ -200,6 +202,7 @@ export class ItemCreatePage {
 
   deleteItem(vmrecord) {
     this.vmrecords.del(this.form.value);
+    this.vmpics.delRecordPics(this.form.value.id);
     this.viewCtrl.dismiss();
   }
 
