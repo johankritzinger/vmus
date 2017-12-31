@@ -50,11 +50,13 @@ export class PicsPage {
     var sourceType = this.camera.PictureSourceType.CAMERA;
     // Create options for the Camera Dialog
     var options = {
-      quality: 100,
+      quality: 50,
       sourceType: sourceType,
       destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: true,
       correctOrientation: true,
+      targetWidth: 250,
+      targetHeight: 250,
       allowEdit: false
     }
     if (source == 'CAMERA') {
@@ -62,11 +64,13 @@ export class PicsPage {
     } else if (source == 'PHOTOLIBRARY') {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
       options = {
-        quality: 100,
+        quality: 50,
         destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: sourceType,
         saveToPhotoAlbum: true,
         correctOrientation: true,
+        targetWidth: 250,
+        targetHeight: 250,
         allowEdit: true
       }
     }
