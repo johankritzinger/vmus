@@ -52,7 +52,7 @@ export class PicsPage {
     var options = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: true,
       correctOrientation: true,
       allowEdit: false
@@ -63,7 +63,7 @@ export class PicsPage {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
       options = {
         quality: 100,
-        destinationType: this.camera.DestinationType.DATA_URL,
+        destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: sourceType,
         saveToPhotoAlbum: true,
         correctOrientation: true,
