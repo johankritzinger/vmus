@@ -52,7 +52,7 @@ export class PicsPage {
     var options = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.NATIVE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       saveToPhotoAlbum: true,
       correctOrientation: true,
       allowEdit: false
@@ -63,7 +63,7 @@ export class PicsPage {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
       options = {
         quality: 100,
-        destinationType: this.camera.DestinationType.NATIVE_URI,
+        destinationType: this.camera.DestinationType.DATA_URL,
         sourceType: sourceType,
         saveToPhotoAlbum: true,
         correctOrientation: true,
@@ -101,26 +101,26 @@ export class PicsPage {
      // });
   }
 
-  // Create a new name for the image
-  private createFileName() {
-    var d = new Date(),
-    n = d.getTime(),
-    newFileName =  n + ".jpg";
-    this.presentToast(newFileName);
-    return newFileName;
-
-  }
+  // // Create a new name for the image
+  // private createFileName() {
+  //   var d = new Date(),
+  //   n = d.getTime(),
+  //   newFileName =  n + ".jpg";
+  //   this.presentToast(newFileName);
+  //   return newFileName;
+  //
+  // }
 
   // Copy the image to a local folder
-  private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
-    this.presentToast('copying ' + namePath + newFileName);
-    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-      this.form.value[picform] = newFileName;
-      this.presentToast('Saved pic ' + newFileName)
-    }, error => {
-      this.presentToast('Error while storing file.');
-    });
-  }
+  // private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
+  //   this.presentToast('copying ' + namePath + newFileName);
+  //   this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+  //     this.form.value[picform] = newFileName;
+  //     this.presentToast('Saved pic ' + newFileName)
+  //   }, error => {
+  //     this.presentToast('Error while storing file.');
+  //   });
+  // }
 
   private presentToast(text) {
     let toast = this.toastCtrl.create({
@@ -131,25 +131,24 @@ export class PicsPage {
     toast.present();
   }
 
-  // Always get the accurate path to your apps folder
-  public pathForImage(img) {
-    if (img === null) {
-      return '';
-    } else {
-      // this.presentToast(cordova.file.dataDirectory + img);
-      return cordova.file.dataDirectory + img;
-    }
-  }
+  // // Always get the accurate path to your apps folder
+  // public pathForImage(img) {
+  //   if (img === null) {
+  //     return '';
+  //   } else {
+  //     // this.presentToast(cordova.file.dataDirectory + img);
+  //     return cordova.file.dataDirectory + img;
+  //   }
+  // }
 
   deleteImage(picform) {
-    this.presentToast('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
+    this.presentToast('Deleting file '  + this.form.value[picform]);
+    this.form.controls[picform].setValue(null);
     this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
       this.presentToast('File deleted');
     }, error => {
       this.presentToast('Error while deleting file.' + cordova.file.dataDirectory + this.form.value[picform]);
     });
-    this.form.controls[picform].setValue(null);
-    console.log('pic now set to ' + this.form.value[picform]);
   }
 
   // ionViewDidLoad() {

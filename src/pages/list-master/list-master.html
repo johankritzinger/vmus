@@ -23,7 +23,8 @@
       <button ion-item (click)="openItem(item)">
         <ion-avatar item-start *ngIf="item.pic1">
           <!-- <img [src]="pathForImage(item.pic1)" /> -->
-          <img [src]="item.pic1" />
+          <!-- <img [src]="item.pic1" /> -->
+          <img [src]="'data:image/jpg;base64,' + form.value.pic1" />
         </ion-avatar>
         <h2>{{ item.id }}: {{ item.locality }}</h2>
         <p>{{item.userdet || item.project}}</p>
