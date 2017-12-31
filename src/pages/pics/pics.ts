@@ -146,13 +146,13 @@ export class PicsPage {
   // }
 
   deleteImage(picform) {
-    this.presentToast('Deleting file '  + this.form.value[picform]);
+    // this.presentToast('Deleting file '  + this.form.value[picform]);
     this.form.controls[picform].setValue(null);
-    this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
-      this.presentToast('File deleted');
-    }, error => {
-      this.presentToast('Error while deleting file.' + cordova.file.dataDirectory + this.form.value[picform]);
-    });
+    // this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
+    //   this.presentToast('File deleted');
+    // }, error => {
+    //   this.presentToast('Error while deleting file.' + cordova.file.dataDirectory + this.form.value[picform]);
+    // });
   }
 
   // ionViewDidLoad() {
