@@ -86,6 +86,7 @@ export class ItemCreatePage {
   }
 
   openPics() {
+    this.vmpics.getPics(this.vmrecords.record.id).then(s =>{
       let addModal = this.modalCtrl.create(PicsPage);
       console.log('addModal')
       addModal.onDidDismiss(vmrecord => {
@@ -96,6 +97,8 @@ export class ItemCreatePage {
 
       })
       addModal.present();
+    });
+
   }
 
   openPicsNav() {
@@ -204,14 +207,6 @@ export class ItemCreatePage {
     this.vmrecords.del(this.form.value);
     this.vmpics.delRecordPics(this.form.value.id);
     this.viewCtrl.dismiss();
-  }
-
-  public pathForImage(img) {
-    if (img === null) {
-      return '';
-    } else {
-      return cordova.file.dataDirectory + img;
-    }
   }
 
 }

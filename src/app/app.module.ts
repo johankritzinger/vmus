@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
+// import { Resizebase64 } from 'resize-base64';
 
 import { MyApp } from './app.component';
 
@@ -29,7 +30,7 @@ import { ListProjectsPage } from '../pages/list-projects/list-projects';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
-import { Vmrecords, VmprojectsProvider, Location, Connection } from '../providers/providers';
+import { Vmrecords, VmprojectsProvider, VmpicsProvider, Location, Connection } from '../providers/providers';
 import { Settings } from '../providers/settings';
 import { User } from '../providers/user';
 
@@ -151,7 +152,9 @@ export function provideSettings(storage: Storage) {
     StatusBar,
     Vmrecords,
     VmprojectsProvider,
+    VmpicsProvider,
     Geolocation,
+    // Resizebase64,
     Location,
     Connection,
     File,

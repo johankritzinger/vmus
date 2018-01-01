@@ -19,7 +19,7 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { ListProjectsPage } from '../pages/list-projects/list-projects';
 
-import { Settings, Vmrecords,VmprojectsProvider,VmpicsProvider } from '../providers/providers';
+import { Settings, Vmrecords,VmprojectsProvider, VmpicsProvider } from '../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core'
 

@@ -28,6 +28,11 @@ export class SettingsPage {
     pageTitleKey: 'SETTINGS_PAGE_PROFILE'
   };
 
+  picSettings = {
+    page: 'pics',
+    pageTitleKey: 'SETTINGS_PAGE_PICS'
+  }
+
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
   pageTitle: string;
@@ -59,6 +64,12 @@ export class SettingsPage {
       case 'profile':
         group = {
           option4: [this.options.option4]
+        };
+        break;
+      case 'pics':
+        group = {
+          quality: [this.options.quality || 75],
+          picsize: [this.options.picsize || 1000 ]
         };
         break;
     }

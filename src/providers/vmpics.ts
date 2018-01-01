@@ -14,7 +14,11 @@ declare var window : any;
 export class VmpicsProvider {
 
 
-    public vmPics = [];
+    public vmPics = {
+      pic1: null,
+      pic2: null,
+      pic3: null
+    };
     public db = null;
 
     constructor(
@@ -64,7 +68,7 @@ export class VmpicsProvider {
         var InsertQuery = `INSERT OR REPLACE INTO VMPics (
              RecordId,
              PicNum,
-             Content,
+             Content
              )
              VALUES (?, ?, ?)`;
         this
@@ -72,7 +76,7 @@ export class VmpicsProvider {
           .executeSql(InsertQuery, [i.RecordId,
                                      i.PicNum,
                                      i.Content], (r) => {
-            // console.log('Inserted... Sucess..', i);
+            console.log('Inserted... Sucess.. record ' + i.RecordId + ' pic ' + i.PicNum );
           }, e => {
             console.log('Inserted Error', e);
             resolve(false);
@@ -82,7 +86,9 @@ export class VmpicsProvider {
 
     getPics(recordId) {
       return new Promise(res => {
-        this.vmPics = [];
+        for (var i = 1; i < 4; i++ ) {
+          this.vmPics['pic' + i] = null;
+        }
         let query = "SELECT * FROM VMPics WHERE RecordId = ? ORDER BY PicNum";
         this
           .db
@@ -92,11 +98,11 @@ export class VmpicsProvider {
                   .rows
                   .item(i);
                 this
-                  .vmPics
-                  .push(item);
+                  .vmPics['pic' + item.PicNum] = item.Content;
                 // console.log('fetched vmproject ' + i + ' of ' + rs.rows.length)
               }
-              // console.log('vmprojects now: ' + JSON.stringify(this.vmProjects))
+              console.log('Pics set')
+              // console.log(JSON.stringify(this.vmPics))
             res(true);
           }, (e) => {
             console.log('Sql Query Error', e);
@@ -104,13 +110,13 @@ export class VmpicsProvider {
       })
     }
 
-    delPic(Id) {
+    delPic(RecordId,PicNum) {
       return new Promise(resolve => {
-        console.log('deleting record ' + Id)
-        var query = "DELETE FROM VMPics WHERE Id=?";
+        console.log('deleting record ' + RecordId + ', ' + PicNum);
+        var query = "DELETE FROM VMPics WHERE RecordId=? AND PicNum=?";
         this
           .db
-          .executeSql(query, [Id], (s) => {
+          .executeSql(query, [RecordId,PicNum], (s) => {
             console.log('Delete Success...', s);
           }, (err) => {
             console.log('Deleting Error', err);

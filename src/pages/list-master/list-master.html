@@ -21,11 +21,9 @@
   <ion-list>
     <ion-item-sliding *ngFor="let item of this.vmrecords.arr">
       <button ion-item (click)="openItem(item)">
-        <ion-avatar item-start *ngIf="item.pic1">
-          <!-- <img [src]="pathForImage(item.pic1)" /> -->
-          <!-- <img [src]="item.pic1" /> -->
+        <!-- <ion-avatar item-start *ngIf="item.pic1">
           <img [src]="'data:image/jpg;base64,' + item.pic1" />
-        </ion-avatar>
+        </ion-avatar> -->
         <h2>{{ item.id }}: {{ item.locality }}</h2>
         <p>{{item.userdet || item.project}}</p>
         <ion-note item-end *ngIf="item.userdet">{{ item.project }}</ion-note>
