@@ -63,7 +63,8 @@ export class SettingsPage {
         break;
       case 'profile':
         group = {
-          option4: [this.options.option4]
+          email: [this.options.email],
+          userid: [this.options.userid]
         };
         break;
       case 'pics':
