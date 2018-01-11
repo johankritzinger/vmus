@@ -70,7 +70,7 @@ export class User {
     // this next bit happens on comlete
     () => {
 
-      console.log('Previous projectsUpdated: ' + this.settings.allSettings.projectsUpdated);
+      // console.log('Previous projectsUpdated: ' + this.settings.allSettings.projectsUpdated);
       let update = {
         userToken: token,
         passmd5: passmd5,

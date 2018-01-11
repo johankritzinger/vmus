@@ -5,6 +5,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Settings,VmprojectsProvider } from '../../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core';
+import { LoginPage } from '../login/login';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -27,6 +28,10 @@ export class SettingsPage {
     page: 'profile',
     pageTitleKey: 'SETTINGS_PAGE_PROFILE'
   };
+
+  login() {
+    this.navCtrl.push(LoginPage);
+  }
 
   picSettings = {
     page: 'pics',

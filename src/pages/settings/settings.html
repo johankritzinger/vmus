@@ -37,7 +37,7 @@
       </button>
 
       <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
-        {{ 'SETTINGS_PROFILE_BUTTON' | translate }}
+        Account settings
       </button>
 
       <button ion-item [navPush]="subSettings" [navParams]="picSettings">
@@ -54,6 +54,7 @@
         <ion-label>User Id</ion-label>
         <ion-input formControlName="userid"></ion-input>
       </ion-item>
+      <button ion-button block (click)="login()" class="login">Login again to update account</button>
     </ion-list>
     <ion-list *ngIf="page == 'pics'">
       <ion-item>

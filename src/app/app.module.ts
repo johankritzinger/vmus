@@ -27,6 +27,8 @@ import { RecordLocationPage } from '../pages/record-location/record-location';
 import { PicsPage } from '../pages/pics/pics';
 import { ProjectDetailsPage } from '../pages/project-details/project-details';
 import { ListProjectsPage } from '../pages/list-projects/list-projects';
+import { HelpPage } from '../pages/help/help';
+import { AboutPage } from '../pages/about/about';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
@@ -99,6 +101,8 @@ export function provideSettings(storage: Storage) {
     SearchPage,
     SettingsPage,
     SignupPage,
+    HelpPage,
+    AboutPage,
     TabsPage,
     TutorialPage,
     WelcomePage,
@@ -134,6 +138,8 @@ export function provideSettings(storage: Storage) {
     SearchPage,
     SettingsPage,
     SignupPage,
+    HelpPage,
+    AboutPage,
     TabsPage,
     TutorialPage,
     WelcomePage,

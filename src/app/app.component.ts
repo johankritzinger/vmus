@@ -14,6 +14,8 @@ import { MenuPage } from '../pages/menu/menu';
 import { SearchPage } from '../pages/search/search';
 import { SettingsPage } from '../pages/settings/settings';
 import { SignupPage } from '../pages/signup/signup';
+import { HelpPage } from '../pages/help/help';
+import { AboutPage } from '../pages/about/about';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -61,7 +63,9 @@ export class MyApp {
     { title: 'Menu', component: MenuPage },
     { title: 'Settings', component: SettingsPage },
     // { title: 'Search', component: SearchPage },
-    { title: 'List Projects', component: ListProjectsPage }
+    { title: 'List Projects', component: ListProjectsPage },
+    { title: 'Help', component: HelpPage },
+
   ]
 
   constructor(private translate: TranslateService,
