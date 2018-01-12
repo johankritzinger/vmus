@@ -52,10 +52,10 @@
       </ion-item>
       <ion-item>
         <ion-label>User Id</ion-label>
-        <ion-label>{{ userid }}</ion-label>
+        <ion-label>{{ options.userid }}</ion-label>
       </ion-item>
 
-      <button ion-button block (click)="login()" class="login">Login again to update account</button>
+      <button ion-button block (click)="login()" class="login">{{ loginButtonText }}</button>
       <ion-item>
         <ion-label><a href='http://www.adu.org.za/register.php?project=vmus'>Manage account (external link)</a></ion-label>
       </ion-item>    </ion-list>
