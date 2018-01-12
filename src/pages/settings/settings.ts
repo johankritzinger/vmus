@@ -45,6 +45,8 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
 
+  loginButtonText: string = 'Log in';
+
   constructor(public navCtrl: NavController,
     public settings: Settings,
     public formBuilder: FormBuilder,
@@ -71,6 +73,9 @@ export class SettingsPage {
           email: [this.options.email],
           userid: [this.options.userid]
         };
+        if (this.settings.allSettings.userToken) {
+          this.loginButtonText = 'Change login';
+        }
         break;
       case 'pics':
         group = {

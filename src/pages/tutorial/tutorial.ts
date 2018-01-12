@@ -78,7 +78,7 @@ export class TutorialPage {
   }
 
   startApp() {
-    if (this.settings.allSettings.userid) {
+    if (this.settings.allSettings.userToken) {
       this.nextpage = MainPage;
     }
     this.navCtrl.setRoot(this.nextpage, {}, {

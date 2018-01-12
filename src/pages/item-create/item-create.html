@@ -33,9 +33,6 @@
     <ion-list>
       <!-- <ion-item-group> -->
           <ion-item>
-            <ion-label>save low quality in DB</ion-label>
-          </ion-item>
-          <ion-item>
             <ion-label>Project</ion-label>
             <ion-select formControlName="project">
               <ion-option *ngFor="let project of this.vmprojects.vmProjects" [value]="project.Project_acronym">{{ project.Project_acronym}}</ion-option>

@@ -52,10 +52,13 @@
       </ion-item>
       <ion-item>
         <ion-label>User Id</ion-label>
-        <ion-input formControlName="userid"></ion-input>
+        <ion-label>{{ userid }}</ion-label>
       </ion-item>
+
       <button ion-button block (click)="login()" class="login">Login again to update account</button>
-    </ion-list>
+      <ion-item>
+        <ion-label><a href='http://www.adu.org.za/register.php?project=vmus'>Manage account (external link)</a></ion-label>
+      </ion-item>    </ion-list>
     <ion-list *ngIf="page == 'pics'">
       <ion-item>
         <ion-label>Picture quality</ion-label>

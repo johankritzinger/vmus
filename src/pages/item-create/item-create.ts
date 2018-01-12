@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Vmrecords, VmprojectsProvider, Items, Location, VmpicsProvider } from '../../providers/providers';
+import { Vmrecords, VmprojectsProvider, Items, Location, VmpicsProvider, Settings } from '../../providers/providers';
 import { RecordLocationPage } from '../record-location/record-location';
 import { PicsPage } from '../pics/pics';
 import 'rxjs/add/operator/filter';
@@ -47,6 +47,7 @@ export class ItemCreatePage {
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public location: Location,
+    public settings: Settings,
     public formBuilder: FormBuilder
   ) {
     if (!this.vmrecords.record.isTrackingLocation) {
@@ -136,6 +137,9 @@ export class ItemCreatePage {
   ionViewWillEnter() {
     //
     // this.page = this.navParams.get('page') || this.page;
+    if (this.settings.allSettings.userid) {
+      this.pageTitle = "VMUS Record (user " + this.settings.allSettings.userid + ")"
+    }
     // this.pageTitle = this.navParams.get('pageTitle');
   }
 
