@@ -58,9 +58,25 @@ export class User {
         console.log('Login result = ' + JSON.stringify(data) );
         if (data.registered.status.result == 'success') {
           console.log('Login success, token is ' + data.registered.status.token)
-          token = data.registered.status.token;
+          // token = data.registered.status.token;
+          let update = {
+            userToken: data.registered.status.token,
+            passmd5: passmd5,
+            email: accountInfo.email,
+            userid: accountInfo.userid,
+            name: data.registered.data.Name,
+            surname: data.registered.data.Surname,
+            username: data.registered.data.Name + " " + data.registered.data.Surname
+          }
+          this.settings.merge(update);
+
         } else if (data.registered.status.result == 'failed') {
-          // login failed
+          // login failed, remove at least the token
+          let update = {
+            userToken: "",
+            email: accountInfo.email,
+            userid: accountInfo.userid
+          }
         }
         result = data.registered.status.result;
     },
@@ -71,13 +87,7 @@ export class User {
     () => {
 
       // console.log('Previous projectsUpdated: ' + this.settings.allSettings.projectsUpdated);
-      let update = {
-        userToken: token,
-        passmd5: passmd5,
-        email: accountInfo.email,
-        userid: accountInfo.userid
-      }
-      this.settings.merge(update);
+
 
     });
     return result;

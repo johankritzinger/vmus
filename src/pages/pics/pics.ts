@@ -73,7 +73,7 @@ export class PicsPage {
       saveToPhotoAlbum: true,
       correctOrientation: true,
       targetWidth: targetSize,
-      targetHeight: targetSize,
+      // targetHeight: targetSize,
       allowEdit: false
     }
     if (source == 'CAMERA') {
@@ -87,7 +87,7 @@ export class PicsPage {
         saveToPhotoAlbum: true,
         correctOrientation: true,
         targetWidth: targetSize,
-        targetHeight: targetSize,
+        // targetHeight: targetSize,
         allowEdit: true
       }
     }

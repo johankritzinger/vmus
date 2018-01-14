@@ -101,8 +101,7 @@ export class VmpicsProvider {
                   .vmPics['pic' + item.PicNum] = item.Content;
                 // console.log('fetched vmproject ' + i + ' of ' + rs.rows.length)
               }
-              console.log('Pics set')
-              // console.log(JSON.stringify(this.vmPics))
+
             res(true);
           }, (e) => {
             console.log('Sql Query Error', e);

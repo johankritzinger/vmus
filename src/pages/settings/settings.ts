@@ -33,6 +33,10 @@ export class SettingsPage {
     this.navCtrl.push(LoginPage);
   }
 
+  logout(){
+    this.settings.allSettings.userToken = '';
+  }
+
   picSettings = {
     page: 'pics',
     pageTitleKey: 'SETTINGS_PAGE_PICS'
@@ -71,7 +75,8 @@ export class SettingsPage {
       case 'profile':
         group = {
           email: [this.options.email],
-          userid: [this.options.userid]
+          userid: [this.options.userid],
+          username: [this.options.username]
         };
         if (this.settings.allSettings.userToken) {
           this.loginButtonText = 'Change login';

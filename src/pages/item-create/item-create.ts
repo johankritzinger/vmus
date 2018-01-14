@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ModalController, ToastController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Vmrecords, VmprojectsProvider, Items, Location, VmpicsProvider, Settings } from '../../providers/providers';
 import { RecordLocationPage } from '../record-location/record-location';
@@ -25,6 +25,7 @@ export class ItemCreatePage {
   proj: any;
   form: FormGroup;
   isReadyToSave: boolean = true ;
+  isReadyToSubmit: boolean = false;
   private myData: any;
   // recordReady: boolean = false;RecordLocationPage
   // isNewRecord: boolean;
@@ -48,6 +49,7 @@ export class ItemCreatePage {
     public modalCtrl: ModalController,
     public location: Location,
     public settings: Settings,
+    public toastCtrl: ToastController,
     public formBuilder: FormBuilder
   ) {
     if (!this.vmrecords.record.isTrackingLocation) {
@@ -56,6 +58,7 @@ export class ItemCreatePage {
     if (!this.vmrecords.record.isTrackingAltitude) {
       this.vmrecords.record.isTrackingAltitude = false;
     }
+    this.vmrecords.checkReadyToSubmit();
     this.form = formBuilder.group(this.vmrecords.record);
     console.log('Loading form for record ' + this.vmrecords.record.id );
 
@@ -66,6 +69,7 @@ export class ItemCreatePage {
       // this.isReadyToSave = this.vmrecords.form.valid;
       // this.vmrecords.record = this.form.value;
     });
+    this.isReadyToSubmit = this.vmrecords.checkReadyToSubmit();
   }
 
 
@@ -143,16 +147,16 @@ export class ItemCreatePage {
     // this.pageTitle = this.navParams.get('pageTitle');
   }
 
-  processWebImage(event) {
-    let reader = new FileReader();
-    reader.onload = (readerEvent) => {
-
-      let imageData = (readerEvent.target as any).result;
-      this.vmrecords.form.patchValue({ 'profilePic': imageData });
-    };
-
-    reader.readAsDataURL(event.target.files[0]);
-  }
+  // processWebImage(event) {
+  //   let reader = new FileReader();
+  //   reader.onload = (readerEvent) => {
+  //
+  //     let imageData = (readerEvent.target as any).result;
+  //     this.vmrecords.form.patchValue({ 'profilePic': imageData });
+  //   };
+  //
+  //   reader.readAsDataURL(event.target.files[0]);
+  // }
 
   getProfileImageStyle() {
     return 'url(' + this.vmrecords.form.controls['profilePic'].value + ')'
@@ -213,4 +217,26 @@ export class ItemCreatePage {
     this.viewCtrl.dismiss();
   }
 
+  submitRecord() {
+    // Submit to ADU
+    console.log('submitting')
+    if (this.vmrecords.checkReadyToSubmit()) {
+      this.vmrecords.record = this.form.value;
+      this.vmrecords.addItem(this.vmrecords.record).then(s => {
+        this.vmrecords.submitRecordToADU();
+        this.viewCtrl.dismiss(this.form.value);
+      });
+    } else {
+      this.presentToast("Not ready to submit this record")
+    }
+  }
+
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
 }

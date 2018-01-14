@@ -117,7 +117,7 @@
         <span color="danger">
           Delete&nbsp;
         </span>
-        <ion-icon name="md-alert" showWhen="android,windows"></ion-icon>
+        <ion-icon name="md-alert"></ion-icon>
       </button>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -130,6 +130,12 @@
           {{ 'DONE_BUTTON' | translate }}
         </span>
         <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+      </button>
+      <button ion-button (click)="submitRecord()" [disabled]="!isReadyToSubmit" strong>
+        <span color="secondary">
+          Submit
+          <ion-icon name="send"></ion-icon>
+        </span>
       </button>
     </ion-buttons>
 
