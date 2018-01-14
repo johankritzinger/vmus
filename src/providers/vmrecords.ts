@@ -220,7 +220,7 @@ export class Vmrecords {
       this.record.long = this.location.lng;
       this.record.accuracy = this.location.accuracy;
       this.record.minelev = this.location.altitude - this.location.altitudeAccuracy;
-      this.record.maxelev = this.location.altitude + this.location.altitudeAccuracy;
+      // this.record.maxelev = this.location.altitude + this.location.altitudeAccuracy;
 
 
       // this.geolocation.getCurrentPosition().then((position) => {
@@ -339,7 +339,7 @@ export class Vmrecords {
               this
                 .arr
                 .push(item);
-              console.log('fetched item ' + JSON.stringify(item))
+              // console.log('fetched item ' + JSON.stringify(item))
             }
           }
           res(true);

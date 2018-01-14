@@ -135,7 +135,7 @@
         </span>
         <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
       </button>
-      <button ion-button (click)="submitRecord()" [disabled]="!isReadyToSubmit" strong>
+      <button ion-button (click)="submitRecord()" [disabled]="this.statusText[ this.form.value.status || 0 ] != 'ready'" strong>
         <span color="secondary">
           Submit
           <ion-icon name="send"></ion-icon>

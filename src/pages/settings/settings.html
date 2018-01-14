@@ -69,11 +69,11 @@
     <ion-list *ngIf="page == 'pics'">
       <ion-item>
         <ion-label>Picture quality</ion-label>
-        <ion-input formControlName="quality"></ion-input>
+        <ion-input type="number" formControlName="quality"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Picture size (width or height)</ion-label>
-        <ion-input formControlName="picsize"></ion-input>
+        <ion-input type="number" formControlName="picsize"></ion-input>
       </ion-item>
     </ion-list>
   </form>

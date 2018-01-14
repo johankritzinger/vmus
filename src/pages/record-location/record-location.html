@@ -49,15 +49,15 @@
 
             <ion-item >
               <ion-label>lat</ion-label>
-              <ion-input type="text"  formControlName="lat" (ionChange)=updateManual() ></ion-input>
+              <ion-input type="number"  formControlName="lat" (ionChange)=updateManual() ></ion-input>
             </ion-item>
             <ion-item >
               <ion-label>long</ion-label>
-              <ion-input type="text"  formControlName="long" (ionChange)=updateManual() ></ion-input>
+              <ion-input type="number"  formControlName="long" (ionChange)=updateManual() ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>accuracy </ion-label>
-              <ion-input type="text" formControlName="accuracy" [disabled]="!this.manualUpdate"></ion-input>
+              <ion-input type="number" formControlName="accuracy" [disabled]="!this.manualUpdate"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>Source</ion-label>
@@ -102,11 +102,11 @@
 
           <ion-item >
             <ion-label>minelev</ion-label>
-            <ion-input type="text" placeholder="minelev" formControlName="minelev"></ion-input>
+            <ion-input type="number" placeholder="minelev" formControlName="minelev"></ion-input>
           </ion-item>
           <ion-item >
             <ion-label>maxelev</ion-label>
-            <ion-input type="text" placeholder="maxelev" formControlName="maxelev"></ion-input>
+            <ion-input type="number" placeholder="maxelev" formControlName="maxelev"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col col-3>
