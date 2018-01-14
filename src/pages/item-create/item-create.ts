@@ -32,6 +32,7 @@ export class ItemCreatePage {
   page: string = 'main';
   pageTitle: string = 'VMUS Record'
   isTrackingLocation: boolean = false;
+  private statusText: any;
 
   // subSettings: any = ItemCreatePage;
 
@@ -63,13 +64,16 @@ export class ItemCreatePage {
     console.log('Loading form for record ' + this.vmrecords.record.id );
 
     console.log('Location tracking: ' + this.vmrecords.record.id );
+    this.statusText = this.vmrecords.statusText;
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       // this.isReadyToSave = this.vmrecords.form.valid;
       // this.vmrecords.record = this.form.value;
     });
-    this.isReadyToSubmit = this.vmrecords.checkReadyToSubmit();
+    if (this.vmrecords.checkReadyToSubmit() > 0 && this.vmrecords.record.status < 3) {
+      this.isReadyToSubmit = true;
+    }
   }
 
 
@@ -220,7 +224,7 @@ export class ItemCreatePage {
   submitRecord() {
     // Submit to ADU
     console.log('submitting')
-    if (this.vmrecords.checkReadyToSubmit()) {
+    if (this.vmrecords.checkReadyToSubmit() > 0 && this.vmrecords.record.status < 3 ) {
       this.vmrecords.record = this.form.value;
       this.vmrecords.addItem(this.vmrecords.record).then(s => {
         this.vmrecords.submitRecordToADU();

@@ -158,11 +158,7 @@ export class Vmrecords {
         this.record.status = 0;
       }
       console.log(this.record.country + ' a ' + a + ' b ' + b + ' and Record status: ' + this.record.status)
-      if (this.record.status == 3) {
-        return false
-      } else {
-        return this.record.status;
-      }
+      return this.record.status;
   }
 
   getNextid()    {
@@ -330,7 +326,8 @@ export class Vmrecords {
   getRows() {
     return new Promise(res => {
       this.arr = [];
-      let query = "SELECT * FROM VMRecords WHERE status IS NULL or status < 3";
+      //  WHERE status IS NULL or status < 3
+      let query = "SELECT * FROM VMRecords";
       this
         .db
         .executeSql(query, [], rs => {

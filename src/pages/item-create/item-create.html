@@ -32,6 +32,10 @@
   <!-- <form *ngIf="vmrecords.form" [formGroup]="vmrecords.form" (ngSubmit)="onSubmit(vmrecords.form.value)"> -->
     <ion-list>
       <!-- <ion-item-group> -->
+      <ion-item>
+        <ion-label>Record {{ this.form.value.id }}</ion-label>
+        <ion-label>{{ this.statusText[ this.form.value.status || 0 ]  }}</ion-label>
+      </ion-item>
           <ion-item>
             <ion-label>Project</ion-label>
             <ion-select formControlName="project">
@@ -65,10 +69,10 @@
           </ion-avatar> -->
           <p>Pictures</p>
         </button>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label>Email</ion-label>
             <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label>Observers</ion-label>
             <ion-input type="text" placeholder="observers" formControlName="observers"></ion-input>
