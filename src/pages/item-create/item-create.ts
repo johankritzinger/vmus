@@ -117,13 +117,6 @@ export class ItemCreatePage {
 
   }
 
-  openPicsNav() {
-    this.navCtrl.push(PicsPage, {
-      // recordnum
-    });
-
-  }
-
   ionViewDidLoad() {
     // Probably already tracking, just in case:
     this.location.startTracking();
