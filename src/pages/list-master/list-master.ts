@@ -5,7 +5,7 @@ import { File } from '@ionic-native/file';
 import { ItemCreatePage } from '../item-create/item-create';
 // import { ItemDetailPage } from '../item-detail/item-detail';
 
-import { Vmrecords, Location } from '../../providers/providers';
+import { Vmrecords, Location, Settings } from '../../providers/providers';
 
 import { Item } from '../../models/item';
 // import { Vmrecord } from '../../models/vmrecord';
@@ -20,8 +20,11 @@ declare var cordova: any;
 })
 export class ListMasterPage {
 
+  pageTitle: string = 'Records'
+
   constructor(public navCtrl: NavController,
       public vmrecords: Vmrecords,
+      public settings: Settings,
       protected platform : Platform,
       public modalCtrl: ModalController,
       public location: Location,
@@ -37,6 +40,9 @@ export class ListMasterPage {
       .vmrecords
       .getRows();
     // this.location.startTracking();
+    if (this.settings.allSettings.userid) {
+      this.pageTitle = "Records (user " + this.settings.allSettings.userid + ")"
+    }
   }
 
   /**

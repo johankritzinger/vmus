@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ModalController, ToastController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Vmrecords, VmprojectsProvider, Items, Location } from '../../providers/providers';
+import { Vmrecords, VmprojectsProvider, Items, Location, VmpicsProvider, Settings } from '../../providers/providers';
 import { RecordLocationPage } from '../record-location/record-location';
 import { PicsPage } from '../pics/pics';
 import 'rxjs/add/operator/filter';
@@ -25,12 +25,14 @@ export class ItemCreatePage {
   proj: any;
   form: FormGroup;
   isReadyToSave: boolean = true ;
+  isReadyToSubmit: boolean = false;
   private myData: any;
   // recordReady: boolean = false;RecordLocationPage
   // isNewRecord: boolean;
   page: string = 'main';
   pageTitle: string = 'VMUS Record'
   isTrackingLocation: boolean = false;
+  private statusText: any;
 
   // subSettings: any = ItemCreatePage;
 
@@ -41,11 +43,14 @@ export class ItemCreatePage {
 
   constructor(public vmprojects: VmprojectsProvider,
     public vmrecords: Vmrecords,
+    public vmpics: VmpicsProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public location: Location,
+    public settings: Settings,
+    public toastCtrl: ToastController,
     public formBuilder: FormBuilder
   ) {
     if (!this.vmrecords.record.isTrackingLocation) {
@@ -54,16 +59,21 @@ export class ItemCreatePage {
     if (!this.vmrecords.record.isTrackingAltitude) {
       this.vmrecords.record.isTrackingAltitude = false;
     }
+    this.vmrecords.checkReadyToSubmit();
     this.form = formBuilder.group(this.vmrecords.record);
     console.log('Loading form for record ' + this.vmrecords.record.id );
 
     console.log('Location tracking: ' + this.vmrecords.record.id );
+    this.statusText = this.vmrecords.statusText;
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       // this.isReadyToSave = this.vmrecords.form.valid;
       // this.vmrecords.record = this.form.value;
     });
+    if (this.vmrecords.checkReadyToSubmit() > 0 && this.vmrecords.record.status < 3) {
+      this.isReadyToSubmit = true;
+    }
   }
 
 
@@ -85,6 +95,7 @@ export class ItemCreatePage {
   }
 
   openPics() {
+    this.vmpics.getPics(this.vmrecords.record.id).then(s =>{
       let addModal = this.modalCtrl.create(PicsPage);
       console.log('addModal')
       addModal.onDidDismiss(vmrecord => {
@@ -95,6 +106,22 @@ export class ItemCreatePage {
 
       })
       addModal.present();
+    });
+
+  }
+
+  openPicsNav() {
+    this.navCtrl.push(PicsPage, {
+      // recordnum
+    });
+
+  }
+
+  openPicsNav() {
+    this.navCtrl.push(PicsPage, {
+      // recordnum
+    });
+
   }
 
   ionViewDidLoad() {
@@ -125,19 +152,22 @@ export class ItemCreatePage {
   ionViewWillEnter() {
     //
     // this.page = this.navParams.get('page') || this.page;
+    if (this.settings.allSettings.userid) {
+      this.pageTitle = "VMUS Record (user " + this.settings.allSettings.userid + ")"
+    }
     // this.pageTitle = this.navParams.get('pageTitle');
   }
 
-  processWebImage(event) {
-    let reader = new FileReader();
-    reader.onload = (readerEvent) => {
-
-      let imageData = (readerEvent.target as any).result;
-      this.vmrecords.form.patchValue({ 'profilePic': imageData });
-    };
-
-    reader.readAsDataURL(event.target.files[0]);
-  }
+  // processWebImage(event) {
+  //   let reader = new FileReader();
+  //   reader.onload = (readerEvent) => {
+  //
+  //     let imageData = (readerEvent.target as any).result;
+  //     this.vmrecords.form.patchValue({ 'profilePic': imageData });
+  //   };
+  //
+  //   reader.readAsDataURL(event.target.files[0]);
+  // }
 
   getProfileImageStyle() {
     return 'url(' + this.vmrecords.form.controls['profilePic'].value + ')'
@@ -147,6 +177,7 @@ export class ItemCreatePage {
    * The user cancelled, so we dismiss without sending data back.
    */
   cancel() {
+    this.vmpics.removeOrphans();
     this.viewCtrl.dismiss();
   }
 
@@ -193,15 +224,30 @@ export class ItemCreatePage {
 
   deleteItem(vmrecord) {
     this.vmrecords.del(this.form.value);
+    this.vmpics.delRecordPics(this.form.value.id);
     this.viewCtrl.dismiss();
   }
 
-  public pathForImage(img) {
-    if (img === null) {
-      return '';
+  submitRecord() {
+    // Submit to ADU
+    console.log('submitting')
+    if (this.vmrecords.checkReadyToSubmit() > 0 && this.vmrecords.record.status < 3 ) {
+      this.vmrecords.record = this.form.value;
+      this.vmrecords.addItem(this.vmrecords.record).then(s => {
+        this.vmrecords.submitRecordToADU();
+        this.viewCtrl.dismiss(this.form.value);
+      });
     } else {
-      return cordova.file.dataDirectory + img;
+      this.presentToast("Not ready to submit this record")
     }
   }
 
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
 }

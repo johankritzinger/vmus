@@ -32,6 +32,10 @@
   <!-- <form *ngIf="vmrecords.form" [formGroup]="vmrecords.form" (ngSubmit)="onSubmit(vmrecords.form.value)"> -->
     <ion-list>
       <!-- <ion-item-group> -->
+      <ion-item>
+        <ion-label>Record {{ this.form.value.id }}</ion-label>
+        <ion-label>{{ this.statusText[ this.form.value.status || 0 ]  }}</ion-label>
+      </ion-item>
           <ion-item>
             <ion-label>Project</ion-label>
             <ion-select formControlName="project">
@@ -57,16 +61,18 @@
         <ion-input type="hidden" placeholder="locality" formControlName="locality"></ion-input> -->
         </button>
         <button ion-button (click)="openPics()" color='light' block>
-          <ion-img *ngIf="form.value.pic1"width="80" height="80" [src]="pathForImage(form.value.pic1)"></ion-img>
+          <!-- <ion-img *ngIf="form.value.pic1" width="80" height="80" [src]="pathForImage(form.value.pic1)"></ion-img> -->
+          <!-- <ion-img *ngIf="form.value.pic1" width="80" height="80" [src]="form.value.pic1"></ion-img> -->
+          <!-- <ion-img *ngIf="form.value.pic1" width="80" height="80" [src]="'data:image/jpg;base64,' + form.value.pic1"></ion-img> -->
           <!-- <ion-avatar item-start *ngIf="form.value.pic1">
             <img [src]="pathForImage(form.value.pic1)" />
           </ion-avatar> -->
           <p>Pictures</p>
         </button>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label>Email</ion-label>
             <ion-input type="text" placeholder="Name" formControlName="email"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label>Observers</ion-label>
             <ion-input type="text" placeholder="observers" formControlName="observers"></ion-input>
@@ -115,7 +121,7 @@
         <span color="danger">
           Delete&nbsp;
         </span>
-        <ion-icon name="md-alert" showWhen="android,windows"></ion-icon>
+        <ion-icon name="md-alert"></ion-icon>
       </button>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -128,6 +134,12 @@
           {{ 'DONE_BUTTON' | translate }}
         </span>
         <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+      </button>
+      <button ion-button (click)="submitRecord()" [disabled]="this.statusText[ this.form.value.status || 0 ] != 'ready'" strong>
+        <span color="secondary">
+          Submit
+          <ion-icon name="send"></ion-icon>
+        </span>
       </button>
     </ion-buttons>
 

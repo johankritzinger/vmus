@@ -12,6 +12,9 @@ log.txt
 .vscode/
 npm-debug.log*
 
+*.jks
+*.apk
+
 .idea/
 .sass-cache/
 .tmp/

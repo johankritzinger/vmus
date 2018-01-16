@@ -1,24 +1,26 @@
 // see https://devdactic.com/ionic-2-images/
 
+// see https://ionicframework.com/docs/developer-resources/third-party-libs/
+
+// https://www.npmjs.com/package/resize-base64
+// npm install resize-base64 --save
+// var  img = resizebase64(base64, maxWidth, maxHeight);
+
 import { Component, ViewChild } from '@angular/core';
 // import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
-import { ViewController, NavController, NavParams } from 'ionic-angular';
-import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+// import { ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+// import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+import {  Platform, ActionSheetController, ToastController, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
-import { Transfer, TransferObject } from '@ionic-native/transfer';
+// import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
-import { Vmrecords } from '../../providers/providers';
+import { Vmrecords, VmpicsProvider, Settings } from '../../providers/providers';
 import { Camera } from '@ionic-native/camera';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
+
 declare var cordova: any;
-/**
- * Generated class for the PicsPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 
 // @IonicPage()
 @Component({
@@ -30,101 +32,81 @@ export class PicsPage {
 
   form: FormGroup;
   // lastImage: string = null;
-  loading: Loading;
+  // loading: Loading;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public vmrecords: Vmrecords,
+    public vmpics: VmpicsProvider,
     public viewCtrl: ViewController,
     public camera: Camera,
-    private transfer: Transfer,
+    // private transfer: Transfer,
     private file: File,
     private filePath: FilePath,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
     public platform: Platform,
-    public loadingCtrl: LoadingController
+    public settings: Settings,
+    // public loadingCtrl: LoadingController
 
   ) {
-
-    this.form = formBuilder.group(this.vmrecords.record);
+    // This creates vmpics.vmPics
+    // this.vmpics.getPics(this.vmrecords.record.id).then(s =>{
+      this.form = formBuilder.group(this.vmpics.vmPics);
+      console.log('formBuilder');
+      // console.log(JSON.stringify(this.vmpics.vmPics))
+    // });
+    // this.form = formBuilder.group(this.vmrecords.record);
   }
 
-  public presentActionSheet(picform) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
-      buttons: [
-        {
-          text: 'Load from Library',
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY,picform);
-          }
-        },
-        {
-          text: 'Use Camera',
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.CAMERA,picform);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  public takePicture(sourceType,picform) {
+  public getPicture(picform,source) {
+    var sourceType = this.camera.PictureSourceType.CAMERA;
+    var targetSize = this.settings.allSettings.picsize || 1000;
+    var quality = this.settings.allSettings.quality || 75;
     // Create options for the Camera Dialog
     var options = {
-      quality: 100,
+      quality: quality,
       sourceType: sourceType,
+      destinationType: this.camera.DestinationType.DATA_URL,
       saveToPhotoAlbum: true,
       correctOrientation: true,
-      allowEdit: true
-    };
-
-    // Get the data of an image
-    this.camera.getPicture(options).then((imagePath) => {
-      // Special handling for Android library
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName(),picform);
-            console.log('copied file to: ' + correctPath)
-          });
-      } else {
-        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName(),picform);
-          console.log('copied camera file to: ' + correctPath);
+      targetWidth: targetSize,
+      // targetHeight: targetSize,
+      allowEdit: false
+    }
+    if (source == 'CAMERA') {
+      // default settings correct
+    } else if (source == 'PHOTOLIBRARY') {
+      sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
+      options = {
+        quality: quality,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        sourceType: sourceType,
+        saveToPhotoAlbum: true,
+        correctOrientation: true,
+        targetWidth: targetSize,
+        // targetHeight: targetSize,
+        allowEdit: true
       }
-    }, (err) => {
-      this.presentToast('Error while selecting image.');
-    });
-  }
-
-  // Create a new name for the image
-  private createFileName() {
-    var d = new Date(),
-    n = d.getTime(),
-    newFileName =  n + ".jpg";
-    console.log(newFileName);
-    return newFileName;
-
-  }
-
-  // Copy the image to a local folder
-  private copyFileToLocalDir(namePath, currentName, newFileName,picform) {
-    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-      this.form.value[picform] = newFileName;
-    }, error => {
-      this.presentToast('Error while storing file.');
-    });
+    }
+    // Get the data of an image
+     this.camera.getPicture(options).then((imageData) => {
+       this.form.controls[picform].setValue(imageData);
+     }, (err) => {
+       this.presentToast('Error while selecting image.');
+     });
+     // if (picform == 'pic1') {
+     //   console.log('thumbnail')
+     //   options.targetWidth = 80;
+     //   options.targetHeight = 80;
+     //   this.camera.getPicture(options).then((imageData) => {
+     //     console.log(imageData);
+     //   }, (err) => {
+     //     this.presentToast('Error while selecting image.');
+     //   });
+     // }
   }
 
   private presentToast(text) {
@@ -136,78 +118,30 @@ export class PicsPage {
     toast.present();
   }
 
-  // Always get the accurate path to your apps folder
-  public pathForImage(img) {
-    if (img === null) {
-      return '';
-    } else {
-      return cordova.file.dataDirectory + img;
-    }
+  deleteImage(picnum) {
+    this.form.controls['pic'+picnum].setValue(null);
+    this.vmpics.delPic(this.vmrecords.record.id,picnum);
   }
 
-  deleteImage(picform) {
-    console.log('Deleting file ' + cordova.file.dataDirectory + this.form.value[picform]);
-    this.file.removeFile(cordova.file.dataDirectory, this.form.value[picform]).then(success => {
-      this.presentToast('File deleted');
-    }, error => {
-      this.presentToast('Error while deleting file.');
-    });
-    this.form.controls[picform].setValue(null);
-    console.log(this.form.value[picform]);
-    console.log('pic now set to ' + this.form.value[picform]);
-  }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad PicsPage');
+  // }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PicsPage');
-  }
-
-//   getPicture() {
-//   if (Camera['installed']()) {
-//     this.camera.getPicture({
-//       destinationType: this.camera.DestinationType.FILE_URI,
-//       // targetWidth: 96,
-//       // targetHeight: 96,
-//       saveToPhotoAlbum: true,
-//       allowEdit: true
-//     }).then((data) => {
-//       console.log('pic data: ' + data)
-//       // this.form.patchValue({ 'pic1': 'data:image/jpg;base64,' + data });
-//       this.form.value.pic1 = data;
-//     }, (err) => {
-//       alert('Unable to take photo');
-//     })
-//   } else {
-//     this.fileInput.nativeElement.click();
-//   }
-// }
-//
-// processWebImage(event) {
-//   let reader = new FileReader();
-//   reader.onload = (readerEvent) => {
-//
-//     let imageData = (readerEvent.target as any).result;
-//     this.form.patchValue({ 'pic1': imageData });
-//   };
-//
-//   reader.readAsDataURL(event.target.files[0]);
-// }
-//
-// getProfileImageStyle() {
-//   return 'url(' + this.form.controls['pic1'].value + ')'
-// }
 
 done() {
   // if (!this.vmrecords.form.valid) { return; }
-    console.log('saving pics: ' + JSON.stringify(this.form.value));
-    this.vmrecords.record = this.form.value;
-    this.vmrecords.addItem(this.form.value).then(s => {
-      this.viewCtrl.dismiss(this.form.value);
-    });
-    /*
-    We need to add a bit in here - if a previous picture was replaced, delete
-    it.
-    */
-  // }
+    //  save each of the pics using vmpics.savePic()
+    for (var i = 1; i < 4; i++ ) {
+      console.log('Var ' + i)
+      if (this.form.value['pic' + i]) {
+        this.vmpics.savePic({ RecordId: this.vmrecords.record.id, PicNum: i, Content: this.form.value['pic' + i] })
+        console.log('pic' + i + 'exists' )
+      }
+    }
+    this.viewCtrl.dismiss(this.vmrecords.record);
+    // this.vmrecords.addItem(this.form.value).then(s => {
+    //   this.viewCtrl.dismiss(this.form.value);
+    // });
 }
 
 cancel() {

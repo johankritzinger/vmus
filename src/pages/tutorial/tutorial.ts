@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { MenuController, NavController } from 'ionic-angular';
 
 import { WelcomePage } from '../welcome/welcome';
+import { MainPage } from '../../pages/pages';
 
 import { TranslateService } from '@ngx-translate/core';
-
+import { Settings } from '../../providers/settings';
 
 
 export interface Slide {
@@ -21,16 +22,28 @@ export class TutorialPage {
   slides: Slide[];
   showSkip = true;
 
-  constructor(public navCtrl: NavController, public menu: MenuController, translate: TranslateService) {
-    translate.get(["TUTORIAL_SLIDE1_TITLE",
-      "TUTORIAL_SLIDE1_DESCRIPTION",
-      "TUTORIAL_SLIDE2_TITLE",
-      "TUTORIAL_SLIDE2_DESCRIPTION",
-      "TUTORIAL_SLIDE3_TITLE",
-      "TUTORIAL_SLIDE3_DESCRIPTION",
-    ]).subscribe(
-      (values) => {
-        // console.log('Loaded values', values);
+  nextpage: any = WelcomePage;
+
+  // account: { email: string, password: string, userid: number } = {
+  //   email: this.settings.allSettings.email || '',
+  //   password: this.settings.allSettings.password || '',
+  //   userid: this.settings.allSettings.userid ||''
+  // };
+
+  constructor(public navCtrl: NavController,
+    public menu: MenuController,
+    public settings: Settings,
+    // translate: TranslateService
+    ) {
+    // translate.get(["TUTORIAL_SLIDE1_TITLE",
+    //   "TUTORIAL_SLIDE1_DESCRIPTION",
+    //   "TUTORIAL_SLIDE2_TITLE",
+    //   "TUTORIAL_SLIDE2_DESCRIPTION",
+    //   "TUTORIAL_SLIDE3_TITLE",
+    //   "TUTORIAL_SLIDE3_DESCRIPTION",
+    // ]).subscribe(
+    //   (values) => {
+    //     // console.log('Loaded values', values);
         this.slides = [
           {
             title: 'Welcome to the VMUS app',
@@ -60,11 +73,15 @@ export class TutorialPage {
             image: 'assets/img/ica-slidebox-img-3.png',
           }
         ];
-      });
+      // });
+
   }
 
   startApp() {
-    this.navCtrl.setRoot(WelcomePage, {}, {
+    if (this.settings.allSettings.userToken) {
+      this.nextpage = MainPage;
+    }
+    this.navCtrl.setRoot(this.nextpage, {}, {
       animate: true,
       direction: 'forward'
     });

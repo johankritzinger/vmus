@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
+// import { Resizebase64 } from 'resize-base64';
 
 import { MyApp } from './app.component';
 
@@ -26,10 +27,12 @@ import { RecordLocationPage } from '../pages/record-location/record-location';
 import { PicsPage } from '../pages/pics/pics';
 import { ProjectDetailsPage } from '../pages/project-details/project-details';
 import { ListProjectsPage } from '../pages/list-projects/list-projects';
+import { HelpPage } from '../pages/help/help';
+import { AboutPage } from '../pages/about/about';
 
 import { Api } from '../providers/api';
 import { Items } from '../mocks/providers/items';
-import { Vmrecords, VmprojectsProvider, Location, Connection } from '../providers/providers';
+import { Vmrecords, VmprojectsProvider, VmpicsProvider, Location, Connection } from '../providers/providers';
 import { Settings } from '../providers/settings';
 import { User } from '../providers/user';
 
@@ -51,6 +54,23 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+//
+// // For ionic view (pro) error capturing
+// import { Pro } from '@ionic/pro';
+//
+// const IonicPro = Pro.init('APP_ID', {
+//   appVersion: "APP_VERSION"
+// });
+//
+// // import { ErrorHandler } from '@angular/core';
+//
+// export class MyErrorHandler implements ErrorHandler {
+//   handleError(err: any): void {
+//     IonicPro.monitoring.handleNewError(err);
+//   }
+// }
+
+
 
 export function provideSettings(storage: Storage) {
   /**
@@ -81,6 +101,8 @@ export function provideSettings(storage: Storage) {
     SearchPage,
     SettingsPage,
     SignupPage,
+    HelpPage,
+    AboutPage,
     TabsPage,
     TutorialPage,
     WelcomePage,
@@ -116,6 +138,8 @@ export function provideSettings(storage: Storage) {
     SearchPage,
     SettingsPage,
     SignupPage,
+    HelpPage,
+    AboutPage,
     TabsPage,
     TutorialPage,
     WelcomePage,
@@ -134,7 +158,9 @@ export function provideSettings(storage: Storage) {
     StatusBar,
     Vmrecords,
     VmprojectsProvider,
+    VmpicsProvider,
     Geolocation,
+    // Resizebase64,
     Location,
     Connection,
     File,
@@ -144,6 +170,7 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }
+    // [{ provide: ErrorHandler, useClass: MyErrorHandler }]
   ]
 })
 export class AppModule { }

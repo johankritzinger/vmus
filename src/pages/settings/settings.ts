@@ -5,6 +5,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Settings,VmprojectsProvider } from '../../providers/providers';
 
 import { TranslateService } from '@ngx-translate/core';
+import { LoginPage } from '../login/login';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -28,12 +29,27 @@ export class SettingsPage {
     pageTitleKey: 'SETTINGS_PAGE_PROFILE'
   };
 
+  login() {
+    this.navCtrl.push(LoginPage);
+  }
+
+  logout(){
+    this.settings.allSettings.userToken = '';
+  }
+
+  picSettings = {
+    page: 'pics',
+    pageTitleKey: 'SETTINGS_PAGE_PICS'
+  }
+
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
   pageTitle: string;
   projectsUpdated: string = new Date(this.settings.allSettings.projectsUpdated).toLocaleDateString();
 
   subSettings: any = SettingsPage;
+
+  loginButtonText: string = 'Log in';
 
   constructor(public navCtrl: NavController,
     public settings: Settings,
@@ -58,7 +74,18 @@ export class SettingsPage {
         break;
       case 'profile':
         group = {
-          option4: [this.options.option4]
+          email: [this.options.email],
+          userid: [this.options.userid],
+          username: [this.options.username]
+        };
+        if (this.settings.allSettings.userToken) {
+          this.loginButtonText = 'Change login';
+        }
+        break;
+      case 'pics':
+        group = {
+          quality: [this.options.quality || 75],
+          picsize: [this.options.picsize || 1000 ]
         };
         break;
     }

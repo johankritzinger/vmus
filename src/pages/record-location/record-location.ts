@@ -101,8 +101,8 @@ export class RecordLocationPage {
         this.presentToast('Setting altitude');
         this.form.get('minelev').setValue(altitude);
         this.vmrecords.record.minelev = altitude;
-        this.form.get('maxelev').setValue(altitude);
-        this.vmrecords.record.maxelev = altitude;
+        // this.form.get('maxelev').setValue(altitude);
+        // this.vmrecords.record.maxelev = altitude;
 
       })
     } else {
