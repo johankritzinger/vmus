@@ -60,6 +60,15 @@ export class ItemCreatePage {
     if (!this.vmrecords.record.isTrackingAltitude) {
       this.vmrecords.record.isTrackingAltitude = false;
     }
+    // Get numPics
+    // this.numPics = 0;
+    // for (var pic = 1; pic < 4; pic++) {
+    //   console.log('pic' + pic + ': ' + this.vmrecords.record['pic' + pic])
+    //   if (this.vmrecords.record['pic' + pic] > 0) {
+    //     console.log('Yes, pic' + pic + ': ' + this.vmrecords.record['pic' + pic])
+    //     this.numPics++
+    //   }
+    // }
     this.vmrecords.checkReadyToSubmit();
     this.form = formBuilder.group(this.vmrecords.record);
     console.log('Loading form for record ' + this.vmrecords.record.id );

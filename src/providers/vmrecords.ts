@@ -148,8 +148,10 @@ export class Vmrecords {
       a += (this.record.year)? 1 : 0; b += 1;
       a += (this.record.month)? 1 : 0; b += 1;
       a += (this.record.day)? 1 : 0; b += 1;
-      a +- (this.record.pic1 || this.record.pic2 || this.record.pic3)? 1 : 0; b += 1;
+      a += (this.record.pic1 > 0  || this.record.pic2 > 0 || this.record.pic3 > 0 )? 1 : 0; b += 1;
       // etc etc
+
+      console.log('pics 1: ' + this.record.pic1 + ' 2: ' + this.record.pic2 + ' 3: ' + this.record.pic3)
 
       if(a == b) {
           //do stuff
@@ -340,7 +342,7 @@ export class Vmrecords {
                 .item(i);
               item.numpics = 0;
               for (var pic = 1; pic < 4; pic++) {
-                if (item['pic' + pic]) {
+                if (item['pic' + pic] > 0) {
                   item.numpics++
                 }
               }
