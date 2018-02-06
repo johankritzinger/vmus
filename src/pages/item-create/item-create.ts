@@ -33,6 +33,7 @@ export class ItemCreatePage {
   pageTitle: string = 'VMUS Record'
   isTrackingLocation: boolean = false;
   private statusText: any;
+  public numPics: number;
 
   // subSettings: any = ItemCreatePage;
 
@@ -51,7 +52,7 @@ export class ItemCreatePage {
     public location: Location,
     public settings: Settings,
     public toastCtrl: ToastController,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
   ) {
     if (!this.vmrecords.record.isTrackingLocation) {
       this.vmrecords.record.isTrackingLocation = false;
@@ -106,13 +107,6 @@ export class ItemCreatePage {
 
       })
       addModal.present();
-    });
-
-  }
-
-  openPicsNav() {
-    this.navCtrl.push(PicsPage, {
-      // recordnum
     });
 
   }
@@ -218,6 +212,7 @@ export class ItemCreatePage {
   deleteItem(vmrecord) {
     this.vmrecords.del(this.form.value);
     this.vmpics.delRecordPics(this.form.value.id);
+    this.vmpics.removeOrphans();
     this.viewCtrl.dismiss();
   }
 

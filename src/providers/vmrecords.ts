@@ -118,12 +118,13 @@ export class Vmrecords {
       "nestcount": '',
       "nestsite": '',
       "roadkill": false,
-      "pic1": '',
-      "pic2": '',
-      "pic3": '',
-      "sound1": '',
+      "pic1": 0,
+      "pic2": 0,
+      "pic3": 0,
+      "sound1": 0,
       "isTrackingLocation":false,
-      "isTrackingAltitude": false
+      "isTrackingAltitude": false,
+      "numpics": 0
       };
 
   checkReadyToSubmit() {
@@ -147,6 +148,7 @@ export class Vmrecords {
       a += (this.record.year)? 1 : 0; b += 1;
       a += (this.record.month)? 1 : 0; b += 1;
       a += (this.record.day)? 1 : 0; b += 1;
+      a +- (this.record.pic1 || this.record.pic2 || this.record.pic3)? 1 : 0; b += 1;
       // etc etc
 
       if(a == b) {
@@ -327,7 +329,7 @@ export class Vmrecords {
     return new Promise(res => {
       this.arr = [];
       //  WHERE status IS NULL or status < 3
-      let query = "SELECT * FROM VMRecords";
+      let query = "SELECT * FROM VMRecords ORDER BY status, date";
       this
         .db
         .executeSql(query, [], rs => {
@@ -336,6 +338,12 @@ export class Vmrecords {
               var item = rs
                 .rows
                 .item(i);
+              item.numpics = 0;
+              for (var pic = 1; pic < 4; pic++) {
+                if (item['pic' + pic]) {
+                  item.numpics++
+                }
+              }
               this
                 .arr
                 .push(item);

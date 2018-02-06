@@ -19,13 +19,13 @@
       on-refresh="doRefresh()">
     </ion-refresher>
   <ion-list>
-    <ion-item-sliding *ngFor="let item of this.vmrecords.arr">
+    <ion-item-sliding *ngFor="let item of this.vmrecords.arr" class="{{ this.vmrecords.statusText[item.status] }}">
       <button ion-item (click)="openItem(item)">
         <!-- <ion-avatar item-start *ngIf="item.pic1">
           <img [src]="'data:image/jpg;base64,' + item.pic1" />
         </ion-avatar> -->
         <h2>{{ item.id }}: {{ item.locality }}</h2>
-        <p>{{item.userdet || item.project}}</p>
+        <p>{{this.vmrecords.statusText[item.status] || item.userdet || item.project}}</p>
         <ion-note item-end *ngIf="item.userdet">{{ item.project }}</ion-note>
       </button>
 

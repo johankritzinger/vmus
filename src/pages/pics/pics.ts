@@ -121,6 +121,7 @@ export class PicsPage {
   deleteImage(picnum) {
     this.form.controls['pic'+picnum].setValue(null);
     this.vmpics.delPic(this.vmrecords.record.id,picnum);
+    this.vmrecords.record['pic'+picnum] = 0;
   }
 
   // ionViewDidLoad() {
@@ -135,6 +136,7 @@ done() {
       console.log('Var ' + i)
       if (this.form.value['pic' + i]) {
         this.vmpics.savePic({ RecordId: this.vmrecords.record.id, PicNum: i, Content: this.form.value['pic' + i] })
+        this.vmrecords.record['pic'+i] = 1;
         console.log('pic' + i + 'exists' )
       }
     }
